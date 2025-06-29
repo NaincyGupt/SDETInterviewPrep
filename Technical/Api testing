@@ -1,12 +1,86 @@
-That’s a great question — for a Senior SDET (Software Development Engineer in Test) role with a focus on API testing, you can expect the interview to probe deeply on both practical testing skills and architectural/design knowledge.
-
-Here’s a structured breakdown of topics you should be prepared for:
 
 ⸻
 
 ✅ Core API Testing Concepts
 	•	REST vs SOAP (differences, advantages, use cases)
+
+### Differences
+
+**REST (Representational State Transfer):**
+- **Architecture Style:** REST is an architectural style that uses standard HTTP methods (GET, POST, PUT, DELETE).
+- **Data Format:** Typically uses JSON, but can also use XML, HTML, or plain text.
+- **Stateless:** Each request from a client to server must contain all the information needed to understand and process the request.
+- **URL Structure:** Uses URLs to access resources, making it easy to understand and use.
+
+**SOAP (Simple Object Access Protocol):**
+- **Protocol:** SOAP is a protocol that relies on XML-based messaging.
+- **Data Format:** Exclusively uses XML for message format.
+- **Stateful:** Can be either stateless or stateful, depending on the need.
+- **Complexity:** Generally more complex due to its strict standards and protocols.
+
+### Advantages
+
+**REST:**
+- **Simplicity:** Easier to understand and implement due to its use of standard HTTP methods.
+- **Performance:** Typically faster and more efficient, especially for web services.
+- **Flexibility:** Can handle multiple data formats and is language-agnostic.
+- **Scalability:** Better suited for large-scale applications due to its stateless nature.
+
+**SOAP:**
+- **Security:** Built-in security features like WS-Security, making it suitable for enterprise-level applications.
+- **Reliability:** Supports ACID (Atomicity, Consistency, Isolation, Durability) transactions, which are crucial for certain applications.
+- **Extensibility:** Highly extensible through various standards and protocols.
+- **Error Handling:** Provides better error handling through standardized fault codes.
+
+### Use Cases
+
+**REST:**
+- **Web Services:** Ideal for web services that require quick and efficient communication.
+- **Mobile Applications:** Commonly used in mobile apps due to its lightweight nature.
+- **Public APIs:** Preferred for public APIs where simplicity and performance are key.
+
+**SOAP:**
+- **Enterprise Applications:** Suitable for applications that require high security and reliability.
+- **Payment Gateways:** Often used in payment gateways due to its support for ACID transactions.
+- **Legacy Systems:** Works well with legacy systems that already use SOAP.
+
+
+
 	•	HTTP methods (GET, POST, PUT, PATCH, DELETE)
+
+### **GET**
+- **Purpose:** Retrieve data from the server.
+- **Usage:** Used to request data from a specified resource.
+- **Example:** Fetching user details from `/users/123`.
+- **Characteristics:** Safe and idempotent (multiple identical requests yield the same result).
+
+### **POST**
+- **Purpose:** Send data to the server to create a new resource.
+- **Usage:** Used to submit data to be processed to a specified resource.
+- **Example:** Creating a new user with `/users`.
+- **Characteristics:** Not idempotent (multiple identical requests create multiple resources).
+
+### **PUT**
+- **Purpose:** Update an existing resource with new data.
+- **Usage:** Used to update a resource at a specified URL.
+- **Example:** Updating user details at `/users/123`.
+- **Characteristics:** Idempotent (multiple identical requests yield the same result).
+
+### **PATCH**
+- **Purpose:** Apply partial modifications to a resource.
+- **Usage:** Used to update part of a resource.
+- **Example:** Updating the email of a user at `/users/123`.
+- **Characteristics:** Not necessarily idempotent (depends on implementation).
+
+### **DELETE**
+- **Purpose:** Remove a resource from the server.
+- **Usage:** Used to delete a specified resource.
+- **Example:** Deleting a user at `/users/123`.
+- **Characteristics:** Idempotent (multiple identical requests yield the same result).
+
+These methods are fundamental to RESTful APIs and help in performing CRUD (Create, Read, Update, Delete) operations 
+
+
 	•	HTTP status codes (2xx, 4xx, 5xx and their meanings)
 	•	Request/response structure
 	•	headers
