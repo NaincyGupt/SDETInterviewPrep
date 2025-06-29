@@ -1,0 +1,127 @@
+That’s a great question — for a Senior SDET (Software Development Engineer in Test) role with a focus on API testing, you can expect the interview to probe deeply on both practical testing skills and architectural/design knowledge.
+
+Here’s a structured breakdown of topics you should be prepared for:
+
+⸻
+
+✅ Core API Testing Concepts
+	•	REST vs SOAP (differences, advantages, use cases)
+	•	HTTP methods (GET, POST, PUT, PATCH, DELETE)
+	•	HTTP status codes (2xx, 4xx, 5xx and their meanings)
+	•	Request/response structure
+	•	headers
+	•	query parameters
+	•	path parameters
+	•	request body
+	•	JSON vs XML payloads
+	•	Idempotency of HTTP methods
+	•	Statelessness of REST APIs
+	•	Authentication mechanisms
+	•	Basic Auth
+	•	OAuth 2.0
+	•	JWT tokens
+	•	API keys
+	•	API versioning strategies
+	•	Pagination, filtering, sorting in APIs
+
+⸻
+
+✅ API Testing Tools
+	•	Postman (including scripting with Postman)
+	•	REST Assured (Java)
+	•	Karate
+	•	SOAPUI
+	•	Newman (for Postman CLI)
+	•	JMeter for performance testing APIs
+	•	Familiarity with using cURL from the command line
+
+You should be able to:
+	•	write test scripts
+	•	chain API calls (multi-step workflow testing)
+	•	validate responses with assertions
+	•	handle dynamic data and environment variables
+
+⸻
+
+✅ Automation Framework Questions
+
+As a senior SDET, you will often be asked to design or extend test frameworks. Be ready to discuss:
+	•	framework design principles
+	•	separating test data from test logic
+	•	reporting strategy
+	•	integrating with CI/CD (Jenkins, GitHub Actions, etc.)
+	•	test parallelization and scaling
+	•	best practices for API test automation
+	•	mocking and stubbing using tools like WireMock or MockServer
+
+⸻
+
+✅ Test Strategy & Test Scenarios
+
+Interviewers will often ask you:
+	•	How would you design API test cases?
+	•	How do you test a GET endpoint vs a POST endpoint?
+	•	What are negative test cases for an API?
+	•	What is contract testing?
+	•	How would you handle testing third-party APIs or rate-limited endpoints?
+	•	How to manage test data for APIs (create, clean up, rollback)?
+
+⸻
+
+✅ Performance & Security Testing of APIs
+	•	Load testing strategies for APIs
+	•	Tools like JMeter, Gatling, k6
+	•	Security tests:
+	•	SQL injection
+	•	XSS
+	•	token validation
+	•	replay attacks
+	•	API rate limiting / throttling
+	•	testing for broken object level authorization
+
+⸻
+
+✅ Design & Architecture Questions
+
+As a senior-level candidate, you may also be asked:
+	•	How would you design a scalable API testing framework?
+	•	How to design tests for microservices with many APIs?
+	•	How to test event-driven APIs (e.g., Kafka, webhooks)?
+	•	What are contract testing tools (Pact, Spring Cloud Contract)?
+
+⸻
+
+✅ Behavioral / Situational
+	•	Describe a time you improved API test coverage.
+	•	Tell me about a time you had to advocate for better API test practices.
+	•	How do you handle flaky API tests?
+	•	How do you prioritize which APIs to test first?
+
+⸻
+
+✅ Coding (for Senior SDET)
+
+Expect a short coding round where you may:
+	•	parse JSON responses
+	•	write a small REST client
+	•	build a test automation class to hit an API endpoint and validate a response
+	•	maybe even design a simple mocking service
+
+Languages: Usually Java, Python, or JavaScript depending on the company.
+
+⸻
+
+👉 TL;DR Checklist for preparation
+
+✅ Understand REST deeply
+✅ Know Postman and REST Assured well
+✅ Design test strategies, including negative tests
+✅ Explain test framework architecture
+✅ Be ready for contract testing and mocking
+✅ Know about API security testing basics
+✅ Be able to code small API test utilities
+✅ Prepare examples of real-world test challenges you solved
+
+⸻
+
+If you like, share the tech stack of the company you are targeting, and I can tailor a sharper preparation roadmap for you! 🚀
