@@ -82,6 +82,33 @@ These methods are fundamental to RESTful APIs and help in performing CRUD (Creat
 
 
 	•	HTTP status codes (2xx, 4xx, 5xx and their meanings)
+
+### **2xx: Success**
+These codes indicate that the request was successfully received, understood, and accepted.
+
+- **200 OK**: The request was successful, and the server returned the requested resource.
+- **201 Created**: The request was successful, and a new resource was created.
+- **202 Accepted**: The request has been accepted for processing, but the processing is not complete.
+- **204 No Content**: The request was successful, but there is no content to send in the response.
+
+### **4xx: Client Error**
+These codes indicate that there was an error with the request, typically due to client-side issues.
+
+- **400 Bad Request**: The server could not understand the request due to invalid syntax.
+- **401 Unauthorized**: Authentication is required and has failed or has not been provided.
+- **403 Forbidden**: The server understood the request but refuses to authorize it.
+- **404 Not Found**: The requested resource could not be found on the server.
+- **405 Method Not Allowed**: The request method is not supported for the requested resource.
+- **429 Too Many Requests**: The user has sent too many requests in a given amount of time.
+
+### **5xx: Server Error**
+These codes indicate that the server failed to fulfill a valid request.
+
+- **500 Internal Server Error**: The server encountered an unexpected condition that prevented it from fulfilling the request.
+- **502 Bad Gateway**: The server received an invalid response from an upstream server.
+- **503 Service Unavailable**: The server is not ready to handle the request, often due to maintenance or overload.
+- **504 Gateway Timeout**: The server did not receive a timely response from an upstream server.
+
 	•	Request/response structure
 	•	headers
 	•	query parameters
@@ -91,13 +118,25 @@ These methods are fundamental to RESTful APIs and help in performing CRUD (Creat
 	•	Idempotency of HTTP methods
 	•	Statelessness of REST APIs
 	•	Authentication mechanisms
-	•	Basic Auth
-	•	OAuth 2.0
-	•	JWT tokens
-	•	API keys
+API Keys: Simple key in headers (e.g., X-API-Key: abc123).
+OAuth: Token-based delegation (e.g., OAuth 2.0 for user authorization).
+JWT: JSON Web Tokens for secure, stateless access.
+Basic Auth: Base64-encoded username:password in headers
+	
 	•	API versioning strategies
 	•	Pagination, filtering, sorting in APIs
 
+What are the Different Types of API Testing?
+Here are the different types of API testing :
+
+Functional Testing: Checks if the API functions correctly according to the requirements.
+Load Testing: Tests how the API performs under heavy load or many simultaneous requests to check its stability and responsiveness.
+Security Testing: Ensures the API is protected against threats like unauthorized access, injection attacks, and data leaks.
+Reliability Testing: Verifies that the API can handle requests consistently over time without failures.
+Validation Testing: Confirms that the API returns the expected results and follows the correct data format and protocols.
+Error Handling Testing: Checks how the API responds to invalid inputs or unexpected conditions, making sure it handles errors gracefully.
+Interoperability Testing: Ensures the API works well across different devices, platforms, or systems that interact with it.
+Documentation Testing: Reviews the API documentation to ensure it is accurate, complete, and easy to understand for developers.
 ⸻
 
 ✅ API Testing Tools
