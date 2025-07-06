@@ -1,0 +1,33 @@
+class Solution {
+    public int thirdMax(int[] nums) {
+        int firstMax = Integer.MIN_VALUE;
+        int secondMax = Integer.MIN_VALUE;
+        int thirdMax = Integer.MIN_VALUE;
+        Set<Integer> set = new HashSet<>();//DISTINCT NUMBERS
+            for(int i=0; i<nums.length;i++){
+                 if(!set.contains(nums[i])){
+                if(nums[i]>firstMax){
+                    thirdMax=secondMax;
+                    secondMax = firstMax;
+                    firstMax=nums[i];
+                }
+                else if(nums[i]>=secondMax){
+                    thirdMax=secondMax;
+                    secondMax = nums[i];
+                }
+                else if(nums[i]>=thirdMax){
+                    thirdMax =nums[i];
+                }
+            }
+                set.add(nums[i]);
+            }    
+        if(set.size()>=3){
+            return thirdMax;
+        }
+        else{
+            return firstMax;
+        }
+        
+    }
+}
+// 1st max = 2 ; 2ndMax =2 1stMax =2; 
