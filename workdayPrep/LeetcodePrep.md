@@ -24,7 +24,7 @@ class Solution {
 
 //O(n)
 ## Check if two strings are anagrams
-'''
+```
 class Solution {
     public boolean isAnagram(String s, String t) {
         //character count
@@ -46,7 +46,7 @@ class Solution {
         return true;
     }
 }
-'''
+```
 ## Group anagrams
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
