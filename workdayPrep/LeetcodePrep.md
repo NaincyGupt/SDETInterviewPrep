@@ -1,28 +1,51 @@
-Ooo okay 👀 preparing for **Workday SDET + HackerRank round** — nice.
-
-First thing: companies like Workday usually don’t ask wild competitive programming puzzles for SDET. It’s more:
-
-* Solid coding fundamentals
-* Data structures
-* String / array manipulation
-* OOP design
-* Basic automation logic
-* Sometimes API / test framework thinking
-
-Let me break this down realistically.
-
----
 
 # 🔥 Common HackerRank Question Types for SDET (Workday Level)
 
 ## 1️⃣ String Manipulation
 
-Very common.
+
 
 Example:
 
-* Reverse words in a sentence
-* Check if two strings are anagrams
+##  Reverse words in a sentence
+class Solution {
+    public String reverseWords(String s) {
+       String[] words = s.trim().split(" ");
+       StringBuilder revString = new StringBuilder();
+       for(int i=words.length-1;i>=0;i--)
+       {
+        if(!words[i].isEmpty())//Returns true if the string contains actual characters (a valid word)
+
+            revString.append(words[i]).append(" ");
+       }
+       return revString.toString().trim();
+    }
+}
+
+//O(n)
+## Check if two strings are anagrams
+
+## Group anagrams
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        //hashmap having sorted and anagrams
+        HashMap<String, List<String>> map = new HashMap<>();
+        for(String str:strs)
+        {
+            char[] sorted = str.toCharArray();
+            Arrays.sort(sorted);
+            String sorted_key = String.valueOf(sorted);
+            if(!map.containsKey(sorted_key))
+            {
+                    map.put(sorted_key, new ArrayList<>());
+             
+            }
+           map.get(sorted_key).add(str);
+        }
+        return new ArrayList(map.values());
+    }
+}
+
 * Longest substring without repeating characters
 * Validate parentheses
 
