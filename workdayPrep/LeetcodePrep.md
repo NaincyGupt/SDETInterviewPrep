@@ -24,7 +24,29 @@ class Solution {
 
 //O(n)
 ## Check if two strings are anagrams
+'''
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        //character count
+        int[] counter = new int[26];
+        if(s.length()!=t.length()) return false;
+        for(int i=0;i<s.length();i++)
+        {
+            char s_char = s.charAt(i);
+            char t_char = t.charAt(i);
+            counter[s_char-'a']++;
+            counter[t_char-'a']--;
+        }
 
+        for(int count:counter)
+        {
+            if(count!=0)
+                return false;
+        }
+        return true;
+    }
+}
+'''
 ## Group anagrams
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
