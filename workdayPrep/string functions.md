@@ -1,6 +1,4 @@
-Certainly! Here is the summary of Java String functions for LeetCode formatted in **Markdown**. You can easily copy and paste this into your personal notes or a `.md` file.
 
----
 
 # Java String Functions for LeetCode Summary
 
