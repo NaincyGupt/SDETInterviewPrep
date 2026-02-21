@@ -1,0 +1,86 @@
+Certainly! Here is the summary of Java String functions for LeetCode formatted in **Markdown**. You can easily copy and paste this into your personal notes or a `.md` file.
+
+---
+
+# Java String Functions for LeetCode Summary
+
+## 1. Basic Navigation & Inspection
+
+Essential for traversing strings using **Two-Pointer** or **Sliding Window** techniques.
+
+| Method | Description | Common Use Case |
+| --- | --- | --- |
+| `s.length()` | Returns the number of characters. | Defining loop boundaries. |
+| `s.charAt(i)` | Returns the `char` at index `i`. | Accessing characters (). |
+| `s.indexOf(str)` | Returns index of first occurrence (or -1). | Searching for patterns. |
+| `s.lastIndexOf(str)` | Returns index of last occurrence. | Finding the end of a pattern. |
+| `s.contains(str)` | Returns `boolean` if substring exists. | Simple existence checks. |
+| `s.isEmpty()` | Returns `true` if length is 0. | Edge case/Base case validation. |
+
+## 2. Transformation & Substrings
+
+> **Note:** Strings in Java are **immutable**. These methods return a **new** String object.
+
+* **`s.substring(int start, int end)`**: Returns a substring from `start` (inclusive) to `end` (**exclusive**).
+* *Complexity:*  time and space.
+
+
+* **`s.toLowerCase()` / `s.toUpperCase()**`: Useful for case-insensitive problems like "Valid Palindrome".
+* **`s.trim()`**: Removes leading and trailing whitespace.
+* **`s.replace(old, new)`**: Replaces all occurrences of a character or sequence.
+* **`s.split(String regex)`**: Splits a string into a `String[]`.
+* *Example:* `s.split("\\s+")` splits by one or more spaces.
+
+
+
+## 3. Comparison & Content
+
+**Never** use `==` for content comparison; it compares memory addresses.
+
+* **`s.equals(other)`**: Checks if string contents are identical.
+* **`s.equalsIgnoreCase(other)`**: Content check ignoring case.
+* **`s.compareTo(other)`**: Returns:
+* `0` if equal.
+* `< 0` if `s` is lexicographically smaller.
+* `> 0` if `s` is lexicographically larger.
+
+
+* **`s.startsWith(prefix)` / `s.endsWith(suffix)**`: Efficient boundary checks.
+
+## 4. The "LeetCode Survival" Classes
+
+In interviews, you often need to bypass String immutability for performance.
+
+### A. StringBuilder (Mutable Strings)
+
+Use this when you need to modify strings in a loop to avoid  complexity.
+
+* `sb.append(val)`: Adds to the end ( amortized).
+* `sb.reverse()`: Reverses the sequence in-place.
+* `sb.deleteCharAt(index)`: Removes a character at a specific position.
+* `sb.setCharAt(index, char)`: Replaces a character at a specific position.
+* `sb.toString()`: Converts back to a standard String.
+
+### B. Character Class (Static Helpers)
+
+Used to inspect individual characters:
+
+* `Character.isLetterOrDigit(char)`
+* `Character.isLowerCase(char)` / `Character.isUpperCase(char)`
+* `Character.isDigit(char)`
+
+### C. Conversions
+
+* **String to Char Array:** `char[] arr = s.toCharArray();` (Faster for frequent swaps).
+* **Char Array to String:** `String.valueOf(arr);` or `new String(arr);`.
+* **Primitive to String:** `String.valueOf(10);` converts `int` to `"10"`.
+
+---
+
+## 5. Complexity Reminders
+
+* **Concatenation in a loop:** `s += "a"` is . **Always use StringBuilder.**
+* **Searching:** `indexOf` and `contains` are  in the worst case, though usually highly optimized.
+* **Space:** Remember that converting a String to a `char[]` or `split()` uses  extra space.
+
+---
