@@ -5,7 +5,7 @@ It follows a hybrid BDD approach
 and build for both iOS and android platform 
 
 Core tech stack 
-  - uses Java 21 ()
+  - uses Java 21 
   - Test NG for  execution management
   - Cucumber for business readable scenarios
   - Appium for cross platform testing
@@ -112,4 +112,284 @@ Video Logs: Link screen recordings of the test execution.
    - Flakiness Trends
 4. categorization (Tags & Authors)
 Since you are using Cucumber Tags, ExtentReports can automatically categorize your results based on those tags.
+---
+
+LAYERED ARCHITECTURE
+
+1. Feature layer - gherkin scenario
+
+2. step defination layer - cucumber glue code - step def classes, logging , hooks, test context
+   hooks - prepare the run context, reporting, device allocation, driver lifecycle , logs and evidence handling.
+
+3. page object model(design pattern) - UI interation encapsulation
+   Each app screen is represented as a class having page elemnets(locators) + actions that can be performed on that how
+   
+
+4.Utilities - 
+
+---
+FEATURE LAYER - GHERKIN  - CUCUMBER
+
+Feature
+The purpose of the Feature keyword is to provide a high-level description of a software feature, and to group related scenarios.
+
+Rule
+The (optional) Rule keyword has been part of Gherkin since v6.
+The purpose of the Rule keyword is to represent one business rule that should be implemented. It provides additional information for a feature. A Rule is used to group together several scenarios that belong to this business rule. 
+
+Steps
+Each step starts with Given, When, Then, And, or But.
+GIVEN - Precondition
+WHEN- user action
+THEN - Expected result
+AND , BUT - 
+
+Background - repeat steps before each scenario
+
+Scenario outline : 
+The Scenario Outline keyword can be used to run the same Scenario multiple times, with different combinations of values.
+The keyword Scenario Template is a synonym of the keyword Scenario Outline.
+Copying and pasting scenarios to use different values quickly becomes tedious and repetitive:
+We can collapse these two similar scenarios into a Scenario Outline.
+Scenario outlines allow us to more concisely express these scenarios through the use of a template with < >-delimited parameters:
+
+Data tables = sending table of data 
+DOC strings= large piece of text to step defination  
+tags = group/organize fature
+"Mocha" = passing argument
+
+```
+@Retail @CoffeeShop
+Feature: Coffee Ordering System
+  As a coffee lover,
+  I want to order different types of coffee through the app
+  So that I can enjoy my drink without waiting in line.
+
+  Background:
+    Given the coffee shop "The Daily Grind" is open
+    And I am logged into the mobile application
+
+  Rule: Users must have sufficient balance to place an order
+
+    Scenario: Successful coffee order
+      Given I have a balance of $10.00 in my account
+      When I select a "Latte" which costs $4.50
+      And I click the "Confirm Order" button
+      Then the order should be placed successfully
+      And my account balance should be $5.50
+
+    Scenario Outline: Ordering various sizes
+      Given I have a balance of $20.00
+      When I choose a <size> <drink>
+      Then the final price should be <price>
+
+      Examples:
+        | size   | drink     | price |
+        | Small  | Espresso  | $3.00 |
+        | Medium | Cappuccino| $5.00 |
+        | Large  | Cold Brew | $6.50 |
+
+  Scenario: Bulk order details
+    Given I want to order for my team:
+      | drink      | quantity |
+      | Americano  | 2        |
+      | Flat White | 3        |
+    When I submit the group order
+    Then the receipt should show a total of 5 drinks
+    But no discount should be applied for orders under 10 drinks
+
+  Scenario: Custom message on cup
+    Given I order a "Mocha"
+    When I add the following instruction:
+      """
+      Please write "Happy Birthday Agastya!" 
+      on the side of the cup in green ink.
+      """
+    Then the barista should see the custom note
+```
+---
+STEP defination layer 
+
+### 1. Feature Layer (`login.feature`)
+The Gherkin remains focused on the user's journey.
+
+```gherkin
+@Regression
+Feature: User Authentication
+
+  Background:
+    Given the mobile application is launched
+
+  Scenario: Successful login
+    When I enter valid username and password
+    And I tap on the "Login" button
+    Then I should be redirected to the "Home" screen
+```
+
+---
+
+### 2. Step Definition Layer (`LoginSteps.java`)
+the steps interact directly with the **Page Objects** initialized in the page classes.
+
+```java
+public class LoginSteps {
+    private static final Logger logger = LogManager.getLogger(LoginSteps.class);
+    LoginPage loginPage = new LoginPage(ServiceHooks.getDriver());
+    HomePage homePage = new HomePage(ServiceHooks.getDriver());
+
+    @When("I enter valid username and password")
+    public void enterCredentials() {
+        logger.info("Step: Entering credentials");
+        loginPage.enterUsername("naincy_gupta");
+        loginPage.enterPassword("pass123");
+    }
+
+    @Then("I should be redirected to the {string} screen")
+    public void verifyScreen(String screenName) {
+        Assert.assertTrue(homePage.isHeaderDisplayed());
+        logger.info("Step: Verified " + screenName + " screen");
+    }
+}
+```
+Step defination layer interacts with many files 
+For page class object - page class - function to call locators are written here or any methods specific to page
+locators are in json file 
+JSON utility - to read locator json file 
+<Read locators.json -> identify platform from system config -> retrun accessibility id>
+
+### 1. The Locator JSON (`locators.json`)
+You can store both platforms in one file, organized by page and platform.
+
+```json
+{
+  "LoginPage": {
+    "android": {
+      "usernameField": "accessibility:username-field",
+      "passwordField": "id:com.lingo.app:id/password",
+      "loginButton": "xpath://android.widget.Button[@text='LOGIN']"
+    },
+    "ios": {
+      "usernameField": "predicate:label == 'username'",
+      "passwordField": "accessibility:password-field",
+      "loginButton": "classChain:**/XCUIElementTypeButton[`label == 'Login'`]"
+    }
+  }
+}
+```
+
+---
+
+### 2. The JSON Utility (`JsonUtils.java`)
+You need a simple helper to read the JSON based on the current platform.
+
+```java
+public class JsonUtils {
+    public static String getLocator(String pageName, String elementKey) {
+        // Implementation logic: 
+        // 1. Read locators.json
+        // 2. Identify platform (Android/iOS) from a config or System property
+        // 3. Return the string (e.g., "accessibility:username-field")
+        return "accessibility:username-field"; // Placeholder for logic
+    }
+}
+```
+
+---
+
+### 3. The Page Object Layer (Interacting with JSON)
+Instead of `@AndroidFindBy`, the page class now asks the utility for the locator string and uses a dynamic `By` object.
+
+**`LoginPage.java`**
+```java
+public class LoginPage {
+    private AppiumDriver driver;
+    private String platform;
+
+    public LoginPage(AppiumDriver driver, String platform) {
+        this.driver = driver;
+        this.platform = platform;
+    }
+
+    // Encapsulated UI Interaction
+    public void login(String user, String pass) {
+        getWebElement("usernameField").sendKeys(user);
+        getWebElement("passwordField").sendKeys(pass);
+        getWebElement("loginButton").click();
+    }
+
+    // Helper to find element dynamically
+    private WebElement getWebElement(String elementKey) {
+        String locatorValue = JsonUtils.getLocator("LoginPage", elementKey);
+        // Logic to split "accessibility:value" and return By.AccessibilityId(value)
+        return driver.findElement(MobileBy.AccessibilityId(locatorValue.split(":")[1]));
+    }
+}
+```
+BY OBJECT
+
+In Selenium and Appium, a **By object** is a mechanism or "locator strategy" used to find and identify elements within a mobile app or webpage. Think of it as the **address format** you give to the driver so it knows exactly where to look.
+
+#### The Logic Flow:
+1.  Your **JSON** stores a string: `"id:com.lingo.app:id/password"`.
+2.  Your **JsonUtils** splits that string into the type (`id`) and the value (`com.lingo.app:id/password`).
+3.  Your code then creates a **By object** dynamically:
+    ```java
+    // This creates the 'By' object that Appium understands
+    By myElement = By.id("com.lingo.app:id/password"); 
+    
+    // The driver uses that By object to find the element
+    driver.findElement(myElement).click();
+    ```
+
+
+
+---
+
+### 3. Hooks Layer (`ServiceHooks.java`)
+This class now acts as the central manager for **Device Allocation**, **Driver Lifecycle**, and **Evidence Handling**.
+
+```java
+public class ServiceHooks {
+    private static AppiumDriver driver;
+    private static final Logger logger = LogManager.getLogger(ServiceHooks.class);
+
+    // Global getter for Step Definitions to access the driver
+    public static AppiumDriver getDriver() {
+        return driver;
+    }
+
+    @Before
+    public void prepareRunContext(Scenario scenario) throws MalformedURLException {
+        logger.info("Initializing run for: " + scenario.getName());
+
+        // 1. Device Allocation & Driver Lifecycle
+        UiAutomator2Options options = new UiAutomator2Options()
+                .setDeviceName("Android_Emulator")
+                .setApp(System.getProperty("user.dir") + "/apps/lingo.apk");
+
+        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        logger.info("Appium Driver started successfully.");
+    }
+
+    @After
+    public void logsAndEvidenceHandling(Scenario scenario) {
+        // 2. Reporting & Evidence Handling
+        if (scenario.isFailed()) {
+            final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", "Failure_Evidence");
+            logger.error("Scenario FAILED: " + scenario.getName() + " - Screenshot captured.");
+        } else {
+            logger.info("Scenario PASSED: " + scenario.getName());
+        }
+
+        // 3. Driver Lifecycle Cleanup
+        if (driver != null) {
+            driver.quit();
+            logger.info("Appium session terminated.");
+        }
+    }
+}
+```
+
+---
 
