@@ -402,6 +402,366 @@ screenshot, recording
 
 ## test/Utils
 
+Mobile and Scroll utility 
+
+SWIPE ELEMENT
+### Core Swipe Methods Summary
+1. Android Swipe Method - mobile: swipeGesture
+// ANDROID: Uses UiAutomator2 native command
+Map<String, Object> params = new HashMap<>();
+params.put("elementId", elementId);     // Target element ID
+params.put("direction", "left");        // "left", "right", "up", "down"
+params.put("percent", 0.8);            // How far to swipe (0.1 - 0.95)
+params.put("speed", 2600);             // Swipe speed (pixels/second)
+js.executeScript("mobile: swipeGesture", params);
+
+2. iOS Swipe Method - mobile: swipe
+// iOS: Uses XCUITest native command  
+Map<String, Object> params = new HashMap<>();
+params.put("elementId", elementId);     // Target element ID
+params.put("direction", "left");        // Swipe direction
+js.executeScript("mobile: swipe", params);
+
+3. W3C Actions Fallback - Cross-Platform
+// W3C Actions: Works on both Android and iOS
+PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+Sequence sequence = new Sequence(finger, 1);
+
+sequence.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), startX, startY));
+sequence.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
+sequence.addAction(finger.createPointerMove(Duration.ofMillis(500), Origin.viewport(), endX, endY));
+sequence.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
+
+driver.perform(Collections.singletonList(sequence));
+
+```
+In mobile automation, **W3C Actions** (specifically the **Actions API**) are the industry-standard way to simulate complex user gestures that go beyond simple clicks. They are platform-agnostic, meaning the same logic works for both Android and iOS.
+
+These actions are represented in Java by the `PointerInput` and `Sequence` classes.
+
+---
+
+### Core W3C Gesture Components
+To build any gesture, you use these four basic building blocks:
+1.  **PointerMove:** Moves the "finger" to a specific $(x, y)$ coordinate.
+2.  **PointerDown:** Presses the "finger" onto the screen.
+3.  **PointerMove (with duration):** Drags the "finger" to a new coordinate over a set time.
+4.  **PointerUp:** Lifts the "finger" off the screen.
+
+---
+
+### 1. Swipe / Scroll (Vertical or Horizontal)
+This is the most common action. It mimics a finger pressing down, moving across the screen, and lifting up.
+
+```java
+public void swipe(int startX, int startY, int endX, int endY) {
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence sequence = new Sequence(finger, 1);
+
+    // 1. Move to Start Position
+    sequence.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), startX, startY));
+    // 2. Press Down
+    sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    // 3. Move to End Position (The actual swipe)
+    sequence.addAction(finger.createPointerMove(Duration.ofMillis(600), Origin.viewport(), endX, endY));
+    // 4. Lift Up
+    sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    driver.perform(Collections.singletonList(sequence));
+}
+
+
+### 2. Long Press
+Used for opening context menus or activating specific UI states. The key here is adding a **Pause** between `PointerDown` and `PointerUp`.
+
+```java
+public void longPress(WebElement element) {
+    Point location = element.getLocation();
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence sequence = new Sequence(finger, 1);
+
+    sequence.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), location.x, location.y));
+    sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    // The "Long" part: Pause for 2 seconds
+    sequence.addAction(new Pause(finger, Duration.ofSeconds(2)));
+    sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    driver.perform(Collections.singletonList(sequence));
+}
+
+
+### 3. Drag and Drop
+This involves moving to an object, picking it up, moving it to a new location, and dropping it.
+
+```java
+public void dragAndDrop(WebElement source, WebElement target) {
+    Point start = source.getLocation();
+    Point end = target.getLocation();
+
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence sequence = new Sequence(finger, 1);
+
+    sequence.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), start.x, start.y));
+    sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    sequence.addAction(new Pause(finger, Duration.ofMillis(500))); // Small pause to "grip" the object
+    sequence.addAction(finger.createPointerMove(Duration.ofMillis(1000), Origin.viewport(), end.x, end.y));
+    sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    driver.perform(Collections.singletonList(sequence));
+}
+
+
+### 4. Double Tap
+Simulates a quick double-click. It requires repeating the down/up sequence twice in rapid succession.
+
+```java
+public void doubleTap(int x, int y) {
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence sequence = new Sequence(finger, 1);
+
+    // Tap 1
+    sequence.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), x, y));
+    sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+    // Short Gap
+    sequence.addAction(new Pause(finger, Duration.ofMillis(100)));
+    // Tap 2
+    sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    driver.perform(Collections.singletonList(sequence));
+}
+
+
+ Why use W3C Actions over `mobile:` commands?
+
+* **Platform Uniformity:** You don't need separate code for `mobile: swipeGesture` (Android) and `mobile: swipe` (iOS). One W3C method handles both.
+* **Precision:** You control the exact pixels and the exact milliseconds of the movement.
+* **Multi-Finger Gestures:** You can create multiple `Sequence` objects (e.g., `finger1`, `finger2`) and run them simultaneously via `driver.perform(Arrays.asList(seq1, seq2))` to simulate **Pinch-to-Zoom**.
+
+```
+
+### Error Handling:
+
+// Framework tries native first, falls back to W3C
+try {
+    if (isAndroid()) {
+        androidSwipeGesture(elementId, direction, percent);
+    } else {
+        iosSwipeCommand(elementId, direction);
+    }
+} catch (Exception e) {
+    // Fallback to W3C Actions
+    w3cSwipe(startX, startY, endX, endY, duration);
+}
+
+
+### Wait Methods - WebDriverWait with ExpectedConditions
+Universal Mechanism (Both Platforms):
+// Selenium WebDriverWait - works on both platforms
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+
+// Different wait conditions:
+wait.until(ExpectedConditions.visibilityOfElementLocated(locator));    // Visible
+  ```
+What it checks: It verifies that the element is present in the DOM AND that it is actually displayed on the screen (height and width $> 0$).
+  ```
+wait.until(ExpectedConditions.elementToBeClickable(locator));          // Clickable  
+  ```
+What it checks: This is the most "strict" condition. It verifies the element is present, visible, AND enabled (not grayed out/disabled).
+```
+wait.until(ExpectedConditions.presenceOfElementLocated(locator));  // Present
+  ```
+What it checks: It only verifies that the element exists in the DOM (Document Object Model) or the app's source tree.
+```
+
+### waitAndClick - Combined Wait + Action
+// ANDROID: mobile:clickGesture
+Map<String, Object> params = new HashMap<>();
+params.put("x", x);    // Coordinate
+params.put("y", y);    // Coordinate
+js.executeScript("mobile: clickGesture", params);
+
+// iOS: mobile:tap
+Map<String, Object> params = new HashMap<>();
+params.put("x", x);
+params.put("y", y);
+js.executeScript("mobile: tap", params);
+
+### performHome - System Navigation
+// ANDROID: mobile:pressKey with keycode
+Map<String, Object> params = new HashMap<>();
+params.put("keycode", 3);  // KEYCODE_HOME = 3
+js.executeScript("mobile: pressKey", params);
+
+// iOS: mobile:pressButton
+Map<String, Object> params = new HashMap<>();
+params.put("name", "home");
+js.executeScript("mobile: pressButton", params);
+
+5. backgroundApp - App State Management
+// ANDROID: mobile:backgroundApp
+Map<String, Object> params = new HashMap<>();
+params.put("seconds", 3);  // Background duration
+js.executeScript("mobile: backgroundApp", params);
+
+// iOS: Native driver method
+driver.runAppInBackground(Duration.ofSeconds(3));
+
+6. foregroundApp - App Restoration
+
+// ANDROID: mobile:startActivity
+Map<String, Object> params = new HashMap<>();
+params.put("appPackage", packageName);
+params.put("appActivity", ".MainActivity");
+js.executeScript("mobile: startActivity", params);
+
+// iOS: Native driver method
+driver.activateApp(appId);
+
+ saveScreenshot - Evidence Capture
+// Appium TakesScreenshot interface
+TakesScreenshot screenshot = (TakesScreenshot) driver;
+byte[] imageBytes = screenshot.getScreenshotAs(OutputType.BYTES);
+
+// Save to file system
+Files.write(Paths.get(fileName), imageBytes);
+
+. hideKeyboard - Keyboard Dismissal
+// PRIMARY: mobile:hideKeyboard
+js.executeScript("mobile: hideKeyboard");
+
+// FALLBACK: Press back key
+params.put("keycode", 4);  // KEYCODE_BACK = 4
+js.executeScript("mobile: pressKey", params);
+// PRIMARY: Native driver method
+driver.hideKeyboard();
+
+// FALLBACK: Tap Done button
+WebElement doneButton = driver.findElement(By.name("Done"));
+doneButton.click();
+
+
+forceQuitAndOpen - App Lifecycle
+
+// ANDROID: mobile:terminateApp
+Map<String, Object> params = new HashMap<>();
+params.put("appId", packageName);
+
+js.executeScript("mobile: terminateApp", params);
+// iOS: Native driver method
+driver.terminateApp(appId);
+
+
+try {
+    // Try platform-specific native command
+    js.executeScript("mobile: command", params);
+} catch (Exception e) {
+    // Fallback to W3C Actions or alternative
+    fallbackMethod();
+}
+
+---
+## W3C Gestures 
+(implemented via the **Actions API**) are the most powerful way to handle non-standard interactions in mobile automation. Because they use coordinates and "finger" sequences, they work identically for both **Android** and **iOS**.
+
+Here are the most common gestures with their technical logic and code examples.
+
+
+### 1. The Tap (Basic Interaction)
+While `element.click()` is common, a W3C Tap is useful for clicking specific coordinates or handling elements that don't respond to standard clicks.
+
+```java
+public void tapAtCoordinates(int x, int y) {
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence tap = new Sequence(finger, 1);
+    
+    // Move to location -> Press -> Release
+    tap.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), x, y));
+    tap.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    tap.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+    
+    driver.perform(Collections.singletonList(tap));
+}
+```
+
+---
+
+### 2. The Swipe / Scroll
+A swipe is a sequence of **Move -> Down -> Move (to new spot) -> Up**. 
+* **Swipe Up:** Start at bottom, end at top.
+* **Swipe Down:** Start at top, end at bottom.
+
+
+
+```java
+public void swipe(int startX, int startY, int endX, int endY) {
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence swipe = new Sequence(finger, 1);
+
+    swipe.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), startX, startY));
+    swipe.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    // Duration here controls the speed of the swipe
+    swipe.addAction(finger.createPointerMove(Duration.ofMillis(600), Origin.viewport(), endX, endY));
+    swipe.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    driver.perform(Collections.singletonList(swipe));
+}
+```
+
+---
+
+### 3. Zoom In (Pinch Open)
+This requires **two fingers** moving simultaneously in opposite directions. You create two sequences and perform them together.
+
+
+
+```java
+public void zoomIn() {
+    PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+    PointerInput finger2 = new PointerInput(PointerInput.Kind.TOUCH, "finger2");
+    
+    Sequence seq1 = new Sequence(finger1, 1);
+    Sequence seq2 = new Sequence(finger2, 1);
+
+    // Finger 1: Move from center to top
+    seq1.addAction(finger1.createPointerMove(Duration.ZERO, Origin.viewport(), 500, 500));
+    seq1.addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    seq1.addAction(finger1.createPointerMove(Duration.ofMillis(500), Origin.viewport(), 500, 200));
+    seq1.addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    // Finger 2: Move from center to bottom
+    seq2.addAction(finger2.createPointerMove(Duration.ZERO, Origin.viewport(), 500, 500));
+    seq2.addAction(finger2.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    seq2.addAction(finger2.createPointerMove(Duration.ofMillis(500), Origin.viewport(), 500, 800));
+    seq2.addAction(finger2.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    // Perform both sequences at the same time
+    driver.perform(Arrays.asList(seq1, seq2));
+}
+```
+
+---
+
+### 4. Drag and Drop
+Similar to a swipe, but often includes a **Pause** after the `PointerDown` to simulate the "grabbing" of an object before moving it.
+
+```java
+public void dragAndDrop(Point source, Point target) {
+    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+    Sequence dragDrop = new Sequence(finger, 1);
+
+    dragDrop.addAction(finger.createPointerMove(Duration.ZERO, Origin.viewport(), source.x, source.y));
+    dragDrop.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+    dragDrop.addAction(new Pause(finger, Duration.ofMillis(500))); // Wait to "pick up"
+    dragDrop.addAction(finger.createPointerMove(Duration.ofMillis(700), Origin.viewport(), target.x, target.y));
+    dragDrop.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+    driver.perform(Collections.singletonList(dragDrop));
+}
+```
+
+
 ---
 config
 suite
