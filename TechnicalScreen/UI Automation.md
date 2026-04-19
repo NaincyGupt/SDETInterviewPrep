@@ -340,56 +340,76 @@ In Selenium and Appium, a **By object** is a mechanism or "locator strategy" use
     // The driver uses that By object to find the element
     driver.findElement(myElement).click();
     ```
+---
+UTILITY LAYER
+
+## Factory patter layer - creational pattern - process of object creation
+1- DriverFactory 
+createDriver() -> create driver according to configreader platform (browserstack/local driver)
+getdriver() -> if the driver is null -> throw illegastateexception -> driver not initialised
+quitdriver() => quit driver 
 
 
+2- Localdriver manager
+Checks config reader and create ios/android specific driver
+set the capabilities according to the platform
+
+3- Browserstackdriver manager 
+same as above
+
+4- appium server manager
+startserver() stopserver()
+
+
+## Hooks
+
+@beforeall
+- runcontext
+- extentmanager
+- start appium server
+
+@before
+- set platform context from cmd line
+- set devicecontext - browserstack/local/devicepool
+- extent manager.setTest
+- driverfactory.createdriver()
+
+@after
+- driver.quit()
+- extentmanager.flush()
+- devicecontext.clear()
+- scenarioartifacts.clear
+- platformcontext.clear
+
+## Listeners
+- deviceexecution summary
+  ItestListener, Isuitelistener
+  onTestSuccess(ITestResult result) -> add passed label to the test
+  onTestSkipped(ITestResult result) -> add skipped label to the test
+  onFinish(ISuite suite) -> suite execution is finished 
+
+## main/Utils
+- Configreader
+read properties file to get env, platform
+- device context
+- run context
+- platform context
+- device pool
+LinkedBlockingQueue - offer , poll
+- log
+
+screenshot, recording
+
+## test/Utils
 
 ---
-
-### 3. Hooks Layer (`ServiceHooks.java`)
-This class now acts as the central manager for **Device Allocation**, **Driver Lifecycle**, and **Evidence Handling**.
-
-```java
-public class ServiceHooks {
-    private static AppiumDriver driver;
-    private static final Logger logger = LogManager.getLogger(ServiceHooks.class);
-
-    // Global getter for Step Definitions to access the driver
-    public static AppiumDriver getDriver() {
-        return driver;
-    }
-
-    @Before
-    public void prepareRunContext(Scenario scenario) throws MalformedURLException {
-        logger.info("Initializing run for: " + scenario.getName());
-
-        // 1. Device Allocation & Driver Lifecycle
-        UiAutomator2Options options = new UiAutomator2Options()
-                .setDeviceName("Android_Emulator")
-                .setApp(System.getProperty("user.dir") + "/apps/lingo.apk");
-
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
-        logger.info("Appium Driver started successfully.");
-    }
-
-    @After
-    public void logsAndEvidenceHandling(Scenario scenario) {
-        // 2. Reporting & Evidence Handling
-        if (scenario.isFailed()) {
-            final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "Failure_Evidence");
-            logger.error("Scenario FAILED: " + scenario.getName() + " - Screenshot captured.");
-        } else {
-            logger.info("Scenario PASSED: " + scenario.getName());
-        }
-
-        // 3. Driver Lifecycle Cleanup
-        if (driver != null) {
-            driver.quit();
-            logger.info("Appium session terminated.");
-        }
-    }
-}
-```
-
----
+config
+suite
+locators
+surefire
+maven
+pom..xml
+failed scenario handling
+permission, backgrounnd,network, gestures, bluetooth handling
+retry
 
