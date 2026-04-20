@@ -453,10 +453,11 @@ Testing push notifications is tricky because they are system-level events outsid
 
 
 ### 6. How do you handle permissions popups?
-There are two professional ways to handle "Allow Location/Camera" popups:
-* **Capability Level (The Clean Way):** Set `autoGrantPermissions: true` in your `UiAutomator2Options` (Android). This grants all permissions when the app installs.
-* **Logic Level (The Interactive Way):** Write a global handler in your `Hooks` or `BasePage` that looks for the "Allow" button and clicks it if it appears.
-    * *Tip:* On iOS, use the `mobile: alert` command to accept or dismiss alerts without finding elements.
+Appium provides specialized capabilities to handle system alerts automatically before the test session begins.  
+
+Android: Use the ```autoGrantPermissions``` capability set to true. This automatically grants all permissions listed in the app's manifest upon installation, preventing popups from appearing during the test.  
+
+iOS: Use ```autoAcceptAlerts``` to automatically accept all permission dialogs or autoDismissAlerts to deny them.  
 
 
 
@@ -467,16 +468,70 @@ To run on multiple devices simultaneously, you must ensure **Port Isolation**:
 3.  **Driver Instances:** Use **ThreadLocal** in your `DriverFactory` to ensure each thread manages its own device session.
 4.  **Configuration:** Use a `testng.xml` file with different `<test>` blocks, passing the device name and port as parameters to the code.
 
+- using cloud device farm like browserstack
+- using device farm integrated with appium grid
+```
+Local Parallel Testing (Appium):
+Connect Devices: Ensure devices are connected (USB/Wi-Fi) to your machine.
+Identify Devices: Use adb devices (Android) or instruments -s devices (iOS) to get device IDs.
+Set Capabilities: Define separate desired_capabilities in your test script (e.g., deviceName, platformVersion, udid) for each device.
+Parallel Runner: Use a test runner like TestNG to run tests in parallel on multiple threads.
+```
+  Or
+  - running parallel tests in multiple devices and platform through CI/CD matrix strategy or
+    
+Steps to Run Parallel Tests  
+Create Independent Tests: Ensure test cases do not depend on each other so they can run concurrently.  
+Select Devices: Select specific devices, OS versions, and screen sizes.  
+Execute Parallel Run: Use a test runner to assign test groups to available workers (separate browser windows or devices).  
+Generate Reports: Analyze test results across all devices for device-specific issues  
 
 ---
 
 # 🔥 6. CI/CD Questions
 
-1. How do you integrate framework with Jenkins/GitHub Actions?
-2. Smoke vs regression strategy?
-3. What runs on PR merge?
-4. How do you publish reports?
-5. How do you reduce execution time?
+
+### 1. How do you integrate with Jenkins/GitHub Actions?
+The integration is built around the **Maven lifecycle**. Since the CI server is just a remote machine, you trigger your tests via the command line.
+
+* **GitHub Actions:** You create a `.yml` file in the `.github/workflows` folder.
+    * **Setup:** Define the OS (e.g., `ubuntu-latest`), install Java, and start the Appium server using a background process.
+    * **Execution:** Run the command: `mvn test -DsuiteXmlFile=testng.xml -Denv=qa`.
+* **Jenkins:** * Install the **Maven Integration Plugin**.
+    * Create a **Pipeline Project** (using a `Jenkinsfile`) or a **Freestyle Project**.
+    * Add a "Build Step" to execute the Maven target.
+
+
+### 2. Smoke vs. Regression Strategy?
+You should use **Cucumber Tags** or **TestNG Groups** to distinguish these suites.
+
+* **Smoke Strategy:**
+    * **Goal:** Verify critical "Happy Path" functionality (e.g., Login, App Launch).
+    * **Execution:** Runs on every single **Pull Request (PR)** or code commit.
+    * **Time:** Should finish in under 5–10 minutes.
+* **Regression Strategy:**
+    * **Goal:** Ensure new changes didn't break existing features across the whole app.
+    * **Execution:** Runs **Nightly** or before a major release.
+    * **Time:** Can take hours (uses maximum parallelism).
+
+
+
+### 4. How do you publish reports?
+CI servers don't display HTML files well by default. You must "archive" them.
+
+* **GitHub Actions:** Use the `actions/upload-artifact` step to save the `target/extent-reports` folder.
+* **Jenkins:** Use the **HTML Publisher Plugin** to display the ExtentReport directly on the Jenkins build page.
+* **Cloud:** Many teams send a link to the report or a summary (Pass/Fail count) directly to a **Slack Channel** using a Webhook.
+
+
+
+### 5. How do you reduce execution time?
+Time is the biggest enemy of CI/CD. Here is how you optimize:
+* **Parallel Execution:** The most effective method. Run tests across 5+ nodes/devices simultaneously using TestNG and a **Device Farm** (BrowserStack/SauceLabs).
+* **Test Sharding:** Split your test suite into smaller chunks and run them on different CI runners in parallel.
+* **Headless Execution:** For web/hybrid components, running "headless" can save rendering time.
+* **Skip Heavy Setup:** Use **API calls** to set up test data (e.g., creating a user via API instead of clicking through the UI) before the mobile test starts.
+
 
 ---
 
@@ -496,10 +551,16 @@ To run on multiple devices simultaneously, you must ensure **Port Isolation**:
 ### Prepare:
 
 1. Test failing intermittently—how investigate?
-2. Element not found though visible?
-3. Works local, fails CI?
-4. App crashes mid-test?
-5. Network issue impacts test?
+- analyze screenshots - UI, Flaky , Backend 
+- backend - analyze server logs, device logs
+- flaky - run the test locally
+- UI - run in previous build or check design spec - then log bug
+- run on ci - standalone few times to see pattern
+
+3. Element not found though visible?
+4. Works local, fails CI?
+5. App crashes mid-test?
+
 
 ### Strong framework answer:
 
@@ -532,71 +593,62 @@ You may be asked to code small utilities.
 4. Would you use BDD? Why / why not?
 5. When rewrite framework vs refactor?
 
-These questions separate senior candidates.
 
----
-
-# 🎯 Questions Most Likely for YOU (Based on Resume)
-
-## Since you migrated Selenium → Playwright:
-
-1. Why move to Playwright?
-2. Selenium vs Playwright?
-3. What improved?
-
-## Since you built device farm:
-
-4. How did you manage devices?
-5. How parallelized tests?
-
-## Since you reduced flakiness:
-
-6. What exact changes reduced 35% flakiness?
-
----
-
-# 💡 Strong Answers Apple Likes
-
-## UI Pyramid Thinking
-
-> “I keep UI automation focused on critical journeys and push most validation to API/service layers.”
-
-## Ownership Thinking
-
-> “I don’t just fix tests—I fix root causes.”
-
-## Scalability Thinking
-
-> “Framework should make writing new tests faster.”
-
----
-
-# 🚀 20 Most Important Questions to Practice Verbatim
-
-1. Design scalable UI framework
-2. Why POM?
-3. POM drawbacks?
-4. Reduce flaky tests?
-5. Wait strategies?
-6. Selenium vs Playwright
-7. Appium vs XCUITest
-8. Best locators mobile
-9. Parallel execution design
-10. ThreadLocal driver
-11. CI/CD integration
-12. Smoke vs regression
-13. Test data strategy
-14. Debug failing CI tests
-15. API + UI hybrid testing
-16. What belongs in UI tests?
-17. How test sync interruption?
-18. How run on multiple devices?
-19. How report failures?
-20. Example framework you built
 
 ---
 Difficult things you automated and how ?
+push notification - ui, api and deeplink ??
+network link conditioner to simulate network issues
+bluetooth 
+date and time change ?
+images compare
 
 Strategy for test automation ?
+Define Scope & Goals: Identify what to automate (e.g., repetitive, high-risk, data-driven tests)   
+Tool Selection: 
+Environment & Data Setup  
+Design & Architecture: Use modular, maintainable frameworks (like Page Object Model) to minimize maintenance.  
+CI/CD Integration: Run tests automatically with every code commit for immediate feedback.  
+Maintenance & Monitoring: Regularly review and update scripts to handle UI changes and eliminate flaky tests.  
 
 challenges in test automation?
+1. The Challenge: "Flaky" Tests and Race Conditions
+- removed hard sleeps and added fluent waits
+
+2. Changing ids in locators
+   - fallback mechanism for locators
+  
+3. Device pool management
+  
+4. The Challenge: Maintenance of Multi-Platform Locators
+The Problem: Maintaining separate Page Objects for Android and iOS led to code duplication. If a business flow changed, I had to update two different Java classes, increasing the risk of "logic drift" between platforms.
+
+The Resolution:
+
+Externalized Locators (JSON): Moved all locators into a centralized locators.json file.
+
+Unified Page Objects: Created single Page Classes that use a Locator Utility to fetch the correct By object based on the current driver instance (Android vs. iOS).
+
+Standardized Accessibility IDs: Partnered with the development team to ensure that both Android and iOS versions of a feature shared the same Accessibility ID, allowing a single line of code to drive both platforms.
+
+5. The Challenge: Managing Test Data at Scale
+The Problem: Tests often failed because of "Data Contamination"—one test would modify a user profile that a parallel test was currently using for verification.
+
+The Resolution:
+
+Account Pooling: Implemented a thread-safe "Account Manager" that dynamically assigned a unique test account to each parallel thread.
+
+API-Driven Setup: Instead of using the UI to create test data (which is slow and error-prone), I integrated REST Assured to set up the required state via API calls in the @BeforeMethod hook.
+
+Self-Healing Data: Added an @AfterMethod logic to delete or reset any modified data, ensuring the environment returned to a "clean slate."
+
+6. The Challenge: Slow Execution in CI/CD
+The Problem: As the regression suite grew to 200+ tests, the execution time exceeded two hours, delaying the feedback loop for developers.
+
+The Resolution:
+
+Parallel Execution with ThreadLocal: Re-architected the DriverFactory using ThreadLocal<AppiumDriver> to support safe parallel execution.
+
+Test Sharding: Configured TestNG to shard tests across multiple nodes in a Cloud Device Farm (like BrowserStack).
+
+Selective Execution: Implemented a tagging strategy (@Smoke, @Regression, @Critical) so that only the most vital tests ran on every Pull Request, while the full suite was reserved for nightly builds.
