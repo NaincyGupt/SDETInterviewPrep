@@ -1,10 +1,11 @@
-Automation Framework Design 
+# Automation Framework Design 
 
-Tech stack - Java, cucumber, appium 
+## Tech stack 
+Java, cucumber, appium 
 It follows a hybrid BDD approach 
 and build for both iOS and android platform 
 
-Core tech stack 
+## Core tech stack 
   - uses Java 21 
   - Test NG for  execution management
   - Cucumber for business readable scenarios
@@ -12,8 +13,397 @@ Core tech stack
   - Maven for dependency management
   - Extentreports for reporting
 
----
-TESTNG
+-----------
+## JAVA
+
+-----------
+## APPIUM
+
+### DEF
+It is cross-platform test automation framework
+Appium operates on a Client-Server Architecture. 
+Client-Server Architecture: Your test script uses appium client library to send commands to the Appium server (HTTP server).
+Appium java client defines "Desired Capabilities" (like device name, platform version, and app path).
+The server interprets these commands and uses platform-specific drivers (e.g., XCUITest for iOS, UIAutomator2 for Android) to execute actions on devices
+
+### Why appium ?
+It acts as a bridge so you don't have to write platform-specific code.
+It uses the WebDriver protocol
+The WebDriver Protocol (specifically the W3C WebDriver Protocol) is a standardized, platform-independent REST API that allows a client (your test script) to communicate with a remote server (a browser or a mobile device) to control its behavior.
+In simpler terms, it is the "common language" that automation tools use to tell a piece of software to "click this," "type that," or "go to this URL."
+
+### System Requirements
+Node.js: Appium is a Node.js application.
+Android: Android SDK, Android Studio/emulators, or real devices.
+iOS: Xcode, macOS, Simulators/real devices.
+Appium Client: A driver/client library specific to your chosen language
+
+### Things associated with Appium
+Apple maintains an iOS automation technology called XCUITest. The Appium driver that supports iOS app automation is called the XCUITest Driver because ultimately what it does is convert the WebDriver protocol to XCUITest library calls.
+
+### Appium is an HTTP server
+It must run as a process on some computer for as long as you want to be able to use it for automation
+The Appium server and the Appium client do not need to be running on the same computer. You simply need to be able to send HTTP requests from the client to the server over some network.
+
+### APPIUM GRID ?
+
+### COMMON APPIUM CAPABILITIES: 
+appium:automationName  -> The name of the Appium driver to use
+appium:udid -> The unique device identifier of a particular device to automate
+appium:app -> The path to an installable application
+
+combine all capabilities under appium:options 
+
+XCUITest driver recommends that at least one of browserName, appium:app, or appium:bundleId
+If you use a lot of appium: capabilities in your tests, it can get a little repetitive. You can combine all capabilities as an object value of a single appium:options capability instead
+{
+    "platformName": "iOS",
+    "appium:options": {
+        "automationName": "XCUITest",
+        "platformVersion": "16.0",
+        "app": "/path/to/your.app",
+        "deviceName": "iPhone 12",
+        "noReset": true
+    }
+}
+
+
+### JavascriptExecutor
+JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
+jsDriver.executeScript("return arguments[0] + arguments[1]", 3, 4);
+
+1. Interacting with Hybrid Apps (WebViews)
+When your mobile app has a WebView (a browser window inside the app), Appium treats it like a mobile browser. You use JavascriptExecutor to:
+- Scroll to elements that are not yet in the viewport.
+- Click hidden elements that the native driver cannot "see" or interact with due to overlay issues.
+- Retrieve page data like the page title or URL that might not be exposed via native selectors.
+
+```
+public void testHybridWebViewInteraction() {
+        // 1. Identify and Switch to WebView Context
+        // Mobile apps start in NATIVE_APP context. You must switch to interact with HTML.
+        Set<String> contextNames = driver.getContextHandles();
+        for (String contextName : contextNames) {
+            if (contextName.contains("WEBVIEW")) {
+                driver.context(contextName); // Switching to WebView
+                break;
+            }
+        }
+
+        // 2. Locate an element within the WebView
+        WebElement hiddenElement = driver.findElement(AppiumBy.id("secret-input"));
+
+        // 3. Use JavascriptExecutor to Change Attribute Values
+        // Example: Changing a 'hidden' field to 'text' so we can interact with it
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        
+        // Changing 'type' attribute from 'hidden' to 'text'
+        js.executeScript("arguments[0].setAttribute('type', 'text')", hiddenElement);
+        
+    }
+```
+
+### HOW TO USE APPIUM STEP BY STEP 
+Step 1: Add Maven Dependencies
+You need the Appium Java Client. Add this to your pom.xml
+
+Step 2: Set Up Desired Capabilities (Options)
+XCUITestOptions options = new XCUITestOptions();
+options.setDeviceName("iPhone 15");
+options.setApp("/path/to/your/app.ipa");
+options.setPlatformVersion("17.0");
+
+Step 3: Initialize the Driver
+The driver is the heart of your script. It sends your commands to the Appium Server (usually running at http://127.0.0.1:4723).
+
+Step 4: Write the Test Logic
+
+
+### What are Desired Capabilities?
+These are key-value pairs sent by the client to the server to define the mobile session. Examples include platformName (Android/iOS), deviceName, app (path to .apk/.ipa), and automationName.
+
+### What are the limitations of Appium?
+- Setup can be complex (Node.js, JDK, Android SDK/Xcode).
+- Tests can be slower than native framework tests.
+
+### What is appPackage and appActivity in Android?
+appPackage: Unique identifier for the Android app (e.g., com.example.app).
+appActivity: The specific screen or activity to start within the app (e.g., .MainActivity).
+
+### Key Appium Objects for iOS (XCUITest)
+1. IOSDriver
+IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+
+2. XCUITestOptions
+Replaces the old DesiredCapabilities. This is where you define the specific environment for an iPhone or iPad.
+  Key Capabilities for Apple:
+    setDeviceName("iPhone 15 Pro")
+    setPlatformVersion("17.4")
+    setBundleId("com.apple.example") (The unique ID for iOS apps)
+    setAutomationName("XCUITest")
+
+3. AppiumBy (iOS Specific Strategies)
+AppiumBy is the specialized locator class in Appium (Java-Client 8.x and above) that replaces the older MobileBy. It extends the standard Selenium By class to include mobile-specific selection strategies.
+AppiumBy.iOSClassChain("**/XCUIElementTypeButton[label == 'Login']")
+
+5. AppiumFieldDecorator
+Used in your Page Object Model. Supports Multi-Platform Annotations.
+```
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
+
+public class LoginPage {
+
+    // AppiumFieldDecorator allows these platform-specific annotations to work
+    @AndroidFindBy(accessibility = "user-id-android")
+    @iOSXCUITFindBy(accessibility = "user-id-ios")
+    private WebElement usernameField;
+
+    public LoginPage(AppiumDriver driver) {
+        // Initialize elements using AppiumFieldDecorator
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+}
+```
+
+### Write a sample code to launch a mobile application using Appium in Java with AppiumOptions.
+Answer: Here’s an updated example to set up and launch a mobile application using Appium in Java:
+
+```
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.options.AppiumOptions;
+import java.net.URL;
+
+public class AppiumTest {
+   public static void main(String[] args) {
+       AppiumOptions options = new AppiumOptions();
+       options.setPlatformName("Android");
+       options.setPlatformVersion("10.0");
+       options.setDeviceName("Pixel_3a");
+       options.setApp("/path/to/your/app.apk");
+
+       try {
+        URL serverUrl = new URL("http://127.0.0.1:4723");
+         IOSDriver driver = new IOSDriver(serverUrl, options); 
+           // Your test code here
+           driver.quit();
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
+}
+```
+
+### Web-Based Version: A browser version is available at inspector.appiumpro.com.
+Note: To use the web version with a local server, you must start the Appium server with the --allow-cors flag: appium --allow-cors.
+
+### XCUITestOptions and UiAutomator2Options
+In modern mobile automation, the enterprise standard has shifted away from the generic DesiredCapabilities class toward Platform-Specific Options (like XCUITestOptions and UiAutomator2Options).
+As of Appium 2.0, using platform-specific options is the highly recommended practice because it provides type safety, better discovery of capabilities, and follows the latest W3C WebDriver standards.
+
+```
+XCUITestOptions options = new XCUITestOptions();
+
+// Set common Appium options
+options.setPlatformName("iOS");
+options.setAutomationName("XCUITest");
+options.setDeviceName("iPhone 15 Pro");
+
+// Set iOS-specific options
+options.setBundleId("com.apple.Maps");
+options.setWdaLaunchTimeout(Duration.ofSeconds(30));
+options.setNoReset(true);
+
+// Initialize the driver with these specific options
+IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+```
+
+
+### How do you handle system permissions in your framework?
+
+I utilize XCUITestOptions to set **setAutoAcceptAlerts(true)** during the driver initialization. This ensures that the WDA automatically handles iOS system-level pop-ups like Location or Camera permissions, preventing the tests from hanging.
+
+
+###  :warning: How do you handle gestures in Appium?
+gestures like swiping, scrolling, and pinching are handled using the W3C Actions API.
+
+Appium treats a gesture as a series of "events" performed by a "finger" (the Pointer).
+PointerInput: Represents the virtual finger.
+Sequence: A list of actions (Move, Pointer Down, Move, Pointer Up).
+VERTICAL SWIPE
+// 1. Create a Finger (Touch) input
+PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+
+// 2. Create a Sequence
+Sequence swipe = new Sequence(finger, 1);
+
+// 3. Define the steps individually
+// Start at (x, y)
+swipe.add(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 500, 800));
+// Press down
+swipe.add(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+// Move to end position (Duration controls speed)
+swipe.add(finger.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(), 500, 200));
+// Lift finger
+swipe.add(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+// 4. Execute the gesture
+driver.perform(Collections.singletonList(swipe));
+
+
+
+The "Mobile" Command Shortcut (iOS Specific)
+For an interview at Apple, you should also mention that you can use the mobile: executeScript command
+Common iOS Mobile Commands:
+mobile: scroll
+mobile: swipe
+mobile: pinch
+mobile: tap
+Map<String, Object> params = new HashMap<>();
+params.put("direction", "down");
+params.put("elementId", ((RemoteWebElement) element).getId());
+
+driver.executeScript("mobile: swipe", params);
+
+
+
+In your interview, explain that you prefer W3C Actions for custom, complex gestures (like drawing a pattern) but use Mobile Commands for standard OS gestures because they are more stable and optimized for iOS.
+
+
+What are some common issues faced during Appium testing?
+1. WebDriverAgent (WDA) Failures
+The WDA is the "engine" that Appium installs on the iOS device to communicate with XCUITest.
+The Issue: The WDA can frequently crash, hang, or fail to install due to code-signing issues or version mismatches between Xcode and Appium.
+The Fix: Use XCUITestOptions to set setUseNewWDA(true) if the session is stuck, or manually rebuild the WDA project in Xcode to ensure the provisioning profiles are correct.
+2. Element Visibility & "Quiescence"
+iOS is very strict about whether an element is "interactable."
+The Issue: XCUITest often waits for the app to be completely "idle" (quiescent) before performing an action. If your app has a looping animation (like a loading spinner), the test might hang and timeout.
+The Fix: Use the capability setWaitForQuiescence(false) in your XCUITestOptions to allow the test to proceed even if animations are running.
+4. Handling System Alerts and Permissions
+iOS frequently interrupts tests with "Allow 'App' to use your location?" or "App would like to send you notifications."
+The Issue: These alerts are not part of the app's UI; they are part of the iOS System UI. Standard driver.findElement calls will fail because the alert blocks the app.
+The Fix: Use options.setAutoAcceptAlerts(true) for generic handling, or use mobile: acceptAlert via executeScript for mid-test alerts.
+
+5. I use setShouldTerminateApp(true) to ensure every test starts from a clean state, which prevents 'leftover' data from one test affecting the next."
+
+Application Crash Handling: Manage app crashes using autoLaunch and noReset capabilities, monitor current activity, and restart apps with driver.resetApp() during execution.
+Imp Appium links - 
+https://www.testmuai.com/learning-hub/appium-interview-questions/
+
+Application Crash Handling:
+
+1 - The "Clean State" Strategy - 
+setShouldTerminateApp(true): Ensures that if the app was previously hung or crashed in a "zombie" state, it is killed before the new test begins.
+setFullReset(true): (Use sparingly) Deletes the app and all its data, ensuring a 100% clean install to avoid crashes caused by old cache.
+
+
+The Recommended Framework Sequence
+You should implement this logic across three layers: the Initialization, the Execution Wrapper, and the Listener.
+1. Pre-Test: The "Clean Slate" (BaseTest.java)
+Before any test runs, you must ensure the environment is stable.
+Java
+public void setup() {
+    XCUITestOptions options = new XCUITestOptions();
+    options.setDeviceName("iPhone 15");
+    options.setBundleId("com.apple.example");
+    
+    // 1. Terminate any zombie processes from previous failed runs
+    options.setShouldTerminateApp(true); 
+    
+    // 2. Clear app state if the test requires a fresh login
+    options.setNoReset(false); 
+
+    driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+}
+
+
+2. During Test: The "State Check" (Utility Layer)
+Don't just wait for a TimeoutException. Create a utility method to check the app health before critical actions.
+Java
+public void performSafeAction(WebElement element) {
+    // Check if app is still in foreground before interacting
+    ApplicationState state = driver.queryAppState("com.apple.example");
+    
+    if (state != ApplicationState.RUNNING_IN_FOREGROUND) {
+        // Log the crash and fail the test immediately with a clear message
+        throw new RuntimeException("App crashed or backgrounded! Current State: " + state);
+    }
+    element.click();
+}
+
+
+3. Post-Failure: The "Recovery & Evidence" (TestListener.java)
+This is where you handle an actual crash. Use a TestNG Listener to capture logs specifically for iOS.
+Java
+@Override
+public void onTestFailure(ITestResult result) {
+    // 1. Capture Screenshot
+    File srcFile = driver.getScreenshotAs(OutputType.FILE);
+    
+    // 2. Capture iOS System Logs (Crucial for Apple Devs)
+    LogEntries logs = driver.manage().logs().get("syslog");
+    
+    // 3. Attempt Recovery (Optional: Restart app for next test)
+    Map<String, Object> params = new HashMap<>();
+    params.put("bundleId", "com.apple.example");
+    driver.executeScript("mobile: launchApp", params);
+}
+
+
+
+NETWORK HANDLING 
+
+Simulating "No Internet" (Airplane Mode)
+Using Mobile Commands
+In iOS, the most reliable way to toggle connectivity is via mobile: setNetworkConnection.
+Java
+// Define the parameters for Airplane Mode
+Map<String, Object> params = new HashMap<>();
+params.put("type", "airplane-mode"); // This cuts off both WiFi and Data
+
+// Execute the command
+driver.executeScript("mobile: setNetworkConnection", params);
+
+// Validation: Check if the 'No Connection' banner appears
+WebElement offlineBanner = driver.findElement(AppiumBy.accessibilityId("offline_warning_label"));
+Assert.assertTrue(offlineBanner.isDisplayed());
+
+2. Simulating "Poor/Slow Internet" (Latency)
+Apple's XCUITest doesn't have a direct "Slow Network" capability like Android's networkSpeed. Instead, you use Network Conditioning.
+Using XCUITestOptions
+You can set a network profile during the driver initialization. This is useful for testing "Limited" internet (e.g., 3G or Edge).
+Java
+XCUITestOptions options = new XCUITestOptions();
+options.setDeviceName("iPhone 15");
+
+// Simulates specific network profiles
+// Common values: 'Very Bad Network', 'LTE', '3G', 'Edge'
+options.setCapability("appium:networkCondition", "3G");
+
+IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+
+iOS ssl and security scenarios and handling summarize with example
+
+options.setAcceptInsecureCerts(true);
+System Security Alerts
+// Automatically clicks "Allow" or "OK" on all iOS system privacy alerts options.setAutoAcceptAlerts(true);
+BIOMETRIC
+// 1. Ensure the simulator is capable of biometrics
+options.setCapability("appium:allowTouchIdEnroll", true);
+
+// 2. Mid-test: Simulate a successful FaceID match
+Map<String, Object> params = new HashMap<>();
+params.put("type", "faceId"); // or "touchId"
+params.put("match", true);    // true for success, false for failure
+
+driver.executeScript("mobile: sendBiometricMatch", params);
+
+--------------
+# TESTNG
 
   TestNG (Test Next Generation) is an open-source automated testing framework
   Core Features of TestNG:
@@ -24,7 +414,7 @@ TESTNG
   5. Grouping: Allows you to categorize tests into groups like "Smoke," "Regression," or "Sanity,"
 
 ---
-CUCUMBER
+# CUCUMBER
 
   Cucumber acts as a bridge between technical and non-technical stakeholders. It translates Gherkin steps into executable code.
   Feature Files (.feature): Where you write scenarios using Given, When, Then.
@@ -75,7 +465,7 @@ appium 2.0 vs 1.0 :
 - Plugins: You can now add functionality like the images plugin for visual testing or the device-farm plugin for managing multiple devices without changing the core server.
 
 ---
-MAVEN
+# MAVEN
 Maven is a powerful build automation and project management tool p
 
 What is Maven?
@@ -100,7 +490,7 @@ Because this structure is universal, any developer can join your project and imm
 Maven is designed to be run from the command line (e.g., mvn test). This makes it incredibly easy to integrate with tools like Jenkins or GitHub Actions.
 
 ---
-EXTENTREPORTS
+# EXTENTREPORTS
 ExtentReports is a popular choice for industry-standard automation frameworks because it transforms raw test data into a highly visual, stakeholder-ready format.
 
 1. Rich Visual Dashboards
@@ -114,7 +504,7 @@ Video Logs: Link screen recordings of the test execution.
 Since you are using Cucumber Tags, ExtentReports can automatically categorize your results based on those tags.
 ---
 
-LAYERED ARCHITECTURE
+# LAYERED ARCHITECTURE
 
 1. Feature layer - gherkin scenario
 
