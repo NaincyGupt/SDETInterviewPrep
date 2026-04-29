@@ -571,83 +571,10 @@ public class SuiteManager implements ISuiteListener {
   Without the "glue," Cucumber won't know which Java code corresponds to the English steps in your feature file.
   Example: glue = {"stepdefinitions", "hooks"}.
 
-### What is BDD (Behavior Driven Development)?
-
-Answer: A software development process that encourages collaboration between developers, QA, and non-technical business stakeholders. It focuses on the behavior of the application rather than just the implementation.
-
-### What is the difference between Scenario and Scenario Outline?
-
-Answer: A Scenario is a single test case. A Scenario Outline is used for Data-Driven Testing, allowing you to run the same scenario multiple times with different sets of data provided in an Examples: table.
-
-### What is the purpose of the Background keyword?
-
-Answer: It is used to define steps that are common to all scenarios in a feature file (e.g., "Given the user is logged in"). It runs before every scenario in that file.
-
-### Can you pass parameters from Gherkin to Java?
-
-Answer: Yes, using Cucumber Expressions or Regular Expressions in the Step Definition. For example: Given I have {int} items in my cart.
-
----------------------
-
-# MAVEN
-Maven is a powerful build automation and project management tool p
-
-What is Maven?
-At its core, Maven uses a POM (Project Object Model) file—the pom.xml—to describe the project's configuration, including its dependencies, build directory, source directory, and plugins.
-
-Why the Industry Uses Maven
-The software industry shifted toward Maven (and later Gradle) because it solved the "Dependency Hell" that plagued early Java development.
-
-1. Centralized Dependency Management
-Before Maven: Developers had to manually download .jar files (like the Appium Java Client), add them to the project path, and manually update them when a new version was released.
-
-With Maven: You simply add a few lines of XML to your pom.xml. Maven automatically downloads the library and—critically—all the other libraries that library depends on (transitive dependencies).
-
-2. Standardized Project Structure
-Maven enforces a standard directory layout:
-src/main/java: For application code.
-src/test/java: For your automation scripts.
-src/test/resources: For your .feature files and config properties.
-Because this structure is universal, any developer can join your project and immediately know where the files are located.
-
-3. Easy Integration with CI/CD
-Maven is designed to be run from the command line (e.g., mvn test). This makes it incredibly easy to integrate with tools like Jenkins or GitHub Actions.
-
----
-# EXTENTREPORTS
-ExtentReports is a popular choice for industry-standard automation frameworks because it transforms raw test data into a highly visual, stakeholder-ready format.
-
-1. Rich Visual Dashboards
-2. Built-in Multimedia Support
-In mobile automation (Appium), seeing the failure is critical. ExtentReports allows you to:
-Embed Screenshots: Attach a screenshot directly to the failed step so you don't have to hunt through folders.
-Video Logs: Link screen recordings of the test execution.
-3. Historical Data & Trends
-   - Flakiness Trends
-4. categorization (Tags & Authors)
-Since you are using Cucumber Tags, ExtentReports can automatically categorize your results based on those tags.
----
-
-# LAYERED ARCHITECTURE
-
-1. Feature layer - gherkin scenario
-
-2. step defination layer - cucumber glue code - step def classes, logging , hooks, test context
-   hooks - prepare the run context, reporting, device allocation, driver lifecycle , logs and evidence handling.
-
-3. page object model(design pattern) - UI interation encapsulation
-   Each app screen is represented as a class having page elemnets(locators) + actions that can be performed on that how
-   
-
-4.Utilities - 
-
----
-FEATURE LAYER - GHERKIN  - CUCUMBER
-
-Feature
+### Feature
 The purpose of the Feature keyword is to provide a high-level description of a software feature, and to group related scenarios.
 
-Rule
+### Rule
 The (optional) Rule keyword has been part of Gherkin since v6.
 The purpose of the Rule keyword is to represent one business rule that should be implemented. It provides additional information for a feature. A Rule is used to group together several scenarios that belong to this business rule. 
 
@@ -669,7 +596,7 @@ Scenario outlines allow us to more concisely express these scenarios through the
 
 Data tables = sending table of data 
 DOC strings= large piece of text to step defination  
-tags = group/organize fature
+tags = group/organize feature
 "Mocha" = passing argument
 
 ```
@@ -721,7 +648,96 @@ Feature: Coffee Ordering System
       """
     Then the barista should see the custom note
 ```
+
+### What is BDD (Behavior Driven Development)?
+
+Answer: A software development process that encourages collaboration between developers, QA, and non-technical business stakeholders. It focuses on the behavior of the application rather than just the implementation.
+
+### What is the difference between Scenario and Scenario Outline?
+
+Answer: A Scenario is a single test case. A Scenario Outline is used for Data-Driven Testing, allowing you to run the same scenario multiple times with different sets of data provided in an Examples: table.
+
+### What is the purpose of the Background keyword?
+
+Answer: It is used to define steps that are common to all scenarios in a feature file (e.g., "Given the user is logged in"). It runs before every scenario in that file.
+
+### Can you pass parameters from Gherkin to Java?
+
+Answer: Yes, using Cucumber Expressions or Regular Expressions in the Step Definition. For example: Given I have {int} items in my cart.
+
+---------------------
+
+# MAVEN
+Maven is a powerful build automation and project management tool 
+
+### What is Maven?
+At its core, Maven uses a POM (Project Object Model) file—the pom.xml—to describe the project's configuration, including its dependencies, build directory, source directory, and plugins.
+
+### Why the Industry Uses Maven
+The software industry shifted toward Maven (and later Gradle) because it solved the "Dependency Hell" that plagued early Java development.
+
+###  Centralized Dependency Management
+Before Maven: Developers had to manually download .jar files (like the Appium Java Client), add them to the project path, and manually update them when a new version was released.
+
+With Maven: You simply add a few lines of XML to your pom.xml. Maven automatically downloads the library and—critically—all the other libraries that library depends on (transitive dependencies).
+
+2. Standardized Project Structure
+Maven enforces a standard directory layout:
+src/main/java: For application code.
+src/test/java: For your automation scripts.
+src/test/resources: For your .feature files and config properties.
+Because this structure is universal, any developer can join your project and immediately know where the files are located.
+
+3. Easy Integration with CI/CD
+Maven is designed to be run from the command line (e.g., mvn test). This makes it incredibly easy to integrate with tools like Jenkins or GitHub Actions.
+
 ---
+# EXTENTREPORTS
+ExtentReports is a popular choice for industry-standard automation frameworks because it transforms raw test data into a highly visual, stakeholder-ready format.
+
+1. Rich Visual Dashboards
+2. Built-in Multimedia Support
+In mobile automation (Appium), seeing the failure is critical. ExtentReports allows you to:
+Embed Screenshots: Attach a screenshot directly to the failed step so you don't have to hunt through folders.
+Video Logs: Link screen recordings of the test execution.
+3. Historical Data & Trends
+   - Flakiness Trends
+4. categorization (Tags & Authors)
+Since you are using Cucumber Tags, ExtentReports can automatically categorize your results based on those tags.
+
+---
+
+# TEST AUTOMATION 
+
+LAYERED ARCHITECTURE
+
+1. Feature layer - gherkin scenario - Business readable scenario
+
+2. step defination layer - cucumber glue code -
+   Translates gherkin step to business actions
+
+ 3. Page classes and utilities - encapsulate UI interation
+    POM - Page object model - design pattern
+   Each app screen is represented as a class having page elemnets(locators) + actions that can be performed on that layer
+
+4. Utilities -
+      driver mgmt - Factory design - creational design pattern
+      centralized driver creation , threadlocal instance of driver
+
+      config mgmt - env specific property files are kept
+
+      screenshot utility - (TakeScreenshot)
+
+      Log4j utility -
+
+   5. hooks - prepare the run context, reporting, device allocation, driver lifecycle , logs and evidence handling.
+
+    6. test context
+
+
+### KEY FEATURE
+
+1. 
 STEP defination layer 
 
 ### 1. Feature Layer (`login.feature`)
