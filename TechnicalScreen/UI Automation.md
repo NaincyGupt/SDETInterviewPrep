@@ -546,14 +546,14 @@ public class SuiteManager implements ISuiteListener {
   1. Add Dependencies: In your pom.xml, add cucumber-java, cucumber-testng
   2. Create a Runner Class: This is a TestNG class that tells Cucumber where to find the features and step definitions.
 
-  Java
+  ```
   @CucumberOptions(
       features = "src/test/resources/features",
       glue = "com.automation.stepdefinitions",
       plugin = {"pretty", "html:target/cucumber-reports.html"}
   )
   public class TestRunner extends AbstractTestNGCucumberTests { }
-
+```
 
   1. ANNOTATION : @Given (and other Keywords)
   These are Annotations used in your Step Definition files to map a Gherkin step to a Java method.
@@ -571,9 +571,24 @@ public class SuiteManager implements ISuiteListener {
   Without the "glue," Cucumber won't know which Java code corresponds to the English steps in your feature file.
   Example: glue = {"stepdefinitions", "hooks"}.
 
+### What is BDD (Behavior Driven Development)?
 
+Answer: A software development process that encourages collaboration between developers, QA, and non-technical business stakeholders. It focuses on the behavior of the application rather than just the implementation.
 
----
+### What is the difference between Scenario and Scenario Outline?
+
+Answer: A Scenario is a single test case. A Scenario Outline is used for Data-Driven Testing, allowing you to run the same scenario multiple times with different sets of data provided in an Examples: table.
+
+### What is the purpose of the Background keyword?
+
+Answer: It is used to define steps that are common to all scenarios in a feature file (e.g., "Given the user is logged in"). It runs before every scenario in that file.
+
+### Can you pass parameters from Gherkin to Java?
+
+Answer: Yes, using Cucumber Expressions or Regular Expressions in the Step Definition. For example: Given I have {int} items in my cart.
+
+---------------------
+
 # MAVEN
 Maven is a powerful build automation and project management tool p
 
