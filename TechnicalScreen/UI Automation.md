@@ -228,7 +228,7 @@ IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
 I utilize XCUITestOptions to set **setAutoAcceptAlerts(true)** during the driver initialization. This ensures that the WDA automatically handles iOS system-level pop-ups like Location or Camera permissions, preventing the tests from hanging.
 
 
-###  :warning: How do you handle gestures in Appium?
+###  ⭐ How do you handle gestures in Appium?
 gestures like swiping, scrolling, and pinching are handled using the W3C Actions API.
 
 Appium treats a gesture as a series of "events" performed by a "finger" (the Pointer).
@@ -256,56 +256,61 @@ driver.perform(Collections.singletonList(swipe));
 
 
 
-The "Mobile" Command Shortcut (iOS Specific)
-For an interview at Apple, you should also mention that you can use the mobile: executeScript command
+### The "Mobile" Command Shortcut (iOS Specific)
+you can use the mobile: executeScript command
+
 Common iOS Mobile Commands:
 mobile: scroll
 mobile: swipe
 mobile: pinch
 mobile: tap
+
+```
 Map<String, Object> params = new HashMap<>();
 params.put("direction", "down");
 params.put("elementId", ((RemoteWebElement) element).getId());
 
 driver.executeScript("mobile: swipe", params);
+```
 
 
+✅  In your interview, explain that you prefer W3C Actions for custom, complex gestures (like drawing a pattern) but use Mobile Commands for standard OS gestures because they are more stable and optimized for iOS.
 
-In your interview, explain that you prefer W3C Actions for custom, complex gestures (like drawing a pattern) but use Mobile Commands for standard OS gestures because they are more stable and optimized for iOS.
 
-
-What are some common issues faced during Appium testing?
+### What are some common issues faced during Appium testing?
 1. WebDriverAgent (WDA) Failures
 The WDA is the "engine" that Appium installs on the iOS device to communicate with XCUITest.
 The Issue: The WDA can frequently crash, hang, or fail to install due to code-signing issues or version mismatches between Xcode and Appium.
-The Fix: Use XCUITestOptions to set setUseNewWDA(true) if the session is stuck, or manually rebuild the WDA project in Xcode to ensure the provisioning profiles are correct.
+The Fix: Use XCUITestOptions to set **setUseNewWDA(true)** if the session is stuck, or manually rebuild the WDA project in Xcode to ensure the provisioning profiles are correct.
+
 2. Element Visibility & "Quiescence"
 iOS is very strict about whether an element is "interactable."
 The Issue: XCUITest often waits for the app to be completely "idle" (quiescent) before performing an action. If your app has a looping animation (like a loading spinner), the test might hang and timeout.
-The Fix: Use the capability setWaitForQuiescence(false) in your XCUITestOptions to allow the test to proceed even if animations are running.
-4. Handling System Alerts and Permissions
+The Fix: Use the capability **setWaitForQuiescence(false)** in your XCUITestOptions to allow the test to proceed even if animations are running.
+
+3. Handling System Alerts and Permissions
 iOS frequently interrupts tests with "Allow 'App' to use your location?" or "App would like to send you notifications."
 The Issue: These alerts are not part of the app's UI; they are part of the iOS System UI. Standard driver.findElement calls will fail because the alert blocks the app.
-The Fix: Use options.setAutoAcceptAlerts(true) for generic handling, or use mobile: acceptAlert via executeScript for mid-test alerts.
+The Fix: Use **options.setAutoAcceptAlerts(true)** for generic handling, or use mobile: acceptAlert via executeScript for mid-test alerts.
 
-5. I use setShouldTerminateApp(true) to ensure every test starts from a clean state, which prevents 'leftover' data from one test affecting the next."
+4. I use **setShouldTerminateApp(true)** to ensure every test starts from a clean state, which prevents 'leftover' data from one test affecting the next."
 
-Application Crash Handling: Manage app crashes using autoLaunch and noReset capabilities, monitor current activity, and restart apps with driver.resetApp() during execution.
-Imp Appium links - 
+### Imp Appium links - 
 https://www.testmuai.com/learning-hub/appium-interview-questions/
 
-Application Crash Handling:
+### Application Crash Handling
+Manage app crashes using autoLaunch and noReset capabilities, monitor current activity, and restart apps with driver.resetApp() during execution.
 
 1 - The "Clean State" Strategy - 
 setShouldTerminateApp(true): Ensures that if the app was previously hung or crashed in a "zombie" state, it is killed before the new test begins.
 setFullReset(true): (Use sparingly) Deletes the app and all its data, ensuring a 100% clean install to avoid crashes caused by old cache.
 
 
-The Recommended Framework Sequence
+2  - The Recommended Framework Sequence
 You should implement this logic across three layers: the Initialization, the Execution Wrapper, and the Listener.
 1. Pre-Test: The "Clean Slate" (BaseTest.java)
 Before any test runs, you must ensure the environment is stable.
-Java
+```
 public void setup() {
     XCUITestOptions options = new XCUITestOptions();
     options.setDeviceName("iPhone 15");
@@ -319,11 +324,12 @@ public void setup() {
 
     driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
 }
-
+```
 
 2. During Test: The "State Check" (Utility Layer)
 Don't just wait for a TimeoutException. Create a utility method to check the app health before critical actions.
 Java
+```
 public void performSafeAction(WebElement element) {
     // Check if app is still in foreground before interacting
     ApplicationState state = driver.queryAppState("com.apple.example");
@@ -334,11 +340,11 @@ public void performSafeAction(WebElement element) {
     }
     element.click();
 }
+```
 
-
-3. Post-Failure: The "Recovery & Evidence" (TestListener.java)
+4. Post-Failure: The "Recovery & Evidence" (TestListener.java)
 This is where you handle an actual crash. Use a TestNG Listener to capture logs specifically for iOS.
-Java
+```
 @Override
 public void onTestFailure(ITestResult result) {
     // 1. Capture Screenshot
@@ -352,42 +358,37 @@ public void onTestFailure(ITestResult result) {
     params.put("bundleId", "com.apple.example");
     driver.executeScript("mobile: launchApp", params);
 }
+```
 
 
-
-NETWORK HANDLING 
+### NETWORK HANDLING 
 
 Simulating "No Internet" (Airplane Mode)
 Using Mobile Commands
-In iOS, the most reliable way to toggle connectivity is via mobile: setNetworkConnection.
-Java
+In iOS, the most reliable way to toggle connectivity is via **mobile: setNetworkConnection.**
+```
 // Define the parameters for Airplane Mode
 Map<String, Object> params = new HashMap<>();
 params.put("type", "airplane-mode"); // This cuts off both WiFi and Data
-
-// Execute the command
 driver.executeScript("mobile: setNetworkConnection", params);
+```
 
-// Validation: Check if the 'No Connection' banner appears
-WebElement offlineBanner = driver.findElement(AppiumBy.accessibilityId("offline_warning_label"));
-Assert.assertTrue(offlineBanner.isDisplayed());
 
 2. Simulating "Poor/Slow Internet" (Latency)
 Apple's XCUITest doesn't have a direct "Slow Network" capability like Android's networkSpeed. Instead, you use Network Conditioning.
 Using XCUITestOptions
 You can set a network profile during the driver initialization. This is useful for testing "Limited" internet (e.g., 3G or Edge).
-Java
+```
 XCUITestOptions options = new XCUITestOptions();
 options.setDeviceName("iPhone 15");
-
 // Simulates specific network profiles
 // Common values: 'Very Bad Network', 'LTE', '3G', 'Edge'
 options.setCapability("appium:networkCondition", "3G");
-
 IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+```
 
-iOS ssl and security scenarios and handling summarize with example
-
+### iOS ssl and security scenarios and handling summarize with example
+```
 options.setAcceptInsecureCerts(true);
 System Security Alerts
 // Automatically clicks "Allow" or "OK" on all iOS system privacy alerts options.setAutoAcceptAlerts(true);
@@ -399,20 +400,141 @@ options.setCapability("appium:allowTouchIdEnroll", true);
 Map<String, Object> params = new HashMap<>();
 params.put("type", "faceId"); // or "touchId"
 params.put("match", true);    // true for success, false for failure
-
 driver.executeScript("mobile: sendBiometricMatch", params);
-
---------------
+```
+----------------------------------------------------------------------
 # TESTNG
 
   TestNG (Test Next Generation) is an open-source automated testing framework
-  Core Features of TestNG:
+  
+  ### Core Features of TestNG:
   1. Annotations: Uses a rich set of annotations (e.g., @Test, @BeforeMethod, @AfterClass) to manage the execution lifecycle.
   2. Parallel Execution: Built-in support for running tests in parallel across multiple threads
   3. Data-Driven Testing: The @DataProvider annotation allows you to run the same test case multiple times with different sets of data
   4. Test Suites via XML: You can define which tests to run, group them, and set execution order using a testng.xml configuration file.
   5. Grouping: Allows you to categorize tests into groups like "Smoke," "Regression," or "Sanity,"
 
+### @Test
+The @Test annotation marks a method as a test method. It can be configured with attributes to control its behavior.
+  Attributes
+  priority: Defines the execution order of tests.
+  enabled: If set to false, the test method will be skipped.
+  dependsOnMethods: Specifies dependencies on other test methods.
+  groups: Assigns the test method to one or more groups.
+  dataProvider: Links the test method to a data provider method for data-driven testing.
+
+### @BeforeSuite and @AfterSuite
+@BeforeSuite and @AfterSuite are executed before and after all tests in the suite, respectively. They are ideal for setting up and tearing down global test configurations.
+Initializing and closing a database connection or setting up and cleaning up environment variables before and after the entire test suite runs.
+
+### @BeforeTest and @AfterTest
+These annotations are executed before and after the <test> tag in the TestNG XML file.
+Setting up a web driver instance before starting the test execution and quitting the web driver instance after completing the test execution defined under a specific <test> tag.
+
+### Data Management & Extensibility
+@DataProvider: Returns a Object[][] or Iterator<Object[]> to feed multiple data sets into a single test.
+
+@Parameters: Pulls simple values (like browserName) directly from the testng.xml file.
+
+@Listeners: Used to implement ITestListener or IRetryAnalyzer. This is how you automate screenshots on failure or retry flaky tests.
+
+
+### 1. IAnnotationTransformer (The Dynamic Modifier)
+This is used to **modify TestNG annotations at runtime**. Its most common use case is automatically adding a **Retry Analyzer** to every `@Test` without manually typing `retryAnalyzer = ...` on hundreds of methods.
+
+**Enterprise Use Case:** Automatically retrying flaky tests.
+
+```java
+import org.testng.IAnnotationTransformer;
+import org.testng.annotations.ITestAnnotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+public class MyTransformer implements IAnnotationTransformer {
+    @Override
+    public void transform(ITestAnnotation annotation, Class testClass, 
+                          Constructor testConstructor, Method testMethod) {
+        // Automatically set the Retry Analyzer for all tests
+        annotation.setRetryAnalyzer(RetryAnalyzer.class);
+    }
+}
+```
+
+
+### 2. ITestListener (The Observer)
+This is the most widely used listener. It monitors the "health" of your tests in real-time.
+
+**Enterprise Use Case:** Taking screenshots exactly when a test fails or logging results to Extent Reports.
+
+```java
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
+public class MyListener implements ITestListener {
+    @Override
+    public void onTestFailure(ITestResult result) {
+        System.out.println("Test Failed: " + result.getName());
+        // Logic to capture screenshot using the driver instance
+        captureScreenshot(result.getName());
+    }
+
+    @Override
+    public void onTestSuccess(ITestResult result) {
+        System.out.println("Test Passed: " + result.getName());
+    }
+}
+```
+
+
+
+### 3. IRetryAnalyzer (The Self-Healer)
+While not a "Listener" by name, it works alongside them to decide if a failed test should be executed again.
+
+**Enterprise Use Case:** Reducing "noise" in CI/CD pipelines caused by environment instability.
+
+```java
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestResult;
+
+public class RetryAnalyzer implements IRetryAnalyzer {
+    private int count = 0;
+    private static final int MAX_RETRY = 2; // Retry twice
+
+    @Override
+    public boolean retry(ITestResult result) {
+        if (count < MAX_RETRY) {
+            count++;
+            return true; // Tells TestNG to run the test again
+        }
+        return false;
+    }
+}
+```
+
+
+### 4. ISuiteListener
+Runs before and after the entire `<suite>` in your `testng.xml`.
+
+**Enterprise Use Case:** Starting/Stopping a Docker container or an Appium server programmatically.
+
+```java
+public class SuiteManager implements ISuiteListener {
+    @Override
+    public void onStart(ISuite suite) {
+        System.out.println("Starting Appium Server for Suite: " + suite.getName());
+    }
+}
+```
+
+
+```xml
+<listeners>
+    <listener class-name="com.qa.listeners.MyListener" />
+    <listener class-name="com.qa.listeners.MyTransformer" />
+</listeners>
+```
+
+\
 ---
 # CUCUMBER
 
@@ -449,20 +571,7 @@ driver.executeScript("mobile: sendBiometricMatch", params);
   Without the "glue," Cucumber won't know which Java code corresponds to the English steps in your feature file.
   Example: glue = {"stepdefinitions", "hooks"}.
 
----
-APPIUM
 
- is an open-source, cross-platform automation tool used for testing native, hybrid, and mobile web applications on iOS, Android, and Windows desktop platforms.
-
-Appium functions as a WebDriver server. It uses the same W3C WebDriver protocol
-
-Appium allows you to write one test suite (in Java, for example) and run it against multiple platforms. It achieves this by using "Drivers" that translate your commands into the platform's native testing framework:
-Android: Uses the UiAutomator2 driver.
-iOS: Uses the XCUITest driver.
-
-appium 2.0 vs 1.0 : 
-- Decoupled Drivers:
-- Plugins: You can now add functionality like the images plugin for visual testing or the device-farm plugin for managing multiple devices without changing the core server.
 
 ---
 # MAVEN
