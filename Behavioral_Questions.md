@@ -24,6 +24,21 @@ define defination of done and ask questions for testability.
 * **Action:** I prioritized. I manually verified the "Happy Path" (P0) first. Simultaneously, I implemented my **Intelligent Retry/Fallback** mechanism (using W3C coordinate taps) to bypass the broken locators and get a clean signal on the actual app functionality.
 * **Result:** We identified that the app was stable; only the automation was "noisy." We cleared the release for the demo and fixed the locators the following day using our centralized JSON repo.
 
+* Situation: "Following a React Native upgrade two days before a major stakeholder demo, we saw a 40% failure rate in our automated test suite. The locators (even those using test-id) were no longer being detected by the automation driver."
+
+* Task: "I had to restore the health of the test suite immediately to provide a 'Green' signal for the demo, while also identifying the root cause to prevent this from happening in future upgrades."
+
+* Action:
+
+Immediate Triage (The Band-Aid): "I diagnosed that the upgrade had significantly increased the DOM/XML hierarchy depth. I implemented an immediate fix by increasing the snapshotMaxDepth capability in our Appium/XCUITest configuration. This allowed the driver to 'reach' the deeper nested elements and restored the tests for the demo."
+
+Root Cause Analysis: "I identified that the new React Native renderer was creating excessive nested wrapper views, pushing our critical elements past the default search depth of the automation engine."
+
+Strategic Solution: "After the demo, I collaborated with the development team to flatten the React code. We audited our components to remove unnecessary nested View containers and redundant wrappers that didn't contribute to layout or styling."
+
+Result:
+"This two-pronged approach allowed us to meet the demo deadline with a passing test suite. Long-term, flattening the hierarchy reduced our test execution time by X% and made our locators significantly more resilient to future framework upgrades."
+
 ## 3. Leadership & Mentorship
 
 **Question:** *“How do you handle a situation where a junior tester is consistently writing flaky scripts?”*
@@ -33,16 +48,11 @@ define defination of done and ask questions for testability.
 
 ## 4. Conflict Resolution (The "Amigo" Conflict)
 Question: "Give an example of a time you disagreed with your manager’s technical direction."
-
 Situation: My manager wanted to achieve 100% automation coverage for all legacy features.
-
 Task: Based on my experience, I knew the ROI on 100% coverage is negative due to high maintenance.
-
 Action: I created a Risk-Based Testing Matrix. I showed that 20% of the features accounted for 80% of user traffic. I proposed focusing automation on these high-impact areas while using exploratory testing for the low-risk legacy features.
-
 Result: We saved 30% of the team's bandwidth, which we then used to build the Device Pool Reservation System to solve our flakiness issues.
 
-## 4. Cross-Functional Alignment (Shift-Left)
 
 
 ---
@@ -51,19 +61,26 @@ Result: We saved 30% of the team's bandwidth, which we then used to build the De
 
 1. **"How do you handle 'Pushback' from developers when you find a bug right before a holiday?"**
 * *Strategy:* Focus on risk assessment. Ask: "What is the cost of a hotfix vs. the cost of delaying 2 days?"
+* find workaround, 
 
 
 2. **"Tell me about a time you failed. What did you learn?"**
 * *Strategy:* Choose a technical oversight (like a missed edge case) and describe the **process change** (e.g., adding a new check to your Test Plan template) you implemented to prevent it.
+The One Change: "I would shift the team toward a 'Shift-Left' testing culture, where performance and architectural impact—like component nesting depth—are evaluated during the design and PR review phase, rather than at the end of the release cycle."
 
+Why This Matters: * "In my recent experience with the React Native upgrade, we realized that structural changes in the code had a massive downstream impact on our automation's stability. While we fixed it, it was a reactive effort."
+
+"If we incorporated 'Testability' as a core requirement in our Code Reviews—checking for things like excessive nesting or missing test-ids before the code is even merged—we could prevent 80% of our flakiness before the first test even runs."
+
+The Vision:
+
+"I want to move away from the idea that 'QA handles the bugs at the end' and move toward a culture where developers and SDETs share the responsibility for building a testable architecture. This would not only make our releases smoother but would also allow the team to innovate faster because we aren't spending our sprints fixing 'hierarchy shifts' and broken locators."
 
 3. **"If you could change one thing about your current team's culture, what would it be?"**
 * *Strategy:* Focus on moving **Shift Left**—getting QA involved in the architectural discussions, not just the testing phase.
 
 
 4. **"How do you stay updated with the SDET landscape?"**
-* *Strategy:* Mention your GitHub repos (like [SDETInterviewPrep](https://github.com/NaincyGupt/SDETInterviewPrep)), following Appium's open-source updates, or experimenting with AI-based healing tools.
+* *Strategy:* following Appium's open-source updates, or experimenting with AI-based healing tools.
 
 
-
-Would you like me to help you draft a "Quality Philosophy" statement to include as an introduction to this file?
