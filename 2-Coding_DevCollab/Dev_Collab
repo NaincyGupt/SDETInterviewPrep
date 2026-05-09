@@ -176,24 +176,54 @@ I believe that the **"Optimal"** state isn't a rigid triangle, but a **Diamond**
 
 2. Dev Collaboration & Teamwork 
 
-• "Tell me about a time you disagreed with a technical decision made by your team.". 
-• "How do you handle receiving critical feedback on your code?". 
-• "Describe a situation where you had to work with a difficult colleague.". 
-• "How do you ensure effective communication when working remotely as a dedicated developer?". 
-• "Describe a time when you had to explain a complex technical concept to a non-technical stakeholder.". [3, 7]  
+ ### "Tell me about a time you disagreed with a technical decision made by your team.". 
+LEAD A DECISION 
+**1. The Situation (The Context)**
+
+"In my previous role, the engineering team was moving toward a rapid CI/CD model. To speed up the pipeline, the team lead proposed a decision to **deprioritize API/Contract testing** and instead funnel all our resources into a massive **End-to-End (E2E) UI suite** using Appium. The belief was that since the UI is what the user sees, it's the only layer that truly matters for 'signing off' a release."
+
+ **2. The Task (The Disagreement)**
+
+"I disagreed with this approach. Based on my experience, relying solely on a massive UI suite creates an 'Ice Cream Cone' anti-pattern. I knew that as the app grew, a 100% UI-based strategy would lead to extremely long execution times, high flakiness (especially with React Native), and would make it impossible to isolate if a failure was in the frontend or the backend."
+
+ **3. The Action (How You Handled It)**
+
+"I didn't just say 'no'; I provided a **Proof of Concept (PoC)** to demonstrate the trade-offs:
+
+* **Data-Driven Influence:** I pulled metrics from our current runs showing that 70% of our 'UI failures' were actually caused by backend data inconsistencies that could have been caught in seconds via API tests.
+* **The 'Diamond' Proposal:** I proposed a 'Diamond' strategy instead. I advocated for a robust middle layer of **RestAssured** API tests to validate business logic and data contracts.
+* **Risk-Based UI Selection:** I suggested we keep the UI suite lean, focusing only on 'Critical User Journeys' (like Login and Checkout) while moving the validation of field-level logic to the API layer."
+
+ **4. The Result**
+
+"The team lead and the developers agreed to a 2-week trial of this model. The results were immediate: our pipeline execution time dropped by **50%**, and our 'signal-to-noise ratio' improved significantly. When a test failed, we knew exactly which microservice was at fault. This eventually became the standard architectural pattern for all new features in the organization."
+
+
+
+
+### "How do you handle receiving critical feedback on your code?". 
+1
+Be open and respectful
+2
+Evaluate and prioritize
+3
+Respond and communicate
+4
+Implement and test
+5
+Learn and improve
+6
+Handle feedback on your code like a pro
+7
+
+
+### "Describe a situation where you had to work with a difficult colleague.". 
+### "How do you ensure effective communication when working remotely as a dedicated developer?". 
+### "Describe a time when you had to explain a complex technical concept to a non-technical stakeholder.
 
 3. Project & Product Focus 
 
- "Tell me about the last time you solved a problem that wasn't on the backlog." (Surfaces initiative). 
-• "How do you prioritize tasks in a project?". 
-• "How do you handle scope changes or feature requests in the middle of development?". 
-• "What is the scope of work I need to do?" (A common question candidates should be prepared to ask). [2, 7, 9]  
-
-Watch this video to learn how to structure your answers to behavioral interview questions: 
-Key Themes in 2026 Developer Interviews 
-
-• Active Collaboration: Moving beyond just technical proficiency to demonstrate how to work with team members. 
-• Debugging & Resilience: Showing how to solve issues, not just write new code. 
-• Growth Mindset: Sharing what was recently learned, particularly if it changed a previous viewpoint. 
-• Communication: Clearly explaining complex, technical scenarios. [2, 3, 10]  
-
+### "Tell me about the last time you solved a problem that wasn't on the backlog." (Surfaces initiative). 
+### "How do you prioritize tasks in a project?". 
+### "How do you handle scope changes or feature requests in the middle of development?". 
+### "What is the scope of work I need to do?" (A common question candidates should be prepared to ask). 
