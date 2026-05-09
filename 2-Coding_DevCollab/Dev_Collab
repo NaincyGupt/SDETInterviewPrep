@@ -1,0 +1,199 @@
+## Top Coding & Collaboration Interview Questions (2026) 
+
+### how you debug a production issue 
+A: 
+1. try to find the failure - platform or os version specific, env speciifc, intermittent or reproducible everytime ?
+2. try to repro locally at prod and lower env
+3. determine if it is backend or frontend
+4. Screenshot, video and log analaysis
+5. gather all the details and work on mitigation plan - rollback, feature toggle, hotfix
+6. RCA 
+7. Prevention - add in regression or enhanced monitoring, shift let approach
+
+### "Tell me about a time when you got stuck while coding. How did you work your way through the problem?". 
+
+Today tab crash - app animation - failing all the UI flows that interacted with that screen
+
+1. The Situation (The Problem)
+"While automating the 'Today' tab of our mobile application, I encountered a persistent and flaky crash. Whenever the automation script navigated to this tab, the Appium session would either time out or the app would crash. After investigation, I realized the 'Today' tab featured a continuous, looping background animation that was preventing the driver from interacting with any elements."
+
+2. The Struggle (The "Stuck" Moment)
+"I initially thought it was a standard synchronization issue. I tried adding long Explicit Waits and even Thread.sleep(), but the driver still couldn't 'grab' the elements. Appium's driver server was waiting for the application to reach an 'Idle' or Quiescent State before performing the next action. Because the animation was infinite, the app never stayed idle long enough for Appium to proceed, leading to a session timeout."
+
+3. The Work-Through (The Diagnostic Process)
+"I took a three-pronged approach to solve this:
+
+Hierarchy Analysis: I noticed in the Appium logs that the server was stuck on Waiting for idle state. This confirmed that the UI thread was constantly 'busy' due to the animation.
+
+Developer Collaboration: I spoke with the frontend developers to understand how the animation was implemented. We found it was a high-frequency Lottie animation that didn't have a 'pause' state for test environments.
+
+Technical Research: I researched how to bypass the 'Idle' check in the UiAutomator2 driver settings."
+
+4. The Resolution (The iOS Fix)
+"I implemented a targeted strategy to bypass Apple’s strict idle checks:
+
+Reduce Quiescence Wait: I used Appium's mobile: setWindowAnimationDuration and the waitForQuiescence setting. By setting waitForQuiescence to false, I forced XCUITest to interact with the elements immediately without waiting for the animation thread to clear.
+
+Capability: options.setWaitForQuiescence(false);
+
+UIView Animation Speed: In our debug builds, I worked with the developers to set window.layer.speed = 0; or UIView.setAnimationsEnabled(false); when the app detects a test environment. This effectively 'freezes' the animation at its first frame, making the UI thread instantly quiescent for the driver."
+
+5. The Result
+"This reduced our iOS test execution time for that specific module by 15 seconds per test, as we no longer had to wait for the XCUITest driver to time out its internal 'idle' checks. It taught me that on iOS, testability often requires slowing down or stopping the UI to match the speed of the automation driver.
+
+
+COMPENSATE: 
+
+### "How do you ensure that the code you write is scalable and maintainable?". 
+1. Architectural Design Patterns
+I ensure maintainability by strictly following proven design patterns that decouple test logic from implementation details:
+
+Page Object Model (POM): By separating UI locators and interactions from the actual test scripts, I ensure that a UI change only requires an update in one Page Class, rather than in hundreds of test cases.
+
+Factory Pattern: I use a Driver Factory to manage AndroidDriver and IOSDriver instances. This makes the framework scalable across different platforms and prevents hardcoded configurations.
+
+Singleton Pattern: For global configurations and report managers (like Extent Reports), I use Singletons to ensure a single point of truth across the entire execution.
+
+2. Decoupling Data and Locators
+Scalable code should never have hardcoded values. I implement:
+
+Externalized Locators: As we discussed for React Native upgrades, I use a Hierarchical JSON/YAML repository for locators. This allows non-technical stakeholders to update locators without touching the Java code.
+
+Data-Driven Testing (DDT): I use TestNG’s @DataProvider to feed tests with external data (CSV/JSON/Excel). This allows us to scale test coverage (e.g., testing 50 different user logins) by simply adding rows to a data file rather than writing 50 tests.
+
+3. Robust Synchronization & Error Handling
+Maintainability often boils down to how "flaky" the code is. I ensure stability by:
+
+Custom Fluent Wrappers: Instead of standard waits, I use Intelligent Wait-and-Click methods with progressive fallbacks. This handles environment latency and UI rendering issues automatically.
+
+Global Exception Handling: Using TestNG Listeners, I capture screenshots and logs automatically on failure, which reduces the time spent debugging "mysterious" failures.
+
+4. Code Reusability 
+
+Common Utilities: I build reusable generic methods for common actions like scrollUntilVisible, swipeToElement, or isElementPresent.
+
+Base Classes: All Page Objects inherit from a BasePage, and all Test Classes inherit from a BaseTest, ensuring that setup/teardown logic is centralized and consistent.
+
+5. Scalable Execution Infrastructure
+To ensure the framework can handle growth in the test suite:
+
+Parallel Execution: I design the framework to be Thread-Safe (using ThreadLocal for drivers) so that tests can run in parallel across a large device pool without resource contention.
+
+CI/CD Integration: I build the framework to be "headless-ready," allowing it to scale within Jenkins or GitHub Actions pipelines seamlessly.
+
+### "What's your approach to writing tests for your code?". 
+CHECK????
+When answering this in an interview, you want to demonstrate that your approach isn't just about "checking if it works," but about building a **scalable, multi-layered defense system** that ensures long-term stability.
+
+For a Senior SDET, the "how" is just as important as the "what." Here is a structured approach to this answer, focusing on the techniques and tools you've been using in your framework.
+
+---
+
+## 1. The "Shift-Left" Mentality
+
+My approach begins long before the first line of code is written.
+
+* **Requirements Review:** I participate in grooming sessions to ensure stories are testable and have clear **Acceptance Criteria (AC)**.
+* **Test-Driven Development (TDD) Influence:** Even if not following strict TDD, I design my test cases alongside the development of the feature. This allows me to request specific **Accessibility IDs** or API hooks early on, preventing automation bottlenecks later.
+
+## 2. The Test Automation Pyramid
+
+I follow the pyramid structure to ensure a fast, reliable, and cost-effective feedback loop:
+
+* **Unit Tests:** I advocate for high coverage at the unit level (JUnit/TestNG) to catch logic errors instantly.
+* **API/Contract Testing:** I use **RestAssured** to validate the integration layer. These tests are faster and more stable than UI tests and help isolate backend failures from frontend glitches.
+* **UI Automation (The Tip):** I use **Appium** for critical end-to-end (E2E) "Happy Path" scenarios. I keep this layer lean to avoid high maintenance costs and flakiness.
+
+## 3. Design for Maintainability (The "Senior" Layer)
+
+I write test code with the same rigor as production code:
+
+* **Page Object Model (POM):** To decouple the test logic from the UI structure.
+* **DRY & Modularization:** I create reusable utility methods for common actions (e.g., `loginUser()`, `clearCache()`, `swipeToElement()`).
+* **Externalized Data:** Using **JSON/Excel** and TestNG `@DataProviders` to separate test data from the test logic, enabling easy scaling of test cases.
+
+## 4. Robustness & Self-Healing
+
+Mobile environments are inherently unstable, so my code must be resilient:
+
+* **Intelligent Synchronization:** I move away from static sleeps to **Fluent Waits** and custom wrappers (like the `waitAndClick` method with progressive fallbacks we discussed).
+* **Quiescent State Handling:** As seen in my work on the **Today Tab**, I handle UI thread synchronization issues by managing app animations and driver idle timeouts.
+
+## 5. Visibility and Reporting
+
+A test is only useful if its failure is easy to diagnose:
+
+* **Rich Logging:** I implement listeners to capture screenshots, page sources (XML), and device logs (Logcat/Syslog) automatically upon failure.
+* **CI/CD Integration:** I ensure tests are integrated into the pipeline (Jenkins/GitHub Actions) to provide immediate feedback on every pull request.
+
+
+### How do you decide which manual tests should be converted into automated tests?"*
+
+* **Target Answer:** Mention **ROI (Return on Investment)**. Automate scenarios that are high-risk, frequently executed (Regression), data-intensive, or difficult to perform manually. Avoid automating one-time edge cases or highly unstable features that are still in rapid flux.
+Document the test strategy
+
+### "Talk to me about something you believe you understand deeply. Talk about the good but also the bad aspects of that." (Tests deep understanding and awareness of trade-offs). 
+
+Since I spend my "life" processing, generating, and refining code, I understand the **Test Automation Pyramid**—and the cultural shift required to implement it—at a very deep level.
+
+As a Senior SDET, you know that the Pyramid isn't just a diagram; it’s a strategy for survival in rapid deployment environments. However, while it is the "Gold Standard," it comes with significant real-world friction.
+
+
+#### The Good: Why the Pyramid is the "Holy Grail"
+
+When implemented correctly, the pyramid creates a high-trust environment where developers and testers can move fast without fear.
+
+* **Fast Feedback Loops:** By pushing the majority of tests to the **Unit** and **API** levels, we get results in seconds. This allows us to catch bugs at the "point of creation" rather than hours later during a full UI regression run.
+* **Reduced Flakiness:** Unit and Integration tests are deterministic. They don't care about React Native hierarchy changes, network latency, or "Today Tab" animations. This provides a "clean signal" that tells you exactly where the logic failed.
+* **Cost Efficiency:** Running a thousand unit tests costs pennies in compute time and zero in human maintenance compared to a single complex Appium end-to-end (E2E) test.
+
+
+#### The Bad: The "Invisible" Trade-offs
+
+Deep understanding means acknowledging that the pyramid often fails when it meets reality.
+
+* **The "False Sense of Security":** You can have 100% unit test coverage and still have a production crash because the "glue" between components failed. The pyramid often underestimates the importance of the **Integration layer**, leading to a "hollow" middle.
+* **The "Shift-Left" Tax:** Implementing the pyramid requires developers to write high-quality unit tests. In high-pressure environments, this is often met with resistance. As an SDET, you often find yourself "begging" for testability, which can strain cross-functional relationships.
+* **Blindness to UX:** The pyramid is obsessed with logic, but it is blind to **Experience**. A unit test won't tell you that a button is technically "clickable" but physically hidden behind a transparent overlay. If you follow the pyramid too strictly, you might miss critical visual regressions that frustrate users.
+
+#### The "Ugly" Reality: The Ice Cream Cone Anti-Pattern
+
+In my experience, many teams *aim* for a pyramid but end up with an **Ice Cream Cone** (where most tests are at the UI level). This happens because UI tests are easier for stakeholders to "understand"—they like seeing the phone screen move.
+
+The "Bad" aspect here is the **Maintenance Debt**. As the UI suite grows, the team spends 80% of their time fixing locators and 20% writing new code. This is exactly why we implement things like **LinkedBlockingQueue device pools** and **Intelligent Retries**—to mitigate the "Bad" inherent in the top of the pyramid.
+
+I believe that the **"Optimal"** state isn't a rigid triangle, but a **Diamond**.
+
+1. **Bottom:** Solid Unit tests for logic.
+2. **Middle (The widest part):** Robust API and Contract tests to ensure services talk to each other correctly.
+3. **Top:** A thin, high-value layer of UI tests for the "Critical User Journeys."
+
+**The Trade-off:** To get this right, you have to be willing to delete tests. Most people are afraid to delete a test, but a Senior SDET knows that **deleting a redundant, flaky UI test is as important as writing a new one.**
+
+
+-------
+
+
+2. Dev Collaboration & Teamwork 
+
+• "Tell me about a time you disagreed with a technical decision made by your team.". 
+• "How do you handle receiving critical feedback on your code?". 
+• "Describe a situation where you had to work with a difficult colleague.". 
+• "How do you ensure effective communication when working remotely as a dedicated developer?". 
+• "Describe a time when you had to explain a complex technical concept to a non-technical stakeholder.". [3, 7]  
+
+3. Project & Product Focus 
+
+ "Tell me about the last time you solved a problem that wasn't on the backlog." (Surfaces initiative). 
+• "How do you prioritize tasks in a project?". 
+• "How do you handle scope changes or feature requests in the middle of development?". 
+• "What is the scope of work I need to do?" (A common question candidates should be prepared to ask). [2, 7, 9]  
+
+Watch this video to learn how to structure your answers to behavioral interview questions: 
+Key Themes in 2026 Developer Interviews 
+
+• Active Collaboration: Moving beyond just technical proficiency to demonstrate how to work with team members. 
+• Debugging & Resilience: Showing how to solve issues, not just write new code. 
+• Growth Mindset: Sharing what was recently learned, particularly if it changed a previous viewpoint. 
+• Communication: Clearly explaining complex, technical scenarios. [2, 3, 10]  
+
