@@ -31,11 +31,19 @@ define defination of done and ask questions for testability.
 * **Answer:** I don't just fix the code for them. I initiate a **Pair Programming** session. I show them how to use **Fluent Waits** instead of `Thread.sleep()` and explain the "Why" behind it.
 * **Process Change:** I implemented a "Sandbox Check" in our CI/CD where new scripts must pass 10 times consecutively in a separate environment before being merged into the master regression suite.
 
+## 4. Conflict Resolution (The "Amigo" Conflict)
+Question: "Give an example of a time you disagreed with your manager’s technical direction."
+
+Situation: My manager wanted to achieve 100% automation coverage for all legacy features.
+
+Task: Based on my experience, I knew the ROI on 100% coverage is negative due to high maintenance.
+
+Action: I created a Risk-Based Testing Matrix. I showed that 20% of the features accounted for 80% of user traffic. I proposed focusing automation on these high-impact areas while using exploratory testing for the low-risk legacy features.
+
+Result: We saved 30% of the team's bandwidth, which we then used to build the Device Pool Reservation System to solve our flakiness issues.
+
 ## 4. Cross-Functional Alignment (Shift-Left)
 
-**Question:** *“How do you work with Product Managers to define 'Quality'?”*
-
-* **Answer:** I view quality as a shared responsibility. I meet with PMs during the **Sprint Grooming** phase to define the "Definition of Done." I advocate for **Testability** early on—requesting specific Accessibility IDs during the design phase so automation can be built in parallel with development rather than after.
 
 ---
 
