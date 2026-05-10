@@ -1,324 +1,259 @@
 
 
-✅ Test Plan – Mobile Application Release
-1. Introduction
-This document defines the test plan for validating the Mobile Application Release (Cocoa 1.11).
-It describes the testing scope, approach, schedule, resources, and deliverables required to ensure a high-quality release.
+# Test Automation Reference Guide
 
-2. Test Plan Objective
-Validate that new features and defect fixes meet business and functional requirements
-Ensure no regression in existing functionality
-Confirm application stability across supported devices and OS versions
-Support release go/no-go decision
-3. Scope
-3.1 In Scope
-Mobile application (iOS & Android)
-Features included in Cocoa 1.11 sprint backlog
-Notifications functionality
-Background/foreground data sync
-API integrations
-Regression testing of critical flows
-On-market defect verification
-3.2 Out of Scope
-OS-level issues
-3rd-party service internal defects
-Hardware sensor manufacturing defects
-Performance stress testing beyond defined scenarios
-4. Test Items
-Mobile app builds (iOS, Android)
-Backend APIs
-Notifications system
-User workflows:
-App launch
-Login/onboarding
-Data sync
-Notifications navigation
-Dashboard & insights
-5. Test Approach
-5.1 Manual Testing
-Functional test execution
-Exploratory testing for new features
-UI/UX validation
-Negative and edge case testing
-Release candidate validation
-5.2 Automation Testing
-Smoke tests on every build
-Regression tests for critical flows
-API automation for backend validation
-CI-triggered automation runs
-6. Test Types
-Smoke Testing
-Functional Testing
-Regression Testing
-Exploratory Testing
-API Testing
-Compatibility Testing
-Basic Accessibility Testing
-7. Test Environment
-Environment
-Purpose
-QA
-Feature & regression testing
-Staging
-Pre-release validation
-Production
-Monitoring only
-8. Test Data
-Mock sensor data
-Valid & invalid user profiles
-Boundary datasets
-Anonymized production-like data
-9. Device & OS Coverage
-iOS
-Latest OS + 2 previous versions
-Real devices via cloud testing
-Android
-Latest OS + major market versions
-Multiple screen sizes & manufacturers
-10. Entry & Exit Criteria
-Entry Criteria
-Feature code merged
-Build available in test environment
-Acceptance criteria defined
-Test cases reviewed and ready
-Exit Criteria
-100% smoke tests passed
-No open critical/high defects
-Regression pass rate ≥ 95%
-Product & QA sign-off
-11. Test Deliverables
-Test cases & execution results
-Defect reports in Jira
-Test summary report
-Release sign-off
-12. Defect Management
-Tool: Jira
-Defect severity & priority defined
-Root cause analysis for critical defects
-Retesting and regression verification
-13. Roles & Responsibilities
-Role
-Responsibility
-QA Engineer
-Test execution & reporting
-Automation Engineer
-Automation scripts & maintenance
-Developer
-Defect fixes & unit testing
-Product Owner
-Acceptance & sign-off
-Release Manager
-Go/no-go decision
-14. Test Schedule (Example)
-Activity
-Timeline
-Test Case Preparation
-Sprint Day 1–3
-Functional Testing
-Sprint Day 4–8
-Regression Testing
-Sprint Day 9–10
-Release Validation
-Sprint Day 11
-15. Risks & Mitigation
-Risk
-Mitigation
-Backend instability
-API mocks/fallback
-Flaky automation
-Stabilization & retries
-Limited device testing
-Cloud devices
-16. Approval
-Name
-Role
-Sign-off
-QA Lead
-Quality Assurance
-✅
-Product Owner
-Product
-✅
-📌 Example Test Plan Structure (Template)
-You can copy-paste this directly into Confluence or Word:
+**Topics:** Appium, TestNG, Rest Assured, Cucumber, Maven, ExtentReports, Java, Jenkins/GitHub Actions, API, Microservices, XCUITest
 
-1. Introduction
-2. Test Plan Objective
-3. Scope
-   3.1 In Scope
-   3.2 Out of Scope
-4. Test Items
-5. Test Approach
-   5.1 Manual Testing
-   5.2 Automation Testing
-6. Test Types
-7. Test Environment
-8. Test Data
-9. Device & OS Coverage
-10. Entry & Exit Criteria
-11. Test Deliverables
-12. Defect Management
-13. Roles & Responsibilities
-14. Test Schedule
-15. Risks & Mitigation
-16. Approval
-🧠 Key Difference (Strategy vs Plan)
-Test Strategy
-Test Plan
-Organization-level
-Release/sprint-specific
-Long-term
-Short-term
-“How we test”
-“What we test now”
+---
+
+## 📱 APPIUM: Cross-Platform Test Automation Framework
+
+### Architecture & Core Concepts
+
+Appium operates on a **Client-Server Architecture**.
+
+* **Client-Server Architecture:** Your test script uses the Appium client library to send commands to the Appium server (HTTP server).
+* **Desired Capabilities:** The Appium Java client defines these (like device name, platform version, and app path) to tell the server what kind of session to start.
+* **Interpretation:** The server interprets these commands and uses platform-specific drivers (e.g., **XCUITest for iOS**, **UIAutomator2 for Android**) to execute actions on devices.
+
+### Why Appium?
+
+* **Bridge Utility:** It acts as a bridge so you don't have to write platform-specific code.
+* **WebDriver Protocol:** It uses the standardized, platform-independent W3C WebDriver Protocol.
+* **Common Language:** It is the "common language" that automation tools use to tell software to "click this," "type that," or "go to this URL."
+
+### System Requirements
+
+* **Node.js:** Appium is a Node.js application.
+* **Android:** Android SDK, Android Studio/emulators, or real devices.
+* **iOS:** Xcode, macOS, Simulators/real devices.
+* **Appium Client:** A driver/client library specific to your chosen language.
+
+### Ecosystem & Logistics
+
+* **XCUITest Driver:** Apple maintains XCUITest. Appium converts WebDriver protocol commands into XCUITest library calls.
+* **HTTP Server:** Appium must run as a process on a computer for the duration of the automation session.
+* **Network Flexibility:** The server and client do not need to be on the same computer; they just need to communicate over a network via HTTP requests.
+
+---
+
+## ⚙️ Capabilities & Configuration
+
+### Common Appium Capabilities
+
+| Capability | Type | Description |
+| --- | --- | --- |
+| `appium:automationName` | String | The name of the Appium driver to use |
+| `appium:udid` | String | Unique device identifier of a particular device |
+| `appium:app` | String | The path to an installable application |
+
+### Appium Options Object
+
+For cleaner code, combine capabilities into a single `appium:options` block:
+
+```json
+{
+    "platformName": "iOS",
+    "appium:options": {
+        "automationName": "XCUITest",
+        "platformVersion": "16.0",
+        "app": "/path/to/your.app",
+        "deviceName": "iPhone 12",
+        "noReset": true
+    }
+}
+
+```
+
+### Executing JavaScript
+
+```java
+JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
+jsDriver.executeScript("return arguments[0] + arguments[1]", 3, 4);
+
+```
+
+---
+
+## 🚀 How to Use Appium: Step-by-Step
+
+1. **Add Maven Dependencies:** Include the Appium Java Client in your `pom.xml`.
+2. **Set Up Desired Capabilities (Options):**
+```java
+XCUITestOptions options = new XCUITestOptions();
+options.setDeviceName("iPhone 15");
+options.setApp("/path/to/your/app.ipa");
+options.setPlatformVersion("17.0");
+
+```
+
+
+3. **Initialize the Driver:** Connect to the Appium Server (default: `http://127.0.0.1:4723`).
+4. **Write the Test Logic.**
+
+---
+
+## ❓ Frequently Asked Questions (Interview Prep)
+
+* **What are Desired Capabilities?** Key-value pairs sent to the server to define the session (e.g., `platformName`, `deviceName`, `app`).
+* **Limitations of Appium?** Complex setup (Node.js, JDK, SDKs) and slightly slower execution compared to purely native frameworks.
+* **Android Specifics:** * `appPackage`: Unique identifier for the app (e.g., `com.example.app`).
+* `appActivity`: The specific screen/activity to start (e.g., `.MainActivity`).
 
 
 
+---
 
-1. What is a Test Strategy?
-A Test Strategy is a high‑level document that defines how testing will be done, what will be tested, what will not, and who is responsible.
-It is stable across releases, unlike a test plan which is release‑specific.
+## 🍏 iOS Deep Dive (XCUITest)
 
-2. High-Level Test Strategy (Example)
-Test Strategy – Mobile Application (Lingo)
-Objective
-Ensure the mobile application delivers a high-quality, reliable, secure, and compliant user experience across supported platforms and devices.
+### Key Appium Objects for iOS
 
-Scope
-✅ In Scope
-Mobile app (iOS & Android)
-Core user journeys (onboarding, sensor sync, notifications, dashboards)
-Backend API integrations
-Notifications (foreground, background, killed app)
-Data sync & offline behavior
-Security & compliance checks
-Regression testing for every release
-❌ Out of Scope
-Third-party service internal testing
-OS-level bugs
-Hardware manufacturing defects
-Test Levels
-Level
-Description
-Unit Testing
-Component-level tests by developers
-Integration Testing
-API & mobile-backend interaction
-System Testing
-End-to-end workflows
-Regression Testing
-Existing functionality validation
-UAT Support
-Business & clinical validation
-Test Types
-Functional Testing
-Regression Testing
-Smoke & Sanity
-Exploratory Testing
-API Testing
-Performance (basic)
-Security (OWASP top checks)
-Accessibility (WCAG basics)
-Compatibility (devices/OS)
-Test Environments
-QA
-Staging
-Production (monitoring only)
-Test Data
-Mock sensor data
-Anonymized production-like data
-Negative and edge cases
-Compliance-friendly datasets
-Automation Strategy
-Mobile Automation
-Framework: Appium 2/3
-Language: JavaScript / TypeScript
-Tools: WebdriverIO
-Coverage:
-Smoke flows
-Critical regression flows
-Notifications & background scenarios
-API Automation
-REST API validation
-Contract & schema checks
-Data sync scenarios
-Manual Testing Strategy
-Exploratory testing for new features
-UI/UX validation
-Edge-case validation
-Release candidate sign-off
-Device & OS Coverage
-iOS: Latest + 2 previous versions
-Android: Latest + major market-used versions
-Real devices via cloud (e.g., BrowserStack)
-Defect Management
-Tool: Jira
-Severity & priority defined
-Root cause mandatory for critical defects
-Reopen & regression tagging
-Entry & Exit Criteria
-Entry Criteria
-Feature complete
-Code merged
-Test environment stable
-Test cases ready
-Exit Criteria
-All critical & high defects closed
-Regression pass ≥ 95%
-Automation green for critical flows
-Stakeholder sign-off
-Risks & Mitigation
-Risk
-Mitigation
-Limited device coverage
-Cloud device farms
-Flaky automation
-Retry logic & stability review
-Backend dependency
-Service mocks
-Metrics & Reporting
-Test case execution status
-Defect leakage
-Automation pass rate
-Regression coverage
-Release quality score
-Roles & Responsibilities
-Role
-Responsibility
-QA Engineer
-Test design & execution
-Automation Engineer
-Framework & scripts
-Dev
-Unit tests & bug fixes
-Product
-Acceptance criteria
-Release Manager
-Go/no-go decision
-3. Example Test Strategy Structure (Template)
-You can copy this directly into Confluence / Word:
+1. **IOSDriver:** `IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);`
+2. **XCUITestOptions:** Replaces the old `DesiredCapabilities`.
+* `setDeviceName("iPhone 15 Pro")`
+* `setBundleId("com.apple.example")`
+* `setAutomationName("XCUITest")`
 
-1. Introduction
-2. Objective
-3. Scope
-   3.1 In Scope
-   3.2 Out of Scope
-4. Test Levels
-5. Test Types
-6. Test Environments
-7. Test Data
-8. Automation Strategy
-   8.1 Mobile Automation
-   8.2 API Automation
-9. Manual Testing Strategy
-10. Device & OS Coverage
-11. Defect Management
-12. Entry & Exit Criteria
-13. Risks & Mitigation
-14. Metrics & Reporting
-15. Roles & Responsibilities
-16. Approval
 
+3. **AppiumBy:** Use for iOS-specific strategies like `AppiumBy.iOSClassChain("/XCUIElementTypeButton[label == 'Login']")`.
+4. **AppiumFieldDecorator:** Used in POM to handle `@iOSXCUITFindBy` annotations.
+
+### Handling System Permissions
+
+> "I utilize `XCUITestOptions` to set `setAutoAcceptAlerts(true)` during initialization. This ensures WDA handles system-level pop-ups like Location or Camera permissions automatically."
+
+---
+
+## 👆 Gestures & Interactions
+
+### W3C Actions API (Vertical Swipe Example)
+
+Appium treats gestures as a series of "events" (Move, Down, Up) performed by a `PointerInput`.
+
+```java
+PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+Sequence swipe = new Sequence(finger, 1);
+
+swipe.add(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), 500, 800));
+swipe.add(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+swipe.add(finger.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(), 500, 200));
+swipe.add(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+driver.perform(Collections.singletonList(swipe));
+
+```
+
+### Mobile Command Shortcut (iOS Specific)
+
+Use `mobile: executeScript` for optimized OS gestures:
+
+```java
+Map<String, Object> params = new HashMap<>();
+params.put("direction", "down");
+params.put("elementId", ((RemoteWebElement) element).getId());
+driver.executeScript("mobile: swipe", params);
+
+```
+
+*Note: Use W3C for complex patterns, but Mobile Commands for standard, stable OS gestures.*
+
+---
+
+## 🛠️ Troubleshooting Common Issues
+
+1. **WebDriverAgent (WDA) Failures:** * *Issue:* WDA crashes or fails to install due to signing issues.
+* *Fix:* Use `setUseNewWDA(true)` or rebuild the WDA project in Xcode.
+
+
+2. **Element Visibility & Quiescence:**
+* *Issue:* XCUITest waits for the app to be "idle." Looping animations can cause hangs.
+* *Fix:* Set `setWaitForQuiescence(false)` in `XCUITestOptions`.
+
+
+3. **Clean State Management:**
+* *Fix:* Use `setShouldTerminateApp(true)` to kill zombie processes and `setFullReset(true)` for a 100% clean install.
+
+
+
+---
+
+## 🛡️ Stability & Recovery Framework
+
+### 1. Pre-Test: The "Clean Slate"
+
+```java
+public void setup() {
+    XCUITestOptions options = new XCUITestOptions();
+    options.setDeviceName("iPhone 15");
+    options.setBundleId("com.apple.example");
+    options.setShouldTerminateApp(true); 
+    options.setNoReset(false); 
+    driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+}
+
+```
+
+### 2. During Test: The "State Check"
+
+```java
+public void performSafeAction(WebElement element) {
+    ApplicationState state = driver.queryAppState("com.apple.example");
+    if (state != ApplicationState.RUNNING_IN_FOREGROUND) {
+        throw new RuntimeException("App crashed or backgrounded! State: " + state);
+    }
+    element.click();
+}
+
+```
+
+### 3. Post-Failure: "Recovery & Evidence"
+
+* **Screenshot:** `driver.getScreenshotAs(OutputType.FILE);`
+* **System Logs:** `driver.manage().logs().get("syslog");`
+* **Recovery:** Use `mobile: launchApp` to restart for the next test.
+
+---
+
+## 🌐 Network & Security Handling
+
+### Simulating Network Conditions
+
+* **Airplane Mode:**
+```java
+Map<String, Object> params = new HashMap<>();
+params.put("type", "airplane-mode");
+driver.executeScript("mobile: setNetworkConnection", params);
+
+```
+
+
+* **Latency/Slow Internet:** Use `options.setCapability("appium:networkCondition", "3G");`.
+
+### SSL & Security
+
+* **Insecure Certs:** `options.setAcceptInsecureCerts(true);`
+* **Biometrics (FaceID/TouchID):**
+```java
+options.setCapability("appium:allowTouchIdEnroll", true);
+// Trigger success
+Map<String, Object> params = new HashMap<>();
+params.put("type", "faceId");
+params.put("match", true);
+driver.executeScript("mobile: sendBiometricMatch", params);
+
+```
+
+
+
+---
+
+## 🔗 Resources
+
+* **Appium Interview Questions:** [TestMu Learning Hub](https://www.testmuai.com/learning-hub/appium-interview-questions/)
+
+---
+
+**Next Section:** TESTNG
 
 
 
