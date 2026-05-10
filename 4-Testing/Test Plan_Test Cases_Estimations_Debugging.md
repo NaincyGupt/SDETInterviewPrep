@@ -474,12 +474,102 @@ $100\%$ of automated Smoke and Regression suites must pass.
 All S1 and S2 defects must be closed.
 
 
-# Estimations
-
-# Debugging
-
 # Test plan and test cases of other scenarios
   - login 
-  - apple health 
+  - apple health - api
   - camera
-  
+
+# Positive, negative , boundary, stress, load, usability, compatibility, security . scalability, stability
+
+  ## LOGIN
+Positive - Basic Valid Login, forgot pass, case sensitivity, password masking, enter key for login button
+Negative - invalid login
+forgot pass
+Attempt login with a correct username but incorrect password.
+Attempt login with an unregistered email address.
+Blank field
+
+
+BOUNDARY - 
+Password Length: If the limit is 8–16 characters, test exactly 7, 8, 15, 16, and 17 characters.
+Special Characters: Test a password with 100% special characters vs. 0% special characters.
+Leading/Trailing Spaces: Enter a valid email with a space at the end (user@test.com ) to see if the app trims it.
+character limit in username
+
+security or functional: 
+Account Lockout: 
+Expired/Inactive Accounts: 
+Unverified Accounts: 
+.MFA Failures: 
+Session Timeout:
+
+error handling
+
+----
+
+Load Testing:
+Simulate 500 concurrent users logging in simultaneously via the API to check server response time.
+Login response time UNDER SLA
+
+Stress: 
+simulate 5000 concurrent users logging in simultaneously via the API to check server response time.
+
+Negative/Volume Testing (Data Flow): Flooding a database with massive amounts of data or concurrently executing thousands of transactions to detect when lockups, data corruption, or slowdowns occur
+
+Resource Depletion (System Stress): Intentionally restricting a system's resources, such as limiting CPU to 10% or capping RAM, to evaluate if the software crashes or continues to run gracefully.
+
+Recovery Testing (Disaster Simulation): Abruptly shutting down a database or server during peak load to analyze how quickly the system recovers and if it saves data securely
+
+
+stability: 
+
+scalability: 
+----
+Security : 
+SQL Injection: 
+Cross-Site Scripting (XSS): 
+Unauthorized Navigation: Attempt to access the dashboard directly via its URL without being logged in.
+-----
+usability: 
+UI  -  Responsive design
+
+compatibility: devices, browser
+
+# apple health - api 
+https://medium.com/@zubairkhansh/10-critical-api-testing-scenarios-every-qa-engineer-should-master-2954e5e60e38
+
+API testing scenarios are structured conditions designed to validate the functionality, security, and performance of an application's interface. Effective testing strategies typically cover the following categories: [1, 2]  
+1. Functional Scenarios 
+These tests ensure the API performs its intended operations correctly according to the requirements. 
+
+• Status Code Validation: Verify that the API returns the expected HTTP status codes (e.g.,  for success,  for new resources, or  for missing resources). 
+• Payload Accuracy: Check that the response body contains the correct data and matches the requested information. 
+• CRUD Operations: Validate the complete "Create, Read, Update, and Delete" flow to ensure data integrity across the system. 
+• Chain Requests (Scenario Testing): Mimic real-world user journeys by chaining multiple requests together, such as registering a user, then logging in with those credentials. [1, 4, 5, 6, 7, 8, 9, 10]  
+
+2. Negative & Edge Case Scenarios 
+These scenarios test how the API handles invalid or extreme inputs to ensure robustness. 
+
+• Invalid Inputs: Send malformed data, incorrect data types (e.g., text in a numeric field), or empty fields to verify the API returns helpful error messages rather than crashing. 
+• Boundary Value Testing: Test the minimum and maximum limits for input parameters to see how the system reacts to extreme values. 
+• Fuzz Testing: Input random or "fuzzed" data to identify unexpected vulnerabilities or edge cases. [4, 11, 12, 13, 14]  
+
+3. Security & Authentication Scenarios 
+Security tests focus on protecting sensitive data and preventing unauthorized access. 
+
+• Unauthorized Access: Attempt to access protected endpoints without a token or with an invalid API key to ensure they are properly blocked (typically a  response). 
+• Insufficient Permissions: Verify that a user with restricted roles cannot perform administrative actions (Authorization testing). 
+• Rate Limiting: Confirm the API correctly throttles users who make too many requests in a short period to prevent DDoS attacks or system overload. [1, 4, 6, 8, 15]  
+
+4. Performance & Reliability Scenarios 
+These assess the API's speed and stability under various traffic conditions. 
+
+• Load Testing: Monitor how the API behaves under expected high traffic to ensure response times remain acceptable. 
+• Stress Testing: Push the API beyond its capacity to find its breaking point and see how it recovers from failure. 
+• Response Time Benchmarks: Measure the time it takes for various calls to ensure they meet performance service level agreements (e.g., responding in under 500ms). [4, 6, 12, 16, 17]  
+
+5. Integration & Contract Scenarios 
+
+• Contract Testing: Ensure the API follows the agreed-upon structure (schema) between the provider and the consumer to prevent breaking changes. 
+• Database Integrity: Verify that API actions result in the correct changes within the underlying database (e.g., a "Delete" request actually removes the record). [1, 4, 5]  
+
