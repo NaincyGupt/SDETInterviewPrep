@@ -559,4 +559,73 @@ security -
 11.6 Test an ATM: How would you test an ATM in a distributed banking system?
 Hints: #210, #225, #268, #349, #393
 
-Functional - Positive 
+Functional - Positive - withdraw money , check balance, 
+Balance Synchronization: If you withdraw $100 from ATM A, does ATM B (connected to the same account) show the updated balance immediately?
+negative - not able to withdaw more than the limit for the day,
+Latency Testing: How does the ATM behave if the connection to the central server is slow? Does it "time out" and cancel the transaction securely?
+Offline Mode: If the network goes down entirely, does the ATM allow small "emergency" withdrawals (if the bank policy allows) or shut down correctly?
+Concurrent Access: What happens if two people use the same joint account at two different ATMs at the exact same second to withdraw the last $100?
+Invalid Inputs: Testing expired cards, incorrect PINs (3-strike rule), and damaged magnetic stripes/chips.
+edge - verify getting the money at 11.59 and then 12.01 , there should be gap and not allowed to take money,
+Transaction Atomicity: If the ATM loses power after the bank server approves the withdrawal but before the cash is dispensed, is the money put back into the user's account? (The "All or Nothing" rule).
+boundary - odd number not able to get that money out and expected error msg is thrown,
+Denomination Logic: If a user requests $50 and the ATM only has $20 bills, does it correctly offer an alternative or fail gracefully?
+
+Non functional 
+stress - Can the central banking switch handle 10,000 ATMs processing transactions simultaneously during peak hours (like payday or Black Friday)?
+load - the atm provides the balance and all screen at expected tie or SLA, no lagging
+scalability - centeral server is take up the load
+stability - able to withstand new or future chnages
+
+usability - able to use it 
+compatibility - compatible to different new and old cards provided by the bank
+security- End-to-End Encryption: Are the PIN and card data encrypted at the ATM and only decrypted inside the secure Hardware Security Module (HSM) at the bank?
+Fraud Detection: If the same card is used at an ATM in New York and then 5 minutes later at an ATM in London, does the distributed system flag the transaction?
+acessibility
+
+# Return from Finally: In Java, does the finally block get executed if we insert a return statement inside the try block of a try-catch-finally?
+The short answer is yes. The finally block is guaranteed to execute even if there is a return statement in the try or catch block.
+
+In Java, the finally block is designed to be the "cleanup" phase. When the JVM hits a return in the try block, it effectively "saves" the return value, pauses, jumps to the finally block to execute its code, and only then actually returns from the method.
+
+# What is the difference between final, finally, and finalize?
+The final keyword is used to apply restrictions to different parts of your code:
+
+Final Variable: Creates a constant. Once assigned, the value cannot be changed.
+
+Final Method: Prevents the method from being overridden by subclasses.
+
+Final Class: Prevents the class from being inherited (extended).
+
+finally (The Block)
+The finally block is used in conjunction with try and catch. It is guaranteed to execute regardless of whether an exception was thrown or caught. It is typically used for resource cleanup, like closing database connections or file streams.
+
+finalize() (The Method)
+This is a protected method defined in the Object class. It is invoked by the Garbage Collector just before an object is removed from memory.
+
+# TreeMap, HashMap, LinkedHashMap: Explain the differences between TreeMap, HashMap, and LinkedHashMap. Provide an example of when each one would be best
+1. HashMap: The High-Performer
+HashMap is the "go-to" map for general use. It uses a hashing function to distribute keys into "buckets." It is the fastest because it doesn't care about the order of elements.
+
+Best Use Case: When you need fast lookups and don't care about the order of the items.
+
+Example: A User Cache. You have 10,000 users and you want to retrieve a user profile by their userID instantly. The order doesn't matter; speed is the only priority.
+
+2. LinkedHashMap: The Predictable One
+LinkedHashMap is exactly like HashMap but it maintains a doubly-linked list running through all its entries. This list defines the iteration order, which is normally the order in which keys were inserted.
+
+Best Use Case: When you need a map that "remembers" the order of entry, such as an LRU (Least Recently Used) Cache.
+
+Example: A Shopping Cart. You want to display the items to the customer in the exact order they added them to the cart. Using a regular HashMap might show the "Milk" they added first at the very bottom of the list.
+
+3. TreeMap: The Navigator
+TreeMap stores its keys in a sorted tree structure. It is slower than the other two because every time you add an element, the tree has to re-balance itself to keep everything in order.
+
+Best Use Case: When you need to keep data constantly sorted or need to perform "range queries" (e.g., find all keys between 'A' and 'F').
+
+Example: A Leaderboard or Dictionary. You want to store names and scores, and you frequently need to print the list in alphabetical order or find the "next" player in the sequence.
+
+# Lambda Expressions: There is a class Country that has methods getContinent() and
+getPopulation(). Write a function int getPopulation(List<Country> countries,
+String continent) that computes the total population of a given continent, given a list of all
+countries and the name of a continent.
