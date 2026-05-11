@@ -116,7 +116,30 @@ options.setPlatformVersion("17.0");
 
 
 3. **AppiumBy:** Use for iOS-specific strategies like `AppiumBy.iOSClassChain("/XCUIElementTypeButton[label == 'Login']")`.
+AppiumBy is the modern locator class in Appium's Java client
+t acts as a factory for creating By objects specifically designed for mobile-specific strategies
+AppiumBy.accessibilityId("ID")
+
 4. **AppiumFieldDecorator:** Used in POM to handle `@iOSXCUITFindBy` annotations.
+AppiumFieldDecorator is a specialized decorator used with PageFactory to initialize elements in your Page Classes
+Mobile Compatibility: It knows how to interpret mobile-specific annotations like @AndroidFindBy and @iOSXCUITFindBy.
+
+Lazy Loading: It ensures elements are only searched for when they are actually called in the code (reducing unnecessary search time).
+
+Default Timeouts: It allows you to define a default Duration (timeout) for finding elements across the entire page object.
+
+4. **PageFactory:** 
+PageFactory is a built-in class in the Selenium WebDriver library (and supported by Appium) that implements the Page Object Model (POM) design pattern. It provides an optimized way to initialize the web elements defined in your Page Classes.
+PageFactory uses annotations to locate elements, making the code cleaner and more readable.
+
+    Key Components for Mobile
+To use PageFactory in Appium, you need more than just the standard Selenium version. You rely on three specific components:
+
+AppiumFieldDecorator: This is the "bridge" that allows PageFactory to understand mobile-specific locators and timeouts.
+
+Mobile-Specific Annotations: Instead of just @FindBy, you use @AndroidFindBy and @iOSXCUITFindBy.
+
+initElements: The method that triggers the initialization of the proxy elements.
 
 ### Handling System Permissions
 
@@ -243,17 +266,13 @@ driver.executeScript("mobile: sendBiometricMatch", params);
 
 ```
 
-
-
 ---
 
 ## 🔗 Resources
 
 * **Appium Interview Questions:** [TestMu Learning Hub](https://www.testmuai.com/learning-hub/appium-interview-questions/)
 
----
 
-**Next Section:** TESTNG
 
 
 
