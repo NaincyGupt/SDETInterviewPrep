@@ -573,3 +573,502 @@ These assess the API's speed and stability under various traffic conditions.
 • Contract Testing: Ensure the API follows the agreed-upon structure (schema) between the provider and the consumer to prevent breaking changes. 
 • Database Integrity: Verify that API actions result in the correct changes within the underlying database (e.g., a "Delete" request actually removes the record). [1, 4, 5]  
 
+How would you decide what to manual test and what to automate ?
+
+This is a core SDET / QA decision, and good teams are very intentional about it.
+Here’s a practical, experience‑based way to decide what to manual test vs what to automate, not theory.
+
+1. First principle (the most important)
+Automate checks.
+Manually test thinking.
+
+Automation is great at:
+
+Repeating
+Verifying
+Regressing
+Humans are great at:
+
+Exploring
+Judging
+Noticing the unexpected
+2. What SHOULD be automated ✅
+✅ 1. High‑risk, high‑impact paths
+Anything that:
+
+Affects revenue
+Affects compliance
+Affects core user flows
+Examples:
+
+User signup / onboarding
+Payments
+SMS/email consent flows
+Order creation
+Critical APIs
+👉 If it breaks, you want to know immediately.
+
+✅ 2. Tests that are run repeatedly
+If a test is run:
+
+Every build
+Every release
+Every sprint
+✅ Automate it.
+
+Manual repetition is expensive and error‑prone.
+
+✅ 3. Deterministic, predictable behavior
+Automation works best when:
+
+Input → output is consistent
+Assertions are clear
+Examples:
+
+API response codes
+Validation rules
+DB state changes
+Contract checks
+✅ 4. Regression tests
+Anything that:
+
+Has broken before
+Is likely to break again
+👉 This is automation gold.
+
+✅ 5. API & backend logic
+APIs are:
+
+Stable
+Fast
+Less flaky than UI
+✅ Perfect for automation:
+
+REST‑Assured
+Contract tests
+Integration tests
+✅ 6. Data‑driven scenarios
+Same logic, different data:
+
+Valid vs invalid inputs
+Boundary values
+Role‑based access
+✅ Automate once, run many times.
+
+3. What should stay MANUAL ❌ (or mostly manual)
+❌ 1. New features (initially)
+When a feature is:
+
+Brand new
+Changing rapidly
+Poorly understood
+✅ Manual first
+✅ Automate later when stable
+
+❌ 2. Exploratory testing
+Things like:
+
+“What if I try this?”
+“Does this feel right?”
+“Is this confusing?”
+Humans > automation here.
+
+❌ 3. UX / usability / visual feedback
+Automation can check:
+
+Element exists
+But it cannot judge:
+
+Clarity
+Confusion
+Tone
+Trust
+✅ Manual testing needed.
+
+❌ 4. One‑time or rare scenarios
+If a test is:
+
+Run once
+Rarely repeated
+Very environment‑specific
+❌ Automation ROI is low.
+
+❌ 5. Highly unstable areas
+If:
+
+Requirements change daily
+UI locators change constantly
+APIs are not finalized
+Manual until stable.
+
+4. A simple decision framework (very practical)
+Ask these 5 questions:
+
+Will this test be run often?
+Is the behavior stable?
+Is the expected result clear?
+Is failure costly?
+Is it technically feasible?
+✅ If most answers are YES → automate
+❌ If most answers are NO → manual
+
+5. Automation ROI rule (important)
+If automation costs more to maintain than it saves, don’t automate it.
+
+This is why:
+
+Not everything should be automated
+100% automation is a myth
+6. How mature teams usually split work
+Manual testing focuses on:
+New features
+Exploratory testing
+Edge‑case discovery
+UX validation
+Automation focuses on:
+Regression
+API integration
+Critical workflows
+Data validation
+Compliance rules
+7. Test pyramid alignment
+        Manual / Exploratory
+
+     UI automation (few)
+
+  API automation (many)  ✅
+
+Unit tests (most)
+
+``
+
+SDETs usually own: ✅ API automation
+✅ Integration tests
+✅ Regression safety nets
+
+8. Common mistakes to avoid 🚫
+❌ Automating unstable UI
+❌ Automating one‑off scenarios
+❌ Automating without clear assertions
+❌ Skipping manual exploration because “we have automation”
+
+Automation supports testing — it doesn’t replace thinking.
+
+9. Example from your context (SMS consent)
+✅ Automate:
+
+API returns correct consent state
+Webhook processing
+DB updates
+Idempotency
+Failure handling
+🧠 Manual:
+
+Message wording clarity
+User understanding
+Edge UX flows
+10. One‑sentence answer (interview‑ready)
+“I automate stable, repeatable, high‑risk checks and keep exploratory, UX, and fast‑changing scenarios manual to maximize confidence and ROI.”
+
+If you want, I can:
+
+Help you classify your current test cases
+Decide what to automate next
+Create an automation candidate checklist
+Align this with SDET expectations
+Just let me know 👍
+
+ 
+
+how much time do you spend automating test and doing manual test ? how is your day in work looks like as a sdet?
+
+Good question — this comes up a lot in interviews and team discussions.
+
+I’ll answer this without speaking as a person with personal experience, but instead describe how a typical SDET role is structured in real teams and how time is usually spent.
+
+1. High‑level split: automation vs manual
+In most mature teams, an SDET’s time looks roughly like this over a sprint:
+
+60–70% automation & framework work
+20–30% manual / exploratory testing
+10–20% collaboration & analysis (design reviews, debugging, meetings)
+This is not fixed — it shifts depending on the sprint.
+
+2. How the split changes over time
+Early in a feature / sprint
+Manual testing is higher.
+
+Understanding requirements
+Exploring edge cases
+Finding unknown risks
+Verifying UX and flows
+👉 Automation comes after understanding stabilizes.
+
+Mid to late sprint
+Automation dominates.
+
+Automating regression scenarios
+Adding API tests
+Covering edge cases discovered manually
+Stabilizing flaky tests
+Mature product / steady state
+Automation-heavy.
+
+Most core flows already automated
+Manual testing focuses on: 
+New features
+Exploratory testing
+Release validation
+3. What “manual testing” means for an SDET (important)
+Manual testing is not repetitive clicking.
+
+It usually means:
+
+Exploratory testing
+Edge‑case discovery
+Failure scenario testing
+Reviewing logs, payloads, DB states
+Verifying integrations (webhooks, async flows)
+This feeds directly into what gets automated next.
+
+4. A typical SDET workday (example)
+Morning
+Check CI failures (API/UI)
+Triage flaky tests
+Review overnight test runs
+Investigate failures (real bug vs test issue)
+Mid‑day
+Write or update automation: 
+API integration tests
+Testcontainers setup
+Resilience / async tests
+Improve framework utilities
+Refactor existing tests
+Afternoon
+Manual testing of new features
+Exploratory testing
+Pair with developers on testability
+Review PRs for test coverage gaps
+End of day
+Push automation changes
+Update test results / notes
+Communicate risks and findings
+5. How SDETs decide in the moment what to do
+A common decision rule:
+
+If the risk is unknown → manual first
+If the risk is known and repeatable → automate
+
+Examples:
+
+New SMS consent flow → manual exploration first
+Consent state API validation → automate
+Twilio webhook retries → automate
+Message wording clarity → manual
+6. Automation work is more than “writing tests”
+Automation time includes:
+
+Framework design
+Utilities & helpers
+Test data management
+CI integration
+Debugging flaky tests
+Improving reporting
+Removing technical debt
+That’s why automation takes a significant portion of the day.
+
+7. How this differs from a manual QA role
+Manual QA
+
+SDET
+
+Mostly execution
+
+Mostly design & validation
+
+Test cases
+
+Test strategy
+
+UI focus
+
+API & integration focus
+
+Reactive
+
+Preventative
+
+SDETs aim to prevent regressions, not just find bugs late.
+
+8. What leadership usually expects from an SDET
+Fewer escaped defects
+Faster feedback in CI
+Stable automation
+Clear risk communication
+Smart decisions about what not to automate
+Not “100% automation”.
+
+9. Interview‑ready answer (concise)
+“In an SDET role, most time is spent on automation and test infrastructure, with manual testing focused on exploratory and new feature validation. Manual testing informs what gets automated, and automation provides fast regression confidence.”
+
+TL;DR
+SDETs typically spend more time automating than manual testing
+Manual testing is exploratory and strategic, not repetitive
+A day includes debugging, designing, automating, and collaborating
+The balance shifts based on feature maturity
+If you want, I can:
+
+Help you frame this for an interview answer
+Map this to your current team setup
+Suggest how to transition manual work into automation
+Help justify time spent on framework improvements
+Just let me know 🙂
+
+ 
+
+1. How I decide test scope
+I decide test scope by balancing risk, business value, and change impact.
+
+Key inputs I look at
+What changed?
+New features, refactors, config changes, dependency/version upgrades
+Risk level
+User impact, revenue impact, security/compliance, data integrity
+Business priority
+Critical user journeys, SLAs, regulatory features
+History
+Previously flaky or bug‑prone areas
+Environment & platform
+Browsers, devices, OS, integrations affected
+Type of release
+Hotfix vs minor vs major vs production incident fix
+A simple rule I use:
+Test what can break + what would hurt most if it breaks.
+
+2. What I include vs exclude
+✅ I include
+Critical user flows
+Login, checkout, payments, core workflows
+Changed code paths
+Direct changes and dependent areas
+High‑risk integrations
+APIs, third‑party services, data pipelines
+Regression on historically unstable areas
+Boundary and negative cases
+Validation, error states, permissions
+Smoke + sanity tests
+Especially before pushing to higher environments
+Automation candidates
+Stable, repeatable, high‑value tests
+❌ I exclude (or deprioritize)
+Low‑risk, unchanged functionality
+Purely cosmetic UI changes
+Unless user‑facing or brand‑critical
+Rare edge cases
+When confidence is high and time is limited
+Redundant tests
+Covered elsewhere (unit, API, automation)
+Unsupported environments
+Browsers/devices outside the defined support matrix
+Excluding tests is a conscious decision, not an oversight—and it’s always documented.
+
+3. How I handle time constraints
+When time is tight, I shift from “complete coverage” to “risk‑based confidence.”
+
+Step 1: Re‑prioritize aggressively
+I classify tests as:
+
+P0 – Must test
+Release blockers, critical paths
+P1 – Should test
+Important but not release‑blocking
+P2 – Nice to have
+Exploratory, edge cases
+Only P0 is mandatory under extreme constraints.
+
+Step 2: Reduce depth, not breadth
+Prefer happy paths + key failures over full combinatorial testing
+One solid scenario > five shallow ones
+Sample environments instead of full matrix (e.g., Chrome + one mobile browser)
+Step 3: Lean on automation & existing signals
+Trust stable automation results
+Use unit/API test coverage to justify reducing UI testing
+Review logs, monitoring, feature flags for additional confidence
+Step 4: Communicate and document risk
+If something isn’t tested, I:
+
+Explicitly call it out
+Explain why it was skipped
+Describe potential impact
+Suggest post‑release validation
+Example:
+
+“Cross‑browser testing on Safari was skipped due to time constraints. Risk: layout regression. Mitigation: monitor user reports and schedule follow‑up test.”
+
+4. Decision frameworks I commonly use
+Risk‑based testing
+Impact analysis
+Test pyramid
+More unit/API tests → fewer UI tests
+80/20 principle
+20% of tests usually cover 80% of production risk
+ 
+
+ 
+
+Structured Step‑by‑Step Debugging Approach (Generic)
+
+STEP 1: Clearly define the problem (avoid assumptions)
+Before debugging, write the problem in one precise sentence.
+
+✅ Answer:
+
+What is failing?
+What was expected vs what happened?
+STEP 2: Gather evidence
+Evidence checklist
+Error messages or logs
+Screenshots / output
+Timestamps
+Inputs used
+Environment details
+Repro steps (if known)
+ 
+
+STEP 3: Check for reproducibility
+This step determines debugging depth.
+
+✅ Ask:
+
+Is it 100% reproducible?
+Outcomes:
+Consistent → logic/config/data issue
+Intermittent → timing, state, concurrency, environment
+ 
+
+STEP 4: Reduce the problem scope (isolation)
+Debugging is about removing variables.
+
+✅ Techniques:
+
+Minimum set of steps
+STEP 5: Where does behavior diverge from expectation?
+ 
+
+STEP 6: Form a hypothesis (one at a time)
+ 
+
+STEP 7: Test the hypothesis
+
+ 
+
+STEP 8: Identify the root cause (not just the symptom)
+
+ 
+
+STEP 9: Fix and verify
+✅ Verification checklist:
+
+STEP 10: Prevent recurrence
+
+ 
