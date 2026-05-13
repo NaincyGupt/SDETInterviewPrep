@@ -13,6 +13,53 @@ and build for both iOS and android platform
   - Maven for dependency management
   - Extentreports for reporting
 
+# TEST AUTOMATION 
+
+LAYERED ARCHITECTURE
+
+1. Feature layer - gherkin scenario - Business readable scenario
+
+2. step defination layer - cucumber glue code -
+   Translates gherkin step to business actions
+
+ 3. Page classes and utilities - encapsulate UI interation
+    POM - Page object model - design pattern
+   Each app screen is represented as a class having page elemnets(locators) + actions that can be performed on that layer
+
+4. Utilities -
+      driver mgmt - Factory design - creational design pattern
+      centralized driver creation , threadlocal instance of driver
+
+      config mgmt - env specific property files are kept
+
+      screenshot utility - (TakeScreenshot)
+
+      Log4j utility -
+
+   5. hooks - prepare the run context, reporting, device allocation, driver lifecycle , logs and evidence handling.
+
+    6. test context
+
+
+### KEY FEATURE - How did you resolve FLAKINESS
+
+1. Platform specific locators - centralized repo for locators for both ios and android which follows hiearchial JSON structure
+   Each element has both ios ad android locator defination and multiple locator strategy
+   android
+   - id
+   - uiautomator
+   - xpath
+  
+   iOS
+   - accessibilityid
+   - ios predicate
+   - ios class chain
+   - xpath
+
+  EARLIER - changing screen or common pain point in mobile automation, especially with React Native upgrades, as the way the framework flattens the UI hierarchy - unable to find the locators
+  Gold standard is to keep testid for android and accessibilityID for ios  - implemented consistent naming convention
+  Created a fallback mechanism 
+
 -----------
 ## JAVA
 
@@ -707,52 +754,6 @@ Since you are using Cucumber Tags, ExtentReports can automatically categorize yo
 
 ---
 
-# TEST AUTOMATION 
-
-LAYERED ARCHITECTURE
-
-1. Feature layer - gherkin scenario - Business readable scenario
-
-2. step defination layer - cucumber glue code -
-   Translates gherkin step to business actions
-
- 3. Page classes and utilities - encapsulate UI interation
-    POM - Page object model - design pattern
-   Each app screen is represented as a class having page elemnets(locators) + actions that can be performed on that layer
-
-4. Utilities -
-      driver mgmt - Factory design - creational design pattern
-      centralized driver creation , threadlocal instance of driver
-
-      config mgmt - env specific property files are kept
-
-      screenshot utility - (TakeScreenshot)
-
-      Log4j utility -
-
-   5. hooks - prepare the run context, reporting, device allocation, driver lifecycle , logs and evidence handling.
-
-    6. test context
-
-
-### KEY FEATURE - How did you resolve FLAKINESS
-
-1. Platform specific locators - centralized repo for locators for both ios and android which follows hiearchial JSON structure
-   Each element has both ios ad android locator defination and multiple locator strategy
-   android
-   - id
-   - uiautomator
-   - xpath
-  
-   iOS
-   - accessibilityid
-   - ios predicate
-   - ios class chain
-   - xpath
-
-  EARLIER - changing screen or common pain point in mobile automation, especially with React Native upgrades, as the way the framework flattens the UI hierarchy - unable to find the locators
-  Gold standard is to keep testid for android and accessibilityID for ios  - implemented consistent naming convention
-  Created a fallback mechanism 
 
 ###  ✔️  Interview "Talking Points" for your Notes
 Since you are preparing for Apple, here is how to explain this "Fallback Mechanism" effectively:
