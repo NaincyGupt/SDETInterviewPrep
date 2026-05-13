@@ -12,7 +12,293 @@ and build for both iOS and android platform
   - Appium for cross platform testing
   - Maven for dependency management
   - Extentreports for reporting
+--------
+# FRAMEWORK
 
+<<<<<<< HEAD
+How I’d Explain This Framework in an Interview
+1. Feature Layer
+What:
+The feature layer consists of Gherkin .feature files (in features), describing business scenarios in a human-readable Given-When-Then format.
+Why:
+This enables clear communication with stakeholders and supports BDD (Behavior-Driven Development).
+2. Step Definitions
+What:
+Step definition classes (in steps) map Gherkin steps to Java code. Each step triggers actions on the app via page objects and utilities.
+Why:
+This layer bridges business intent and automation logic, keeping tests maintainable and readable.
+3. Page Objects
+What:
+Page classes (like DevMenuPage.java) encapsulate all interactions with specific app screens or flows. They use locator logic and utility methods to perform actions (e.g., tapping buttons, scrolling, seeding data).
+Why:
+This abstraction centralizes UI logic, making tests robust against UI changes and promoting code reuse.
+4. Main Utilities
+a. Mobile Utility (MobileUtility.java)
+What:
+A comprehensive utility class for all mobile interactions—tapping, swiping, scrolling, waiting, keyboard handling, Bluetooth toggling, context switching, and more.
+Why:
+Handles platform differences (Android/iOS), synchronization, and fallback strategies, reducing test flakiness.
+b. Driver Management
+What:
+Managed by DriverFactory and related classes, ensuring each test/thread gets a properly configured Appium driver instance.
+Why:
+Supports parallel execution, device pooling, and thread safety for scalable test runs.
+c. Screenshot Utility (ScreenshotUtil.java)
+What:
+Captures screenshots (as Base64) for evidence, attaches them to reports, and integrates with ALM for compliance.
+Why:
+Ensures every test step or failure is documented for debugging and regulatory needs.
+d. Config Management
+What:
+Centralized configuration using property files or config classes (e.g., for device settings, environment, swipe percentages).
+Why:
+Allows easy tuning of test parameters and environment setup without code changes.
+e. Logging (Log4j)
+What:
+Log4j is used for structured logging throughout the framework.
+Why:
+Provides detailed execution logs for debugging, auditing, and compliance.
+5. Hooks
+What:
+Cucumber hooks (@Before, @After) in the hooks package handle setup and teardown—driver initialization, login, evidence capture, and cleanup.
+Why:
+Ensures a clean, repeatable test environment and captures evidence on failure.
+6. Listeners
+What:
+TestNG listeners (like ExtentTestNGListener) and Cucumber plugins listen to test events for reporting, logging, and retry logic.
+Why:
+Enables advanced reporting (ExtentReports), automatic retries, and integration with CI/CD pipelines.
+7. Error Handling & Synchronization
+What:
+The framework uses explicit waits, intelligent retries, and multi-strategy locators to handle asynchronous UI and reduce flakiness.
+Why:
+Makes tests robust and reliable, even with dynamic or slow-loading UIs.
+
+
+# KEY FEATURE 
+## pLATFORM SPECIFIC LOCATOR - 
+Centralized repo of locator for both iOS and android which follow hierarchal json structure.
+Each element has multiple locator strategy 
+Android - id, uiautimator, xpath
+iOS - accessibility id, iOS predicate, iOS class chain and path
+1. Where is the utility which has written the fallback mechanism for locator strategy?
+
+The fallback mechanism for locator strategy is implemented in the utility class typically named LocatorLogic.java (sometimes also called ElementFinder, ElementUtils, or similar) in your framework. This class is responsible for resolving a UI element by trying multiple locator strategies in a prioritized order.
+
+How does it work?
+Reads locators from the locators.json file, which provides multiple strategies for each element (e.g., id, accessibilityId, uiAutomator, xpath, etc.) for both Android and iOS.
+Tries each locator strategy in order (usually fastest and most stable first, like id or accessibilityId, then uiAutomator/iosPredicate, and finally xpath as a last resort).
+If the element is not found with the first strategy, it automatically falls back to the next one, and so on, until the element is found or all strategies are exhausted.
+Example (simplified):
+```
+    public WebElement one_ele(HasBy locatorKey) {
+    try {
+    return driver.findElement(locatorReader.getLocator(page, key, platform, "id"));
+    } catch (NoSuchElementException e1) {
+    try {
+    return driver.findElement(locatorReader.getLocator(page, key, platform, "uiAutomator"));
+    } catch (NoSuchElementException e2) {
+    return driver.findElement(locatorReader.getLocator(page, key, platform, "xpath"));
+    }
+    }
+    }
+```
+How does it help in the framework?
+Reduces test flakiness: If the primary locator (e.g., id) changes due to a UI update or is missing on some devices, the test doesn’t fail immediately. The fallback tries alternative strategies, increasing the chance of finding the element.
+Supports cross-platform testing: Different platforms (Android/iOS) and even different OS versions or device models may expose elements differently. The fallback mechanism ensures the test works across these variations.
+Minimizes maintenance: Test scripts don’t need to be updated every time a locator changes, as long as at least one valid locator remains in the JSON.
+Handles dynamic UIs: In cases where elements are rendered differently based on user state, region, or A/B testing, the fallback increases robustness.
+In which cases is it most useful?
+UI changes or refactoring: When developers change resource IDs or accessibility labels.
+Device/OS fragmentation: When the same element is exposed differently on various devices or OS versions.
+Dynamic or conditional rendering: When elements appear/disappear or change structure based on app state.
+Third-party or hybrid screens: Where only XPath or less stable locators are available as a last resort.
+
+## DEVICE POOL 
+A blocking queue is a thread‑safe queue where operations wait (block) until they can be completed.
+A blocking queue blocks the calling thread until the queue is ready to perform the operation.
+
+If the queue is empty → a consumer waits
+If the queue is full → a producer waits
+No busy‑waiting. No manual locking.
+
+Imagine a coffee shop counter:
+
+Barista (producer) puts drinks on the counter
+Customer (consumer) picks up drinks
+Rules:
+
+If there are no drinks → customer waits
+If the counter is full → barista waits
+That counter is a blocking queue.
+
+Why blocking queues are useful
+✅ Thread‑safe
+✅ No explicit synchronized needed
+✅ Prevents race conditions
+✅ Simplifies producer–consumer patterns
+✅ Efficient CPU usage
+
+ Device Acquisition and Release
+Acquisition:
+Each test thread calls DevicePool.acquire(), which blocks and waits if no device is available, ensuring exclusive access to a device for the duration of the test.
+Release:
+After the test, the device is returned to the pool with DevicePool.release(device), making it available for other tests.
+
+
+## 3-Health scripts
+Before reserving the device - check if it is online, have WDA, Appium session is active, no system dialogs, app is installed, cache is removed
+Recovery if these checks are failing  - to return to correct state
+After - app is force closed, Appium session is quit, driver quit
+
+4 - device farm 
+How did you setup , how many device ? - 20 devices
+At Abbott, I designed and implemented an in-house mobile device farm to support automation testing for both iOS and Android applications.
+ I started by procuring a diverse set of physical devices (different models and OS versions) and mounted them in racks connected via high-capacity USB hubs to dedicated Mac Minis (for iOS) and Linux servers (for Android). For Android, I configured ADB over TCP/IP, and for iOS, I set up WebDriverAgent on each device to enable remote Appium sessions.
+The device farm was integrated with Appium Grid so automation tests — written in WebdriverIO + Appium — could be triggered in parallel from our CI/CD pipeline. This cut our mobile regression suite time by over 70%.
+Since our application connected to Bluetooth-enabled biosensors (e.g., glucose monitors, heart rate trackers), I ensured the farm supported real hardware pairing during tests. I implemented automation hooks to:
+Enable Bluetooth automatically before tests.
+Simulate pairing/unpairing sequences with biosensors.
+Validate real-time data sync from the sensor to the mobile app.
+
+
+This setup allowed QA engineers across teams to run end-to-end sensor-to-app scenarios on real devices without physically being in the lab. The farm also captured device logs, biosensor event logs, and network traces, which made debugging faster and more reliable.
+
+
+5 - WAITS wrapper 
+wait and click - multi retry with native fallback 
+custom polling to wait for element to appear
+
+6- when do you run CI
+Scheduled Runs (Nightly/Daily): Longer, more resource-intensive tests (like full regression 
+After Every Successful Build: Once the application is successfully compiled, the CI server executes smoke automated tests to assess the impact of the new code.
+
+7 - what you keep in main- java - base - page factory.init elements, Appium field decorator
+For Appium driver
+
+8- factory - driver, Appium server, 
+
+## 9 - tricky bug 
+A race condition where interrupted cloud sync can create duplicates data writes, leading to data inconsistency and data corruption.
+Challenge: extremely difficult to test reliably many scenarios
+ADDED 1- interruption in start middle and end, 2- different data sets with different event data
+3- netwrok drop scenario (mitmproxy , adb shell)
+4- phone os update inbetwen cloud sync
+verified local db, and cosmos db after trying diff scanerios 
+ran query to check duplicate string 
+```
+    SELECT column_name, COUNT(*)
+FROM table_name
+GROUP BY column_name
+HAVING COUNT(*) = 1;
+```
+Broke down the system and tested on every layer UI -sync layer - backend - storage and checked that dedup is applied everywhere.
+
+
+## UTC BUG 
+
+10 - Hooks 
+
+1. @BeforeAll
+Initializes the run context and reporting (ExtentReports).
+Starts the local Appium server if running tests locally.
+2. @Before (before each scenario)
+Sets up platform and device context (from config or device pool).
+Acquires a device (from DevicePool for BrowserStack or builds a local config).
+Prepares artifact directories for storing logs, screenshots, and evidence.
+Initializes PDF evidence collection if enabled.
+Creates a new ExtentReports test node for the scenario.
+Optionally attaches device logs to the report.
+Initializes the Appium driver for the scenario.
+Starts local log collection and video recording if running locally.
+3. @After (after each scenario)
+Updates the test report with pass/fail status.
+Collects and attaches device, network, and server logs (local or BrowserStack).
+Finalizes open reporting steps and stops video recording.
+Terminates the app if configured.
+Releases the device back to the pool (for BrowserStack).
+Generates a PDF evidence report with all artifacts (logs, screenshots, video).
+Clears all scenario-specific contexts and artifacts.
+4. @AfterAll
+Flushes the final report.
+Stops the local Appium server if it was started.
+
+10- why did you choose this framework ?
+BDD Structure: The use of Cucumber feature files and step definitions makes tests readable and easy to collaborate on with business and QA teams.
+Page Object Model: Centralizes UI logic, making maintenance easier and tests more resilient to UI changes.
+Powerful Utilities: Utilities for mobile actions, driver management, device pooling, and evidence capture handle platform differences and reduce flakiness.
+Parallel Execution: Supports efficient parallelism across devices and configurations, maximizing CI/CD throughput.
+Comprehensive Reporting & Evidence: Integrates with ExtentReports, ALM, and PDF generation for traceability and regulatory compliance.
+Error Handling & Synchronization: Built-in retries, waits, and locator fallback strategies ensure reliability even with asynchronous or dynamic UIs.
+Scalability: Easily integrates with cloud device providers and supports large-scale, parallel test execution.
+
+
+Why did you choose Appium + java + testing + cucumber
+Java is widely adopted in enterprise environments, especially for mobile and backend automation. It integrates seamlessly with CI/CD tools, device clouds, and reporting systems. 
+Java’s static typing and mature IDE support (like IntelliJ and Eclipse) help catch errors early and refactor safely.
+
+Appium is language-agnostic, but its Java client is the most mature and feature-rich, 
+TestNG offers advanced features like parallel execution, flexible configuration, powerful listeners, and retry mechanisms—essential for large-scale, robust test suites.
+
+Cucumber with Java is a standard for BDD in many regulated industries. It allows business stakeholders to write and review tests in Gherkin, while Java step definitions provide power and maintainability.
+
+How do handle flaky tests
+Locator logic, wait and click - retry mechanism, run it 10 times before submitting.
+Make sure that all variables are getting created and ended and handled in hooks , no shared
+Do not make much space in CI ?
+Explicit Waits & Synchronization:
+We use explicit waits (WebDriverWait, ExpectedConditions) and intelligent retry logic to handle asynchronous UI and timing issues, reducing flakiness from elements not being ready.
+
+Robust Locator Strategies:
+The framework uses multi-strategy locator fallback (ID, accessibility ID, UiAutomator, XPath) to survive UI changes and dynamic rendering.
+
+Retry Mechanism:
+We implement automatic retries for failed tests using TestNG’s RetryAnalyzer and Cucumber’s rerun plugin, so transient failures are rerun before being marked as failed.
+
+Device Health Checks:
+Devices are checked and recovered before use, preventing failures due to device state issues.
+
+Test Data Isolation:
+Each test uses isolated or reset data to avoid interference from other tests.
+
+Comprehensive Logging & Evidence:
+Detailed logs and screenshots help quickly diagnose and fix the root cause of flakiness.
+
+Continuous Review:
+Flaky tests are tracked, and root causes are prioritized for permanent fixes (e.g., improving waits, fixing app bugs, or stabilizing environments).
+
+
+Test
+
+## How to resolve scaling issue?
+Layered Architecture: Separate the framework into distinct layers:
+Test Layer: High-level business scenarios and assertions.
+Business/Action Layer: Reusable workflows (e.g., login, checkout).
+Core/Utility Layer: Driver setup, configuration management, and helper functions.
+Design Patterns: Use patterns like the Page Object Model (POM) to decouple UI locators from test logic, or the Screenplay Pattern for more complex, actor-centric interactions.
+
+Execution Scalability
+To handle hundreds of tests without wait times, your framework must support parallel execution. [1, 2]
+Independent Tests: Ensure tests have no execution order dependencies and do not rely on shared state.
+Thread Safety: Use ThreadLocal for driver instances to prevent different threads from overwriting each other's browser sessions.
+Parallel Environments: Scale horizontally using containers (Docker) or cloud-based grids (Selenium Grid, LambdaTest) to run tests across multiple environments concurrently.
+
+## Test Data Management
+Hardcoded data is the primary bottleneck for scaling. 
+Externalize Data: Store test data in external JSON, CSV, or database files.
+Data Isolation: Each test should generate its own unique data or use isolated data sets to prevent conflicts during parallel runs.
+CI/CD Integration: Hook into tools like GitHub Actions or Jenkins early to provide continuous feedback loops.
+
+different ways - 
+1- create the user with skip mfa by generating unique email (create json payload with user data) and then sending post request to ecommerce API , validate response and then keep the email in log file for further action
+
+2 - Databases: For complex scenarios, frameworks query dedicated test databases or use database virtualization to provision specific records.
+
+External Storage: Data is typically stored in external formats for easy maintenance and scalability:Flat Files: Formats like CSV, JSON, XML, or YAML are common for static datasets
+Data-Driven Testing (DDT): This core framework pattern separates test data from script logic. By externalizing data, testers can run the same script multiple times with different inputs without modifying the code.
+Production Cloning & Subsetting: Extracting a representative sample of production data. This often requires Data Masking to anonymize personally identifiable information (PII) for compliance with regulations like GDPR or HIPAA.
+
+=======
 # TEST AUTOMATION 
 
 LAYERED ARCHITECTURE
@@ -60,6 +346,7 @@ LAYERED ARCHITECTURE
   Gold standard is to keep testid for android and accessibilityID for ios  - implemented consistent naming convention
   Created a fallback mechanism 
 
+>>>>>>> 74cb2e77750f72a4050d0bbd85c75658e6718fe1
 -----------
 ## JAVA
 
