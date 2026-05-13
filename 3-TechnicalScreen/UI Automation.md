@@ -15,7 +15,7 @@ and build for both iOS and android platform
 --------
 # FRAMEWORK
 
-<<<<<<< HEAD
+
 How I’d Explain This Framework in an Interview
 1. Feature Layer
 What:
@@ -151,7 +151,7 @@ Before reserving the device - check if it is online, have WDA, Appium session is
 Recovery if these checks are failing  - to return to correct state
 After - app is force closed, Appium session is quit, driver quit
 
-4 - device farm 
+## 4 - device farm 
 How did you setup , how many device ? - 20 devices
 At Abbott, I designed and implemented an in-house mobile device farm to support automation testing for both iOS and Android applications.
  I started by procuring a diverse set of physical devices (different models and OS versions) and mounted them in racks connected via high-capacity USB hubs to dedicated Mac Minis (for iOS) and Linux servers (for Android). For Android, I configured ADB over TCP/IP, and for iOS, I set up WebDriverAgent on each device to enable remote Appium sessions.
@@ -164,6 +164,8 @@ Validate real-time data sync from the sensor to the mobile app.
 
 This setup allowed QA engineers across teams to run end-to-end sensor-to-app scenarios on real devices without physically being in the lab. The farm also captured device logs, biosensor event logs, and network traces, which made debugging faster and more reliable.
 
+How do you integrate this into a CI/CD pipeline with a Device Farm?
+The Answer: "Our Jenkins/GitHub Actions pipeline triggers a Maven build. The framework is configured to point to a Remote Address (like BrowserStack, SauceLabs, or an internal Headless grid). We pass the buildID and accessKey through environment variables, and use TestNG XML suites to split the load across 10-20 concurrent devices."
 
 5 - WAITS wrapper 
 wait and click - multi retry with native fallback 
@@ -298,6 +300,9 @@ External Storage: Data is typically stored in external formats for easy maintena
 Data-Driven Testing (DDT): This core framework pattern separates test data from script logic. By externalizing data, testers can run the same script multiple times with different inputs without modifying the code.
 Production Cloning & Subsetting: Extracting a representative sample of production data. This often requires Data Masking to anonymize personally identifiable information (PII) for compliance with regulations like GDPR or HIPAA.
 
+## test runner
+## cucumber extentbridge
+
 =======
 # TEST AUTOMATION 
 
@@ -346,7 +351,7 @@ LAYERED ARCHITECTURE
   Gold standard is to keep testid for android and accessibilityID for ios  - implemented consistent naming convention
   Created a fallback mechanism 
 
->>>>>>> 74cb2e77750f72a4050d0bbd85c75658e6718fe1
+
 -----------
 ## JAVA
 
