@@ -573,10 +573,8 @@ These assess the API's speed and stability under various traffic conditions.
 • Contract Testing: Ensure the API follows the agreed-upon structure (schema) between the provider and the consumer to prevent breaking changes. 
 • Database Integrity: Verify that API actions result in the correct changes within the underlying database (e.g., a "Delete" request actually removes the record). [1, 4, 5]  
 
-How would you decide what to manual test and what to automate ?
+# How would you decide what to manual test and what to automate ?
 
-This is a core SDET / QA decision, and good teams are very intentional about it.
-Here’s a practical, experience‑based way to decide what to manual test vs what to automate, not theory.
 
 1. First principle (the most important)
 Automate checks.
@@ -770,21 +768,12 @@ Edge UX flows
 10. One‑sentence answer (interview‑ready)
 “I automate stable, repeatable, high‑risk checks and keep exploratory, UX, and fast‑changing scenarios manual to maximize confidence and ROI.”
 
-If you want, I can:
-
-Help you classify your current test cases
-Decide what to automate next
-Create an automation candidate checklist
-Align this with SDET expectations
-Just let me know 👍
 
  
 
-how much time do you spend automating test and doing manual test ? how is your day in work looks like as a sdet?
+## how much time do you spend automating test and doing manual test ? how is your day in work looks like as a sdet?
 
-Good question — this comes up a lot in interviews and team discussions.
 
-I’ll answer this without speaking as a person with personal experience, but instead describe how a typical SDET role is structured in real teams and how time is usually spent.
 
 1. High‑level split: automation vs manual
 In most mature teams, an SDET’s time looks roughly like this over a sprint:
@@ -859,12 +848,7 @@ A common decision rule:
 If the risk is unknown → manual first
 If the risk is known and repeatable → automate
 
-Examples:
 
-New SMS consent flow → manual exploration first
-Consent state API validation → automate
-Twilio webhook retries → automate
-Message wording clarity → manual
 6. Automation work is more than “writing tests”
 Automation time includes:
 
@@ -875,58 +859,9 @@ CI integration
 Debugging flaky tests
 Improving reporting
 Removing technical debt
-That’s why automation takes a significant portion of the day.
 
-7. How this differs from a manual QA role
-Manual QA
 
-SDET
-
-Mostly execution
-
-Mostly design & validation
-
-Test cases
-
-Test strategy
-
-UI focus
-
-API & integration focus
-
-Reactive
-
-Preventative
-
-SDETs aim to prevent regressions, not just find bugs late.
-
-8. What leadership usually expects from an SDET
-Fewer escaped defects
-Faster feedback in CI
-Stable automation
-Clear risk communication
-Smart decisions about what not to automate
-Not “100% automation”.
-
-9. Interview‑ready answer (concise)
-“In an SDET role, most time is spent on automation and test infrastructure, with manual testing focused on exploratory and new feature validation. Manual testing informs what gets automated, and automation provides fast regression confidence.”
-
-TL;DR
-SDETs typically spend more time automating than manual testing
-Manual testing is exploratory and strategic, not repetitive
-A day includes debugging, designing, automating, and collaborating
-The balance shifts based on feature maturity
-If you want, I can:
-
-Help you frame this for an interview answer
-Map this to your current team setup
-Suggest how to transition manual work into automation
-Help justify time spent on framework improvements
-Just let me know 🙂
-
- 
-
-1. How I decide test scope
+## 1. How I decide test scope
 I decide test scope by balancing risk, business value, and change impact.
 
 Key inputs I look at
@@ -945,7 +880,7 @@ Hotfix vs minor vs major vs production incident fix
 A simple rule I use:
 Test what can break + what would hurt most if it breaks.
 
-2. What I include vs exclude
+## 2. What I include vs exclude
 ✅ I include
 Critical user flows
 Login, checkout, payments, core workflows
@@ -972,7 +907,7 @@ Unsupported environments
 Browsers/devices outside the defined support matrix
 Excluding tests is a conscious decision, not an oversight—and it’s always documented.
 
-3. How I handle time constraints
+## 3. How I handle time constraints
 When time is tight, I shift from “complete coverage” to “risk‑based confidence.”
 
 Step 1: Re‑prioritize aggressively
@@ -1016,7 +951,7 @@ More unit/API tests → fewer UI tests
 
  
 
-## Structured Step‑by‑Step Debugging Approach (Generic)
+# Structured Step‑by‑Step Debugging Approach (Generic)
 
 STEP 1: Clearly define the problem (avoid assumptions)
 Before debugging, write the problem in one precise sentence.
