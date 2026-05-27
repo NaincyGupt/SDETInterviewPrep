@@ -254,4 +254,68 @@ The Answer: "I’d advocate for a stronger 'Shift-Left' mentality. While my curr
 
 > “I identified recurring CI instability impacting multiple teams and proposed framework-level improvements around synchronization and test isolation. By sharing data and demonstrating impact, I gained alignment across teams and helped drive adoption of the improvements.”
 
+-------------
+# DIRECTOR ROUND QUESTIONS 
 
+
+* **"If you are hired, what will your automation and quality strategy look like for the first 90 days?"**
+* *How to approach:* Focus on auditing the current infrastructure, identifying bottlenecks (like your previous work eliminating external vendor dependencies), and aligning with product milestones.
+1 - I will focus on a deep-dive technical and operational audit of our current infrastructure. I’ll assess test execution times, pipeline flakiness, and team dependencies. A major priority here is identifying costly bottlenecks—such as heavy reliance on third-party vendor infrastructure or cloud device farms—and assessing if bringing these workflows local or internal can optimize speed and cut costs.
+2- I will address the immediate pain points discovered in the audit. If pipeline flakiness or slow feedback loops are stalling deployments, I'll introduce structural fixes—such as optimizing locator strategy hierarchies
+3- I will establish long-term quality KPIs and engineering guardrails. This includes introducing a risk-based testing framework to maximize coverage on critical paths
+  
+
+* **"How do you calculate and demonstrate the ROI (Return on Investment) of your automation framework to business stakeholders?"**
+* *Connection to your notes:* This is where your **Risk-Based Testing Matrix** shines. Mention how you saved 30% of team bandwidth by focusing on high-impact user journeys (the 20/80 rule) rather than chasing a vanity metric like 100% test coverage.
+1- Time & Resource Reallocation: Quantifying the hours saved.
+2- Release Velocity: Shorter feedback loops mean fewer deployment blockers. Moving from a weekly release model to continuous delivery directly impacts business revenue.
+3- Cost of Defect Leakage: I map out what a critical production leak costs the business in terms of user churn or hotfix overhead,
+
+* **"Where do you see the future of Quality Engineering evolving over the next 3–5 years, and how are you preparing your teams for it?"**
+Over the next 3 to 5 years, Quality Engineering will completely transition from reactive verification to intelligent, proactive engineering. The role of the SDET will shift from writing execution scripts to building smart infrastructure that predicts and prevents failures before code is even committed.
+Predictive & Intelligent Testing
+AI-Driven Log Analysis & Self-Healing Pipelines:
+Deeper Observability Shift-Left
+
+## 2. Shift-Left Culture & Cross-Functional Influence
+
+* **"How do you handle a situation where engineering leadership wants to push a release to meet a business deadline, but your data shows high quality risks?"**
+* *Connection to your notes:* Emphasize your **"Data over Opinion"** rule. Explain how you isolate the exact risk (e.g., sync inconsistencies, crash dumps) and present it as user/business impact, allowing stakeholders to make an objective, risk-informed decision.
+
+
+* **"What does a true 'Shift-Left' culture look like to you, and how have you driven that change?"**
+* *Connection to your notes:* Discuss moving away from siloed testing. Talk about making testability a core requirement during PR reviews and the design phase (e.g., auditing component nesting depth early on to prevent downstream framework flakiness).
+
+
+
+## 3. Scale, Infrastructure, and Resource Allocation
+
+Directors oversee budgets and infrastructure sustainability. They want to ensure your technical decisions scale.
+
+* **"Tell me about a time you had to make a major architectural pivot for your testing infrastructure. What was the catalyst and the business impact?"**
+* *Connection to your notes:* Your migration from **Selenium to Playwright** or building an **Internal Device Farm** are perfect examples here. Highlight the business outcomes: faster feedback loops, reduced execution bottlenecks, and eliminating costly external provider dependencies.
+
+
+* **"How do you balance technical debt in your automation suite with the pressure to deliver new feature automation?"**
+
+## 4. Leadership, Mentorship, and Talent Retention
+
+Directors care deeply about team health, growth, and engineering excellence.
+
+* **"How do you upskill junior engineers or manual testers to become highly proficient SDETs?"**
+* *Connection to your notes:* Discuss your hands-on approach, like **Pair Programming** to teach architectural concepts (e.g., Fluent Waits over arbitrary sleeps), combined with structural guardrails like a CI/CD "Sandbox Check" to keep the main suite healthy.
+
+
+* **"Tell me about a time you had to manage a high-performing engineer who disagreed strongly with the team's technical direction."**
+
+---
+
+### 💡 Pro-Tip for the Director Round:
+
+When answering, always structure your impact using this executive-level cadence:
+
+1. **The Business/Technical Problem** (e.g., framework instability delaying releases).
+2. **The Strategic Action** (e.g., building localized infrastructure, rewriting framework core).
+3. **The Quantifiable Metric** (e.g., reduced regression execution times by X%, saved 30% bandwidth, achieved zero post-release crashes).
+
+Would you like to drill down into a specific example from your repository—like the internal device farm or graph sync issue—and refine how to pitch it to an executive audience?
