@@ -8,14 +8,16 @@ I am currently working as automation lead at Lingo which is one of the division 
 * **End-to-End Coverage:** Automated API test automation framework  using REST-Assured to validate high-value transactional flows, including customer data and checkout flows.
 * **Domain Ownership:** Functioning as a  Domain Lead driving cross-functional defect triage, deep root-cause analysis (RCA), and Agile governance alongside Dev and Product teams. 
 
-## 3. Prior Scale: Amazon & Adobe
-
 * **Amazon (Alexa Ecosystem):** Owned end-to-end API and UI automation for internal ad-targeting systems. Architected nightly regression gates in AWS CodePipeline and built load test environments to test backend microservice resilience under peak traffic stress.
 * **Adobe & DXC Technology:** Developed specialized regression test suites for complex Adobe PDF print engine at Adobe, and engineered automated frameworks for telecom management systems at DXC technology.
 
 ---
 The Lingo biosensor, which can be worn for 14 days, tracks blood glucose levels, while its accompanying app provides personalized, real-time insights and customized coaching to help people create healthy eating habits, retrain their metabolism and improve their overall well-being.
 ----
+Apple is organized by functional specialties rather than business units — rare for a company our size. We’re experts leading experts: hardware experts lead hardware, software experts lead software, and design experts lead design. This differs from most other large companies, where general managers oversee managers. Apple is Apple because those with the most expertise in an area of work have decision rights for that area.
+
+Leaders at Apple combine their expertise with two other important characteristics: immersion in the details and a willingness to collaboratively debate during collective decision-making. For people at every level here, it can be liberating — even exhilarating — to work with experts who offer relevant guidance and mentoring. This approach to leadership is a commitment to collaboration that leads to innovation.
+--------
 
 why do you want to join apple?
 why are you leaving Abbott?
