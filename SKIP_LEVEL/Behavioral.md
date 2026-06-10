@@ -48,10 +48,8 @@ In my current role at Abbott, I've been focused on building scalable automation 
 
 ### Tell me about the most impactful project you've worked on. / Biggest impact you have done: When You Solved a Problem
 
+#### LOCATOR STRATEGY
 "I resolved the issue of fragile automation by architecting a resilient locator system using a centralized JSON repository with a progressive fallback mechanism. By decoupling the test logic from the volatile React Native hierarchy, I ensured that if a primary ID fails, the framework automatically attempts alternative strategies like iOS Class Chains or Android UiAutomator. This 'self-healing' approach reduced maintenance time by 80% and prevented false failures during framework upgrades."
-
-* Internal device farm
-* Playwright Migration
 
 ---
 
