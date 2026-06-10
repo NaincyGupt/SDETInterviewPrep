@@ -12,8 +12,14 @@ I am currently working as automation lead at Lingo which is one of the division 
 * **Adobe & DXC Technology:** Developed specialized regression test suites for complex Adobe PDF print engine at Adobe, and engineered automated frameworks for telecom management systems at DXC technology.
 
 ---
+## What is Lingo ?
+
 The Lingo biosensor, which can be worn for 14 days, tracks blood glucose levels, while its accompanying app provides personalized, real-time insights and customized coaching to help people create healthy eating habits, retrain their metabolism and improve their overall well-being.
+
 ----
+
+## About Apple 
+
 Apple is organized by functional specialties rather than business units — rare for a company our size. We’re experts leading experts: hardware experts lead hardware, software experts lead software, and design experts lead design. This differs from most other large companies, where general managers oversee managers. Apple is Apple because those with the most expertise in an area of work have decision rights for that area.
 
 Leaders at Apple combine their expertise with two other important characteristics: immersion in the details and a willingness to collaboratively debate during collective decision-making. For people at every level here, it can be liberating — even exhilarating — to work with experts who offer relevant guidance and mentoring. This approach to leadership is a commitment to collaboration that leads to innovation.
@@ -32,6 +38,100 @@ In my current role at Abbott, I've been focused on building scalable automation 
 
 --------
 
+Why should we hire you? / Why are you good fit for us?
+
+"I am a strong fit because I don't just write test scripts; I build scalable quality infrastructure. Whether it was building an Appium framework from scratch at my current company or managing high-load Alexa service testing at Amazon, I focus on 'Observability'—ensuring that every test run provides actionable data to developers through CI/CD integration and real-time monitoring. I’m ready to bring that same culture of automated, proactive quality to your team."
+
+--------
+
+Tell me about the most impactful project you've worked on. /
+Biggest impact you have done: When You Solved a Problem
+
+"I resolved the issue of fragile automation by architecting a resilient locator system using a centralized JSON repository with a progressive fallback mechanism. By decoupling the test logic from the volatile React Native hierarchy, I ensured that if a primary ID fails, the framework automatically attempts alternative strategies like iOS Class Chains or Android UiAutomator. This 'self-healing' approach reduced maintenance time by 80% and prevented false failures during framework upgrades."
+
+Internal device farm 
+
+Playwright Migration
+
+--------
+
+## When You Overcame a Challenge
+
+### Introduced android - test become flaky
+When introduced android - the test became flaky - where developers began to lose trust in our automation results."
+
+My goal was to stabilize the framework and restore the team's confidence in our CI/CD pipeline. 
+
+First, I implemented a centralized locator repository using a JSON-based structure that handled platform-specific identifiers for iOS and Android more intelligently. 
+Second, instead of using generic 'sleep' statements, I developed a custom 'smart-wait' utility and an intelligent retry logic.I also collaborated closely with the dev team to ensure that unique accessibility IDs were added to the source code to make the UI more testable."
+Third, I engineered a custom Android Gesture Utility - like vertical scrolling, swiping, and multi-touch interactions
+
+"As a result, we reduced our flakiness from 30% to under 2%. This improved our release velocity significantly, as stakeholders could now rely on the automation report 
+
+### Changing leadership - affecting product timelines ?
+
+### internal device farm
+The Challenge: Architecting an In-House Mobile Device Lab for High-Security Testing
+Situation:
+did not got clearance to exeute test protocols on emulator and simulator
+Task:
+"I was tasked with architecting and building a private, in-house device farm from scratch. The goal was to provide the team with a 24/7 automated execution engine that offered the same parallelization benefits of the cloud but within our own secure network firewall."
+Action:
+"This was a complex project that required solving several 'physical-meets-digital' hurdles:
+Infrastructure Setup: I configured a dedicated Mac Mini rack as the host controller, using high-quality powered USB hubs to maintain stable data connections and prevent battery swelling on the iPhones and Android devices.
+Software Layer: I utilized Appium Grid and Selenium Grid to manage device distribution. I wrote custom shell scripts to automate the 'cleanup' phase—ensuring each device cleared its cache, reset permissions, and stayed awake between test runs.
+Network Orchestration: I worked with our IT department to set up a dedicated VLAN for the lab, ensuring the devices could communicate with our internal staging servers while remaining isolated from the rest of the corporate network."
+Result:
+"i successfully stabilized a farm of 20+ diverse physical devices. This shifted our automation coverage from 0% to 90% for critical regression paths in our secure environment. We reduced the feedback loop for developers from two days to under two hours, and because it was in-house, we eliminated the recurring monthly costs of cloud subscriptions, saving the department significant budget while increasing security compliance."
+
+A Wit-Check for the Interview:
+If they ask, "What was the most surprising difficulty of an in-house farm?" 
+health scripts - random failures if appium session not started, device is offline, updates
+--------
+
+## Conflict with team 
+
+The Conflict: Negotiating a "No-Go" on a Tight Deadline
+Situation:
+"During a high-priority release for our bio-wearable app, we discovered a late-stage regression in the data syncing module just 24 hours before the scheduled deployment. The lead developer felt the bug was an 'edge case' and argued that we should ship the build to stay on schedule and fix it in a patch later. However, based on my assessment, I knew this could lead to data loss for a specific subset of users."
+Task:
+"My task was to manage the disagreement professionally without damaging my relationship with the engineering team, while simultaneously acting as the 'gatekeeper' for the user experience and product integrity."
+Action:
+"Instead of just saying 'no,' I took a data-driven approach to de-escalate the tension.
+Objectivity: I quickly pulled our analytics to show that the 'edge case' actually affected about 5% of our active user base—thousands of people.
+Collaboration: I sat down with the developer and, instead of criticizing the code, I focused on the risk to the brand. I proposed a middle ground: we would delay the release by just six hours, and I would personally assist in a focused 'war room' session to help reproduce and verify the fix immediately.
+Communication: I kept the Product Manager informed with clear, non-emotional updates on the risk vs. reward of waiting for the fix."
+Result:
+"The developer agreed once he saw the impact data. We fixed the bug, ran a targeted automation sweep, and shipped the build with only a minor delay. Afterward, I initiated a 'Post-Mortem' where we agreed to implement a new 'Critical Path' automated check earlier in the sprint to prevent this kind of late-stage friction. It actually strengthened our partnership because the developer realized I was there to protect his work, not just block it."
+
+
+A Wit-Check for the Interview:
+If they ask, "What if the manager had ordered you to ship it anyway?"
+Answer: "I would clearly document the known risks and provide a 'Mitigation Plan'—such as an immediate hotfix schedule or a targeted notification for affected users. At the end of the day, I advocate for the user, but I also understand that business decisions require balancing risks. My job is to make sure that risk is fully understood before the button is pressed."
+
+------------
+
+## Conflict with manager:
+
+
+
+The Conflict: Defending UI Consistency Against "Feature Dropping"
+Situation:
+"Recently, during a high-pressure release planning meeting, stakeholders decided to move up a shipment date. To meet the new deadline, they proposed dropping several planned projects. However, the projects they chose to cut would have left the application in a 'split' state: a major new UI overhaul would be applied to the primary user flows, while secondary—but still critical—flows would remain on the legacy UI."
+Task:
+"As the Quality Lead, I recognized that this 'disjointed' experience would confuse users and diminish the perceived quality of the brand. My task was to challenge the shipment plan and advocate for a cohesive user experience, even though the pressure to ship early was high."
+Action:
+"I spoke up during the planning meeting, but I made sure to frame my objection through the lens of User Experience (UX) debt rather than just technical difficulty:
+Visual Mapping: I created a quick 'User Journey Map' showing how a typical user would bounce between the new and old UIs, highlighting the friction points where buttons and navigation would change mid-session.
+The 'Brand Integrity' Argument: I argued that shipping a 'half-finished' UI would lead to higher support tickets and a drop in user trust, which would outweigh the benefits of an early release.
+The Solution: I proposed a 'Unified Toggle' strategy. If we couldn't finish the UI everywhere, I suggested we keep the new UI behind a feature flag for a smaller beta group, or revert the ship date by one week to ensure a 'Big Bang' release that was consistent across the entire app."
+Result:
+"My manager and the stakeholders took the feedback seriously. After seeing the journey map, they realized the 'disjointed' UI felt like a bug rather than a feature. We reached a compromise: we delayed the release by ten days, but we re-scoped the sprint to focus only on the visual consistency of the core flows. We shipped a product that felt finished and intentional, and it resulted in one of our highest-rated updates in terms of user satisfaction."
+A Wit-Check for the Interview:
+If they ask, "Why didn't you just let them ship it and fix it later?"
+Answer: "Because first impressions are permanent. If a user feels the app is 'broken' or 'inconsistent' on day one, it’s much harder to win their trust back on day thirty. Quality isn't a patch you apply later; it has to be baked into the launch."
+
+----------
 why do I enjoy quality? / "What is the primary motivator for you in your career right now?"
 how do you handle disagreements on projects
 tell me about a time you helped contribute to an inclusive work env
@@ -43,8 +143,7 @@ Apple info
 QA question - non generic and specific question
 what is the vision for the team?
 
-Background - consice and impactful 
-Lingo - what have you done here ?
+
 
 
 – What do you like most about working here? 
