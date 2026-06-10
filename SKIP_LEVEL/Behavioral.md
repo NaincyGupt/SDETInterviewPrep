@@ -86,16 +86,49 @@ did not got clearance to exeute test protocols on emulator and simulator
 
 * **Infrastructure Setup:** I configured a dedicated Mac Mini rack as the host controller, using high-quality powered USB hubs to maintain stable data connections and prevent battery swelling on the iPhones and Android devices.
 * **Software Layer:** I utilized Appium Grid and Selenium Grid to manage device distribution. I wrote custom shell scripts to automate the 'cleanup' phase—ensuring each device cleared its cache, reset permissions, and stayed awake between test runs.
-* **Network Orchestration:** I worked with our IT department to set up a dedicated VLAN for the lab, ensuring the devices could communicate with our internal staging servers while remaining isolated from the rest of the corporate network."
+
 
 **Result:**
-"i successfully stabilized a farm of 20+ diverse physical devices. This shifted our automation coverage from 0% to 90% for critical regression paths in our secure environment. We reduced the feedback loop for developers from two days to under two hours, and because it was in-house, we eliminated the recurring monthly costs of cloud subscriptions, saving the department significant budget while increasing security compliance."
+I successfully stabilized a farm of 20+ diverse physical devices. This shifted our automation coverage from 0% to 90% for critical regression paths in our secure environment. We reduced the feedback loop for developers from two days to under two hours, and because it was in-house, we eliminated the recurring monthly costs of cloud subscriptions, saving the department significant budget while increasing security compliance."
 
 **A Wit-Check for the Interview:**
 If they ask, "What was the most surprising difficulty of an in-house farm?"
 health scripts - random failures if appium session not started, device is offline, updates
 
 ---
+
+## “Give an example of when you worked as part of a team to achieve a goal.”
+Here's a polished STAR-format answer based on your FUDGE release experience:
+
+### Situation
+
+At Abbott, we had a FUDGE release with a very aggressive deadline because commitments had already been made to a third-party partner. The challenge was that the testing effort required was significantly larger than the development work, and we had limited time to complete validation before the release date.
+
+### Task
+
+As one of the senior members of the QA team, my goal was to help the team deliver sufficient test coverage, identify critical risks, and ensure we could release on time without compromising quality.
+
+### Action
+
+I worked closely with QA, development, product, systems, and SRE teams to define a risk-based testing strategy. Together, we identified the most critical user workflows, integrations, and business-impacting scenarios that needed to be validated before release.
+
+To accelerate execution, I helped onboard multiple team members quickly by providing knowledge-sharing sessions and clear testing guidelines. I also focused on expanding and optimizing our automation coverage. We automated critical scenarios and carefully tagged test cases so we could execute only the relevant suites required for risk-based validation in higher environments.
+
+Throughout the project, I maintained constant communication with developers, product managers, system teams, and SREs to resolve blockers quickly, align on priorities, and ensure everyone had visibility into testing progress and release risks.
+
+### Result
+
+As a team, we successfully completed risk-based testing within the tight timeline and met the third-party commitment. The targeted automation approach significantly reduced execution time, enabled faster feedback, and gave stakeholders confidence in the release. The collaboration across teams allowed us to deliver on schedule without any critical production issues.
+
+### What this demonstrates
+
+This experience showed me that when timelines are constrained, strong collaboration, clear communication, and a well-planned risk-based testing strategy can help a team achieve challenging goals while maintaining product quality.
+----------
+
+## If you were faced with a tight deadline and conflicting priorities, how would you handle it?
+- create risk based testing matrix - run and automate core user journeys
+- drive decisions with data - maybe based on previous data
+- propose some agile alternatives such as 1. feature flags - if the featue is not fully validated, 2. targeted hotfix 
 
 ## Conflict with team/developer
 
@@ -148,6 +181,71 @@ If they ask, "Why didn't you just let them ship it and fix it later?"
 Answer: "Because first impressions are permanent. If a user feels the app is 'broken' or 'inconsistent' on day one, it’s much harder to win their trust back on day thirty. Quality isn't a patch you apply later; it has to be baked into the launch."
 
 ---
+
+## How do you handle feedback or criticism?”
+### Answer (Another Example)
+
+I handle feedback by listening carefully, separating the message from my emotions, and turning it into an action plan. I believe constructive criticism is one of the fastest ways to improve, especially in engineering teams where collaboration matters.
+
+### Example
+
+During a release cycle at Abbott, I was responsible for coordinating regression testing and reporting progress to stakeholders. A product manager later told me that my updates were too technical and made it difficult for non-engineering teams to understand the actual release risk.
+
+Instead of becoming defensive, I asked for specific examples and what information would be more helpful. I learned that stakeholders wanted concise summaries focused on customer impact, blocker status, and confidence level rather than detailed test execution data.
+
+I adjusted my communication style by creating a simple dashboard with:
+
+1. Release status (green/yellow/red)
+
+2. Top risks and mitigations
+
+3. Blocking issues and owners
+
+4. Expected readiness date
+
+I continued to share detailed technical data with the engineering team separately, while giving stakeholders a clearer high-level view.
+
+### Result
+
+The new reporting format improved alignment across QA, product, and leadership teams. Stakeholders were able to make faster decisions, and our release meetings became much more efficient. More importantly, it taught me that effective communication is just as important as technical execution.
+
+### Key takeaway
+
+Feedback helps me identify blind spots. I try to understand the intent behind the feedback, adapt where it makes sense, and use it to improve both my technical work and collaboration with others.
+
+
+-------
+
+## how do you deal with pressure 
+
+### Answer (with a real example)
+
+> I handle pressure by staying calm, focusing on facts, and breaking a large problem into smaller, manageable tasks. In fast-paced environments, pressure is usually caused by competing priorities, tight deadlines, or uncertainty. I find that clear communication, prioritization, and collaboration help me perform effectively even in high-pressure situations.
+
+**Example:**
+
+> At Abbott, we had a FUDGE release where a commitment had already been made to a third-party partner, and the testing effort was much larger than the development effort. We had a very tight deadline and there wasn't enough time to execute every test case.
+>
+> Instead of trying to do everything, I worked with developers, product managers, system teams, and SREs to perform a risk assessment and identify the most critical workflows. We created a risk-based testing strategy, prioritized high-impact scenarios, and automated as many critical paths as possible.
+>
+> I also helped onboard additional team members quickly and organized the work so that everyone knew their responsibilities. We had daily checkpoints to track progress, remove blockers, and adjust priorities as needed.
+>
+> By staying focused on the highest-risk areas and maintaining strong communication across teams, we completed testing on time, met the release commitment, and delivered without critical production issues.
+
+**What I learned:**
+
+> Pressure doesn't necessarily come from the amount of work—it often comes from a lack of clarity. When I prioritize effectively, communicate openly, and focus on what matters most, I'm able to stay productive and help the team succeed even under challenging deadlines.
+
+
+-------
+## Where do you see yourself in five years?
+n five years, I see myself as a strong technical leader in quality engineering, someone who not only builds scalable test automation frameworks but also helps shape the overall quality strategy for products.
+
+I want to continue deepening my expertise in automation, distributed systems, CI/CD, and testing at scale while taking on larger cross-functional responsibilities. I enjoy working closely with developers, product managers, and operations teams to solve complex quality challenges, and I'd like to be in a position where I can mentor engineers and influence engineering best practices across teams.
+
+What excites me about Apple is the opportunity to work on products that impact millions of users. Over the next five years, I hope to become a trusted partner within the organization, contribute to high-impact initiatives, and help build a culture where quality is engineered into the product from the beginning rather than tested at the end.
+
+-------
 
 ## What does quality mean to you?
 
@@ -243,4 +341,6 @@ DST Timezone Bug
 
 ## QA
 
-"What qualities distinguish the most successful quality engineers on your team?"
+What qualities distinguish the most successful quality engineers on your team?"
+What differentiates the engineers who are most successful on your team from those who are average performers?
+How do quality engineers partner with development and product teams here to influence quality early in the development lifecycle?
