@@ -89,7 +89,7 @@ If they ask, "What was the most surprising difficulty of an in-house farm?"
 health scripts - random failures if appium session not started, device is offline, updates
 --------
 
-## Conflict with team 
+## Conflict with team/developer 
 
 The Conflict: Negotiating a "No-Go" on a Tight Deadline
 Situation:
@@ -132,35 +132,83 @@ If they ask, "Why didn't you just let them ship it and fix it later?"
 Answer: "Because first impressions are permanent. If a user feels the app is 'broken' or 'inconsistent' on day one, it’s much harder to win their trust back on day thirty. Quality isn't a patch you apply later; it has to be baked into the launch."
 
 ----------
-why do I enjoy quality? / "What is the primary motivator for you in your career right now?"
-how do you handle disagreements on projects
-tell me about a time you helped contribute to an inclusive work env
-social media feeds of Apple - what is good about it ? what do i like about it ?
-"Which of our company values resonates most with you, and why?"
-Where do you see yourself in 3 to 5 years, and how will this role help you get there?"
-What is a new skill or concept you've had to learn recently?"
-Apple info
-QA question - non generic and specific question
-what is the vision for the team?
+
+## What does quality mean to you?
+
+Quality means delivering a reliable experience that users can trust. It's not just finding defects; it's building confidence through prevention, automation, observability, and collaboration throughout the development lifecycle."
+
+----------
+
+When You Made a Mistake: 
+
+Situation:
+"Early in a major release cycle for our bio-wearable app, I was responsible for overseeing the final automation sign-off. We had a tight deadline, and while our automated suite passed 100%, a critical bug related to data syncing on older iOS versions reached production, affecting a small subset of users."
+Task:
+"I had to identify why our 'perfect' automation missed this and, more importantly, ensure it couldn't happen again. In the medical domain, data integrity is paramount, so any miss is a serious learning opportunity."
+Action:
+"I took immediate ownership. After performing a root cause analysis, I discovered that our automation was primarily running on the latest OS versions, and we had a gap in our cross-version compatibility matrix.
+To fix this, I didn't just add a test case. I revamped our CI/CD infrastructure to use a cloud-based device farm that triggered parallel runs across a broader spectrum of legacy devices and OS versions. I also implemented a 'Technical Debt' review into our sprint planning to ensure we were updating our test environment profiles as frequently as our production user data suggested."
+Result:
+"We caught three similar edge-case bugs in the very next sprint before they reached the user. The experience taught me that quality isn't just about the code you write today, but about the diversity of the environment you test in. It made me a much more proactive Lead, as I now prioritize 'edge-case discovery' sessions at the start of every feature design."
 
 
+## How do you ensure quality in a fast-moving team?
+Shift-left testing
+API-first validation
+Automation
+CI/CD quality gates
+Risk-based testing
+
+## BUG 
+Cloud Sync Duplicate Write
+
+How do you decide when software is ready to ship?
+Escaped defects
+Flaky test rate
+Automation coverage
+Pass rate
+MTTR
+Build stability
+Regression duration
+
+How do you handle disagreement with engineering leadership?
+Strong Answer
+
+"I present risks with data, explain customer impact, and propose mitigation options rather than simply saying yes or no."
 
 
-– What do you like most about working here? 
+What would your manager say is your biggest strength?
+Ownership
+Reliability
+Problem solving
+Collaboration
 
-– How do you hear about if you have done something well? 
+weakness
+I sometimes dive too deeply into technical details and have learned to communicate at the right level for different audiences."
 
-– What do you like most about your job? 
+How do you prioritize testing?
+Framework:
+User impact
+Business impact
+Risk
+Complexity
+Recent changes
+🍎 17. How do you use AI in quality engineering?
+Use your real experience:
+test generation
+log analysis
+test prioritization
+🍎 18. Tell me about a failure.
 
-– What things would you change or improve about your job, department or at the company? 
+Use:
 
-– What career interests or aspirations do you have with us? 
+DST Timezone Bug
 
-– How does your boss recognize you for good performance or a job well done? 
+Key:
 
-– What resources, information and support do you need to be more successful in your job? 
+accountability
+learning
+prevention
 
-– If you experience a problem or roadblock, where do you go for support and solutions? 
-
-– What’s one thing that is working well for our company? 
-
+QA
+"What qualities distinguish the most successful quality engineers on your team?"
