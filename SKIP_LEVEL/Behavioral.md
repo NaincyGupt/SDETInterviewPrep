@@ -45,7 +45,7 @@ agency, responsibility, familarity, flexibility, simplicity, craft and delight
 
 ### Why should we hire you? / Why are you good fit for us?
 
-"I am a strong fit because I don't just write test scripts; I build scalable quality infrastructure. Whether it was building an Appium framework from scratch at my current company or managing high-load Alexa service testing at Amazon, I focus on 'Observability'—ensuring that every test run provides actionable data to developers through CI/CD integration and real-time monitoring. I’m ready to bring that same culture of automated, proactive quality to your team."
+~ I am a strong fit because I don't just write test scripts; I build scalable quality infrastructure. Whether it was building an Appium framework from scratch at my current company or managing high-load Alexa service testing at Amazon, I focus on 'Observability'—ensuring that every test run provides actionable data to developers through CI/CD integration and real-time monitoring. I’m ready to bring that same culture of automated, proactive quality to your team. ~
 
 I believe I'm a strong fit because I bring a combination of deep test automation experience, a quality-first mindset, and the ability to work effectively across teams to deliver products at scale.
 
@@ -53,9 +53,9 @@ Over the years, I've worked in organizations such as Abbott, Adobe, and Amazon, 
 
 One of my strengths is that I don't view quality as the responsibility of QA alone. I partner closely with developers, product managers, DevOps, and SRE teams to build quality into the development process from the beginning. For example, during a recent high-priority release at Abbott with a tight third-party commitment, I helped drive a risk-based testing strategy, onboarded additional team members, expanded automation coverage, and coordinated across multiple teams to successfully deliver on time without critical production issues.
 
-I also enjoy solving complex technical problems. My experience with WebDriverIO, Appium, Selenium, API automation, cloud technologies, and CI/CD allows me to contribute not only to testing but also to improving engineering efficiency and release confidence.
+~ I also enjoy solving complex technical problems. My experience with WebDriverIO, Appium, Selenium, API automation, cloud technologies, and CI/CD allows me to contribute not only to testing but also to improving engineering efficiency and release confidence.
 
-What excites me about Apple is the emphasis on delivering exceptional user experiences and maintaining a very high quality bar. I enjoy working in environments where quality, innovation, and attention to detail are deeply valued, and I believe my background and collaborative approach would allow me to make meaningful contributions to the team.
+What excites me about Apple is the emphasis on delivering exceptional user experiences and maintaining a very high quality bar. I enjoy working in environments where quality, innovation, and attention to detail are deeply valued, and I believe my background and collaborative approach would allow me to make meaningful contributions to the team. ~
 
 ---
 
