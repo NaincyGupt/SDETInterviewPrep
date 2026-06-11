@@ -61,8 +61,27 @@ What excites me about Apple is the emphasis on delivering exceptional user exper
 
 ### Tell me about the most impactful project you've worked on. / Biggest impact you have done: When You Solved a Problem
 
-#### LOCATOR STRATEGY
+#### LOT OF FLAKY TEST - REWRITTEN LOCATOR STRATEGY
 "I resolved the issue of fragile automation by architecting a resilient locator system using a centralized JSON repository with a progressive fallback mechanism. By decoupling the test logic from the volatile React Native hierarchy, I ensured that if a primary ID fails, the framework automatically attempts alternative strategies like iOS Class Chains or Android UiAutomator. This 'self-healing' approach reduced maintenance time by 80% and prevented false failures during framework upgrades."
+
+#### SETUP INTERNAL DEVICE FARM
+
+#### Influencing Developers to Build Testability into the Product
+Situation
+
+Testing certain workflows required complex setups and manual intervention, slowing validation.
+
+Action
+Partnered with developers early in the design phase.
+Proposed test hooks, APIs, and logging improvements.
+Demonstrated how these changes would speed up testing and debugging.
+Result
+Faster root-cause analysis.
+Easier automation development.
+Reduced testing effort for future features.
+Impact
+
+Instead of just testing the product, I helped improve how the product was engineered.
 
 ---
 
@@ -80,7 +99,6 @@ My goal was to stabilize the framework and restore the team's confidence in our 
 
 "As a result, we reduced our flakiness from 30% to under 2%. This improved our release velocity significantly, as stakeholders could now rely on the automation report
 
-### Changing leadership - affecting product timelines?
 
 ### Internal device farm
 
