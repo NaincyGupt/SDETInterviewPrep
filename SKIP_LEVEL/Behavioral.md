@@ -53,11 +53,62 @@ Over the years, I've worked in organizations such as Abbott, Adobe, and Amazon, 
 
 One of my strengths is that I don't view quality as the responsibility of QA alone. I partner closely with developers, product managers, DevOps, and SRE teams to build quality into the development process from the beginning. For example, during a recent high-priority release at Abbott with a tight third-party commitment, I helped drive a risk-based testing strategy, onboarded additional team members, expanded automation coverage, and coordinated across multiple teams to successfully deliver on time without critical production issues.
 
-~I also enjoy solving complex technical problems. My experience with WebDriverIO, Appium, Selenium, API automation, cloud technologies, and CI/CD allows me to contribute not only to testing but also to improving engineering efficiency and release confidence.
+~I also enjoy solving complex technical problems. My experience with WebDriverIO, Appium, Selenium, API automation, cloud technologies, and CI/CD allows me to contribute not only to testing but also to improving engineering efficiency and release confidence.~
 
-What excites me about Apple is the emphasis on delivering exceptional user experiences and maintaining a very high quality bar. I enjoy working in environments where quality, innovation, and attention to detail are deeply valued, and I believe my background and collaborative approach would allow me to make meaningful contributions to the team.~
+~What excites me about Apple is the emphasis on delivering exceptional user experiences and maintaining a very high quality bar. I enjoy working in environments where quality, innovation, and attention to detail are deeply valued, and I believe my background and collaborative approach would allow me to make meaningful contributions to the team.~
 
 ---
+### Tell me about a time when you discovered that your idea was not the best course of action. What was your idea? Why wasn't your idea the best course of action? How did you find out it was not the correct path? What was the best course of action? Who provided it? What did you learn from the experience?
+
+When I was working in DXC, there was a project in order management system which required us to take decision that whether we should show the product feature in billing or not. As a tester, I have got a bug which was not allowing that feature to be shown in bill and hence, I was not giving go to the feature testing. But after taking input from one of the stakeholder and my test lead, I realized that the feature will not appear in anyone bills for a month, which will allow the billing team to fix the issue in that time. At this time I learned that I should have thought about overall product timeline in order to make a good decision.
+
+------
+
+Different stories 
+
+**Question:** Tell me about the most impactful project you've worked on.
+
+
+## Example 2: Reducing Release Delays Across Teams
+
+> The most impactful project I worked on involved improving release quality and reducing last-minute release delays.
+>
+> Our team was experiencing frequent release blockers because regression testing took several days and defects were often discovered very late in the cycle.
+>
+> I analyzed historical release data and found that many critical issues were concentrated around a few high-risk user journeys such as onboarding, device pairing, and data synchronization.
+>
+> I proposed creating a risk-based automated regression suite focused on those business-critical flows. I collaborated with product managers, developers, and QA engineers to identify the most important scenarios and prioritize them.
+>
+> After implementation, the suite ran automatically on every code change and before every release. Critical issues were detected much earlier in development instead of during release week.
+>
+> As a result, regression execution time was reduced significantly, release confidence improved, and our team experienced far fewer release delays.
+>
+> What made this project impactful was that it improved productivity for multiple engineering teams and accelerated delivery without compromising quality.
+
+**Why it works:** Shows leadership and business impact.
+
+---
+
+## Example 3: Solving an Intermittent Production Issue
+
+> One of the most impactful projects I worked on involved investigating a production issue that customers had been reporting for months.
+>
+> Users occasionally experienced failures while onboarding their medical devices, but the issue was highly intermittent and difficult to reproduce in test environments.
+>
+> Instead of treating it as a one-time bug, I gathered logs from customer-reported incidents and analyzed failure patterns. I noticed the failures were correlated with specific connectivity interruptions during device setup.
+>
+> I created automated test scenarios that simulated unstable network conditions and reproduced the issue consistently for the first time.
+>
+> Working with developers, we identified a gap in the application's retry and recovery mechanism. After the fix was implemented, I expanded our automated coverage to include various network degradation scenarios.
+>
+> The solution significantly reduced onboarding failures and improved customer experience for new users.
+>
+> This project stood out because it solved a long-standing customer pain point and demonstrated how quality engineering can directly improve product reliability.
+
+
+
+
+-------
 
 ### Tell me about the most impactful project you've worked on. / Biggest impact you have done: When You Solved a Problem
 
@@ -127,7 +178,7 @@ health scripts - random failures if appium session not started, device is offlin
 ---
 
 ## “Give an example of when you worked as part of a team to achieve a goal.”
-Here's a polished STAR-format answer based on your FUDGE release experience:
+
 
 ### Situation
 
@@ -149,22 +200,61 @@ Throughout the project, I maintained constant communication with developers, pro
 
 As a team, we successfully completed risk-based testing within the tight timeline and met the third-party commitment. The targeted automation approach significantly reduced execution time, enabled faster feedback, and gave stakeholders confidence in the release. The collaboration across teams allowed us to deliver on schedule without any critical production issues.
 
-### What this demonstrates
 
-This experience showed me that when timelines are constrained, strong collaboration, clear communication, and a well-planned risk-based testing strategy can help a team achieve challenging goals while maintaining product quality.
 ----------
 
 ## If you were faced with a tight deadline and conflicting priorities, how would you handle it?
+
 - create risk based testing matrix - run and automate core user journeys
 - drive decisions with data - maybe based on previous data
-- propose some agile alternatives such as 1. feature flags - if the featue is not fully validated, 2. targeted hotfix 
+- propose some agile alternatives such as 1. feature flags - if the featue is not fully validated, 2. targeted hotfix
+
+
+----------
+
 
 ## Conflict with team/developer
 
-thread.sleep - optimize the framework - 50 TC with POM 
+####  Framework Optimization (STAR)
+
+**Situation**
+
+> In one of my projects, we had around 50 automated test cases covering critical user journeys. Over time, the suite execution time increased significantly and became unstable. Many tests contained hardcoded `Thread.sleep()` statements added over several releases to handle synchronization issues.
+>
+> The regression suite was taking much longer than expected and intermittent failures were becoming common.
+
+**Task**
+
+> My responsibility was to improve the reliability and execution time of the automation suite. However, there was disagreement with one of the senior developers who believed the failures were caused by unstable application behavior and not by the automation framework itself.
+>
+> He felt replacing the existing synchronization approach would be risky and would require unnecessary effort.
+
+**Action**
+
+> Instead of debating opinions, I gathered data.
+>
+> I analyzed failure reports from several weeks of regression runs and found that a large percentage of failures occurred around screens where fixed waits were used.
+>
+> I demonstrated examples where the application loaded in 2-3 seconds, but the framework was waiting 10 seconds because of `Thread.sleep()`. In other cases, network delays exceeded the hardcoded wait, causing failures.
+>
+> I proposed replacing the static waits with explicit waits and moving synchronization logic into reusable Page Object Model utilities.
+>
+> To prove the value, I created a proof of concept on a subset of the suite and shared execution metrics with the team.
+>
+> After seeing the data, the developer agreed to collaborate. Together we reviewed critical flows and gradually removed hardcoded waits from the framework.
+
+**Result**
+
+> The execution time of the 50-test regression suite was reduced by approximately 35-40%.
+>
+> Test stability improved significantly, and flaky failures were reduced.
+>
+> More importantly, the disagreement turned into a productive collaboration because we focused on objective evidence rather than personal opinions.
+>
+> The experience taught me that when conflicts arise, bringing data and measurable outcomes to the discussion is often the best way to align teams.
 
 
-**The Conflict:** Negotiating a "No-Go" on a Tight Deadline
+#### **The Conflict:** Negotiating a "No-Go" on a Tight Deadline
 
 **Situation:**
 "During a high-priority release for our bio-wearable app, we discovered a late-stage regression in the data syncing module just 24 hours before the scheduled deployment. The lead developer felt the bug was an 'edge case' and argued that we should ship the build to stay on schedule and fix it in a patch later. However, based on my assessment, I knew this could lead to data loss for a specific subset of users."
@@ -189,9 +279,64 @@ Answer: "I would clearly document the known risks and provide a 'Mitigation Plan
 
 ---
 
-how did you cope with disagreeament from another employee 
+## How did you cope with disagreement from another employee?
 
-retro - why we went ahead woth this solution
+
+
+**Situation**
+
+> In one release cycle, we were introducing a new onboarding flow for a healthcare mobile application. During testing, I identified a defect related to data synchronization. Under certain conditions, users could see delayed updates after completing onboarding.
+>
+> Based on my analysis, I recommended delaying the release until the issue was fully resolved because it affected a core user journey.
+
+**Task**
+
+> My responsibility was to communicate the risk and help the team make an informed decision. However, the Product Manager and Business stakeholders had a different perspective. They believed the issue affected a very small percentage of users and that delaying the release would impact important business commitments.
+
+**Action**
+
+> I presented my findings with supporting evidence, including reproduction steps, impact analysis, and potential customer experience risks.
+>
+> During discussions, I made sure to clearly explain my recommendation but also listened to the business perspective. They had customer deadlines and market commitments that I was not fully considering from my QA viewpoint.
+>
+> Although I disagreed with the final decision, once leadership chose to proceed with the release, I focused on reducing risk rather than continuing the debate.
+>
+> I worked with the team to:
+>
+> * Add additional monitoring
+> * Create rollback procedures
+> * Define support guidelines if issues occurred
+> * Increase post-release validation coverage
+
+**Result**
+
+> The release went ahead successfully, although a small number of users experienced the issue we had discussed.
+>
+> Because we had monitoring and mitigation plans in place, the team identified impacted users quickly and deployed a fix in the next release with minimal disruption.
+>
+> The experience taught me that my role is to provide clear technical recommendations and risk assessments, but not every decision is purely technical. Business priorities, customer commitments, and risk tolerance also play important roles.
+
+
+
+### Retro Question: "Why did we go ahead with this solution?"
+
+A strong retrospective answer:
+
+> During the retrospective, we revisited the decision. From a QA perspective, my recommendation had been to delay the release because the defect affected a critical workflow.
+>
+> However, after reviewing all factors, we understood why leadership chose to proceed:
+>
+> * The issue impacted a limited subset of users.
+> * A workaround existed.
+> * Business commitments and timelines were important.
+> * The team had mitigation plans in place.
+>
+> The discussion was valuable because it wasn't about proving who was right or wrong. It was about understanding the trade-offs that were made.
+>
+> One outcome from the retro was that we improved our release readiness process by defining clearer severity criteria and requiring impact analysis for similar decisions in the future.
+>
+> So even though the decision was different from my recommendation, the team learned from it and strengthened our release process.
+
 
 ---
 
@@ -219,13 +364,148 @@ retro - why we went ahead woth this solution
 If they ask, "Why didn't you just let them ship it and fix it later?"
 Answer: "Because first impressions are permanent. If a user feels the app is 'broken' or 'inconsistent' on day one, it’s much harder to win their trust back on day thirty. Quality isn't a patch you apply later; it has to be baked into the launch."
 
+------
+
+
+#  not good - Manager Wanted a Quick Fix, I Pushed for Root Cause - DEDUPLICATION at various levels
+
+### Situation
+
+> A recurring production issue kept reappearing every few releases.
+
+### Conflict
+
+> My manager wanted a temporary workaround because the team was under pressure to deliver new features.
+>
+> I felt we were spending more time repeatedly fixing symptoms than addressing the actual problem.
+
+### Action
+
+> I gathered data showing how much engineering effort had been spent investigating the same issue over multiple releases.
+>
+> I proposed dedicating one sprint to root-cause analysis.
+
+### Result
+
+> The team identified an architectural issue and fixed it permanently.
+>
+> Customer-reported incidents related to that problem dropped significantly.
+
+### Lesson
+
+> Sometimes investing more effort upfront saves much more effort later.
+
+
+
 ---
 
 ## collegaue has better point of view 
 
+#  Parallel Execution vs Sequential Execution Debate
 
-## maanger feed back how did you work 
-delegation, prioritizing the task that I get 
+## **Situation**
+
+> We were optimizing a regression suite of around 50+ test cases. I initially suggested keeping execution mostly sequential because parallel execution was causing occasional flakiness due to shared test data and environment constraints.
+
+## **Task**
+
+> The goal was to improve execution time without compromising stability.
+
+## **Action**
+
+> A colleague proposed a better idea: instead of avoiding parallel execution, we should fix the root cause by isolating test data and using ThreadLocal drivers for execution.
+>
+> Initially, I was skeptical because we had seen instability in earlier attempts with parallel runs.
+>
+> However, he demonstrated:
+>
+> * How shared test data was causing conflicts
+> * How proper test isolation would remove dependency issues
+> * How ThreadLocal could safely manage driver instances per thread
+>
+> We ran a small POC together on 10 test cases. The results showed:
+>
+> * No data collisions
+> * Stable parallel execution
+> * Significant reduction in execution time
+>
+> Based on the evidence, I agreed to adopt his approach.
+
+## **Result**
+
+> We successfully moved to parallel execution for the full suite, reducing regression execution time significantly while maintaining stability.
+>
+> This allowed faster CI feedback and improved release confidence.
+
+
+Here’s a strong **STAR-format answer for “manager feedback – delegation and prioritization”** that sounds real, senior-level, and interview-ready.
+
+---
+
+#  Manager Feedback on Delegation & Prioritization
+
+## **Situation**
+
+> In one of my projects, I was handling multiple responsibilities at the same time—automation development, regression maintenance, and supporting ongoing release testing. During a quarterly review, my manager gave me feedback that while my technical execution was strong, I needed to improve how I prioritized work and delegated tasks within the team.
+
+---
+
+## **Task**
+
+> My goal was to improve my ability to:
+>
+> * Prioritize tasks based on business impact and release urgency
+> * Avoid personally owning all execution work
+> * Delegate effectively to ensure faster delivery without compromising quality
+>
+> Essentially, I needed to shift from being purely execution-focused to operating more like a domain lead.
+
+---
+
+## **Action**
+
+> I took the feedback seriously and changed my approach in three ways:
+>
+> **1. Prioritization based on impact**
+>
+> * I started categorizing tasks into critical, high, and medium priority based on:
+>
+>   * Release timelines
+>   * Customer impact
+>   * Defect severity
+> * I aligned daily work with sprint goals instead of working in task order.
+>
+> **2. Delegation within the team**
+>
+> * Instead of taking all automation tasks myself, I distributed test case development among team members based on their strengths.
+> * I focused more on designing the framework and reviewing critical components rather than implementing everything end-to-end.
+>
+> **3. Better visibility & communication**
+>
+> * I started giving regular updates in standups about what was being prioritized and why.
+> * I ensured stakeholders were aligned when priorities shifted due to release risks.
+>
+> One example was during a release cycle where we had both new feature automation and regression failures. Instead of trying to handle everything myself, I delegated regression test fixes to one team member while I focused on stabilizing high-risk onboarding flows.
+
+---
+
+## **Result**
+
+> This change significantly improved team efficiency.
+>
+> * We were able to complete regression stabilization faster
+> * My workload became more balanced, allowing me to focus on high-impact areas
+> * The team delivered release-critical automation on time without burnout
+>
+> In the next review cycle, my manager specifically noted improvement in my ownership, prioritization, and ability to scale work through the team.
+
+---
+
+## **Learning**
+
+> The biggest learning for me was that senior engineering roles are not about doing all the work yourself—they are about ensuring the right work gets done by the right people at the right time. Prioritization and delegation are key to scaling impact.
+
+---------
 
 ## How do you handle feedback or criticism?”
 ### Answer (Another Example)
@@ -284,7 +564,7 @@ Feedback helps me identify blind spots. I try to understand the intent behind th
 
 -------
 ## Where do you see yourself in five years?
-n five years, I see myself as a strong technical leader in quality engineering, someone who not only builds scalable test automation frameworks but also helps shape the overall quality strategy for products.
+In five years, I see myself as a strong technical leader in quality engineering, someone who not only builds scalable test automation frameworks but also helps shape the overall quality strategy for products.
 
 I want to continue deepening my expertise in automation, distributed systems, CI/CD, and testing at scale while taking on larger cross-functional responsibilities. I enjoy working closely with developers, product managers, and operations teams to solve complex quality challenges, and I'd like to be in a position where I can mentor engineers and influence engineering best practices across teams.
 
@@ -323,9 +603,8 @@ To fix this, I didn't just add a test case. I revamped our CI/CD infrastructure 
 * CI/CD quality gates
 * Risk-based testing
 
-## BUG
-
-Cloud Sync Duplicate Write
+  
+-----
 
 ## How do you decide when software is ready to ship?
 
@@ -337,12 +616,18 @@ Cloud Sync Duplicate Write
 * Build stability
 * Regression duration
 
+In automation testing, MTTR (Mean Time to Repair or Mean Time to Resolution) measures the average time it takes for your team to identify, troubleshoot, and fix a failing automated test. It is a key KPI for assessing test suite stability and maintainability. [1, 2] 
+## How to Calculate
+You can calculate test suite MTTR using the following formula:
+$$\text{MTTR} = \frac{\text{Total time spent fixing failed tests in a given period}}{\text{Total number of test failures fixed}}$$ 
+## Why MTTR Matters
+
+* Flaky Test Reduction: A high MTTR often indicates "flaky" or brittle tests that frequently fail for environmental reasons rather than actual bugs.
+* CI/CD Bottlenecks: Slow test maintenance delays deployment pipelines, forcing engineers to wait around for green builds. [1, 3, 4, 5, 6] 
+
 
 
 ## What would your manager say is your biggest strength?
-Here is a fully articulated, executive-level answer for the **"What is your biggest strength?"** question. It frames your strength as **Proactive Ownership**, backed by concrete technical metrics from your architecture work at Abbott and Amazon.
-
----
 
 ## "What is your biggest strength?"
 
