@@ -300,18 +300,25 @@ Cloud Sync Duplicate Write
 * Build stability
 * Regression duration
 
-## How do you handle disagreement with engineering leadership?
 
-### Strong Answer
-
-"I present risks with data, explain customer impact, and propose mitigation options rather than simply saying yes or no."
 
 ## What would your manager say is your biggest strength?
+Here is a fully articulated, executive-level answer for the **"What is your biggest strength?"** question. It frames your strength as **Proactive Ownership**, backed by concrete technical metrics from your architecture work at Abbott and Amazon.
 
-* Ownership
-* Reliability
-* Problem solving
-* Collaboration
+---
+
+## "What is your biggest strength?"
+
+
+> "My biggest strength is my sense of **proactive ownership**. I don’t view my role as just managing a team or automating a set of test cases; I take full accountability for the overall health, velocity, and observability of the engineering pipeline. When I see a gap in our infrastructure or a process bottleneck that slows down deployments, I don’t wait for a requirement document—I build a cross-functional strategy to solve it.
+> A perfect example of this was when I joined the Lingo biowearables division at Abbott. Mobile automation was virtually non-existent, creating a massive manual regression bottleneck that delayed releases. Instead of operating within traditional boundaries, I took complete ownership of the problem:
+> 1. **I architected a scalable technical solution:** I built a cross-platform Appium and Java framework from scratch for iOS and Android to completely eliminate manual intervention for core user journeys.
+> 2. **I scaled the infrastructure:** I didn't stop at the framework level. I set up an in-house mobile device farm, containerized our environment using Docker, and integrated it into GitHub Actions and BrowserStack. This enabled automated, overnight multi-device regression sweeps, giving developers instant, actionable feedback loops before they started work the next morning.
+> 3. **I drove cross-functional observability:** Realizing we needed better production insights, I proactively collaborated with DevOps and SRE teams to integrate New Relic and Sentry directly into our testing infrastructure for real-time network monitoring and crash tracking.
+> 
+> 
+> By taking end-to-end ownership—from framework architecture to CI/CD scaling and observability—we transformed our quality culture. We moved from a reactive testing model to a proactive engineering ecosystem that caught regressions hours after code was written rather than weeks later. This is the exact same high-impact, proactive leadership mindset I intend to bring to Apple."
+
 
 ## Weakness
 
@@ -352,3 +359,10 @@ DST Timezone Bug
 What qualities distinguish the most successful quality engineers on your team?"
 What differentiates the engineers who are most successful on your team from those who are average performers?
 How do quality engineers partner with development and product teams here to influence quality early in the development lifecycle?
+
+Would you like to share something that stands out about working at Apple for someone who is apiring to join ?
+What is your vision for the team and the role ?
+something to share about the work culture or values such as amazon - customer obsession, dive deep, invent and simplify, deliver results
+
+## AI how did you use ?
+github copilot, claude, agentic workflow, which model ?, 
