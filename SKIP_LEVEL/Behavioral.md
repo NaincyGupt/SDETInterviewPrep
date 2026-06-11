@@ -141,6 +141,9 @@ This experience showed me that when timelines are constrained, strong collaborat
 
 ## Conflict with team/developer
 
+thread.sleep - optimize the framework - 50 TC with POM 
+
+
 **The Conflict:** Negotiating a "No-Go" on a Tight Deadline
 
 **Situation:**
@@ -158,10 +161,17 @@ This experience showed me that when timelines are constrained, strong collaborat
 
 **Result:**
 "The developer agreed once he saw the impact data. We fixed the bug, ran a targeted automation sweep, and shipped the build with only a minor delay. Afterward, I initiated a 'Post-Mortem' where we agreed to implement a new 'Critical Path' automated check earlier in the sprint to prevent this kind of late-stage friction. It actually strengthened our partnership because the developer realized I was there to protect his work, not just block it."
+I TRIED TO BOND with colleagues to create cohesive environment, we can have disagreements , but still come to a decison for team or project , 
 
 **A Wit-Check for the Interview:**
 If they ask, "What if the manager had ordered you to ship it anyway?"
 Answer: "I would clearly document the known risks and provide a 'Mitigation Plan'—such as an immediate hotfix schedule or a targeted notification for affected users. At the end of the day, I advocate for the user, but I also understand that business decisions require balancing risks. My job is to make sure that risk is fully understood before the button is pressed."
+
+---
+
+how did you cope with disagreeament from another employee 
+
+retro - why we went ahead woth this solution
 
 ---
 
@@ -190,6 +200,12 @@ If they ask, "Why didn't you just let them ship it and fix it later?"
 Answer: "Because first impressions are permanent. If a user feels the app is 'broken' or 'inconsistent' on day one, it’s much harder to win their trust back on day thirty. Quality isn't a patch you apply later; it has to be baked into the launch."
 
 ---
+
+## collegaue has better point of view 
+
+
+## maanger feed back how did you work 
+delegation, prioritizing the task that I get 
 
 ## How do you handle feedback or criticism?”
 ### Answer (Another Example)
