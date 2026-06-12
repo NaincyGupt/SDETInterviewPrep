@@ -68,6 +68,22 @@ Different stories
 
 **Question:** Tell me about the most impactful project you've worked on.
 
+## too flaky automation + introduce android
+Situation:
+"My biggest achievement was architecting and leading the transition from a fragmented, manual-heavy testing process to a unified, scalable automation framework for a bio-wearable mobile application. When I joined, the release cycle was delayed by days due to manual regression, and the existing automation was too flaky to be trusted."
+
+
+Task:
+"I needed to build a framework that could handle complex data synchronization from hardware to software, while reducing the 'false failure' rate that was stalling our CI/CD pipeline."
+
+
+Action:
+"I designed a hybrid framework using Appium, Java, and TestNG, implementing a centralized locator strategy and an intelligent retry mechanism to handle React Native element flakiness. I also integrated the suite with GitHub Actions and Docker, allowing for parallel execution across a multi-device matrix. Crucially, I established a 'Quality-First' culture by training the manual QA team on the new framework and setting up automated reporting in Confluence for stakeholders."
+
+
+Result:
+"This initiative reduced our regression testing time from three days to just four hours, while improving test reliability to 98%. This directly enabled the team to move from monthly to bi-weekly releases, ensuring that critical health-tracking features reached our users faster and with higher confidence."
+
 
 ## Example 2: Reducing Release Delays Across Teams
 
@@ -656,7 +672,7 @@ $$\text{MTTR} = \frac{\text{Total time spent fixing failed tests in a given peri
 * Complexity
 * Recent changes
 
-## 🍎 17. How do you use AI in quality engineering?
+## How do you use AI in quality engineering?
 
 ### Use your real experience:
 
@@ -664,17 +680,328 @@ $$\text{MTTR} = \frac{\text{Total time spent fixing failed tests in a given peri
 * log analysis
 * test prioritization
 
-## 🍎 18. Tell me about a failure.
+# ⭐ How I use AI in Quality Engineering (Copilot + AI tools)
 
-### Use:
+## 🟢 Easy Level Use Cases
 
-DST Timezone Bug
+### 1. Writing Test Cases Faster
 
-### Key:
+> I use Copilot or ChatGPT to quickly draft test cases from user stories or acceptance criteria.
+> Example: “Login with valid/invalid credentials” → AI generates positive, negative, and edge cases.
 
-* accountability
-* learning
-* prevention
+---
+
+### 2. Generating Boilerplate Automation Code
+
+> For mobile automation (Appium/WebDriverIO), I use Copilot to generate:
+
+* Page Object class templates
+* Driver setup
+* Basic test structure
+  This saves time on repetitive coding.
+
+---
+
+### 3. Creating Test Data
+
+> I use AI to generate realistic test data like:
+
+* User profiles
+* Edge-case inputs (long strings, special characters)
+* Locale-specific data for mobile apps
+
+---
+
+### 4. Writing Assertions and Validations
+
+> Copilot helps suggest assertions for API and UI validations, especially for:
+
+* JSON response validation
+* UI element visibility checks
+* Error message verification
+
+---
+
+### 5. Debugging Test Failures
+
+> I paste logs or stack traces into AI tools to quickly identify:
+
+* Common Appium/Selenium errors
+* Locator issues
+* Timing/synchronization problems
+
+---
+
+# 🟡 Medium Level Use Cases
+
+### 6. Improving Flaky Test Cases
+
+> I use AI to analyze flaky test patterns and suggest improvements like:
+
+* Replacing `Thread.sleep()` with explicit waits
+* Better locator strategies
+* Adding retry mechanisms
+
+---
+
+### 7. Generating Page Object Model Structure
+
+> For new mobile features, I use AI to design:
+
+* Page classes
+* Element locators
+* Action methods
+  This helps maintain clean architecture and consistency.
+
+---
+
+### 8. API Test Design Support
+
+> I use AI to help design API test coverage:
+
+* Positive/negative scenarios
+* Boundary conditions
+* Contract validation cases
+  It helps ensure better coverage for REST APIs used in mobile apps.
+
+---
+
+### 9. Test Suite Optimization Ideas
+
+> I use AI to analyze large test suites and suggest:
+
+* Which tests can be grouped
+* Which are redundant
+* Which should be moved to smoke vs regression
+  This helps improve execution time in CI/CD.
+
+---
+
+### 10. Mobile Scenario Exploration
+
+> I use AI to brainstorm edge cases for mobile testing like:
+
+* Network switching (WiFi ↔ LTE)
+* Background/foreground app behavior
+* Bluetooth/device connectivity interruptions
+* Battery low / app kill scenarios
+
+
+---
+
+# ⭐ 1. AI-Driven Impact Analysis → Smart Test Selection (Your Idea Refined)
+
+## 💡 Concept
+
+Instead of running the full regression suite, use AI/logic to:
+
+* Analyze **code changes (diff / PR)**
+* Map changes to **test cases**
+* Run only impacted tests (intelligent regression selection)
+
+---
+
+## 🔧 How it works (real implementation approach)
+
+### Step 1: Parse code changes
+
+* Use Git diff / GitHub API
+* Identify:
+
+  * Files changed
+  * Methods impacted
+  * API endpoints modified
+  * UI components changed
+
+---
+
+### Step 2: Maintain mapping layer (critical)
+
+Create a mapping like:
+
+```json
+LoginPage.js → [TC01, TC02, TC05]
+PaymentAPI → [TC10, TC11, TC12]
+```
+
+This can be built using:
+
+* TestRail / Xray links
+* Or custom tagging in automation framework
+
+---
+
+### Step 3: AI/Rules engine to infer impact
+
+Use AI or heuristics to:
+
+* Match changed functions → related test cases
+* Expand impact using dependency graph
+
+Example:
+
+> If “Login API” changes → also run:
+
+* session tests
+* token refresh tests
+* logout validation
+
+---
+
+### Step 4: Trigger selective execution in CI/CD
+
+* GitHub Actions / Jenkins pipeline runs:
+
+  * `smoke tests`
+  * `impacted tests only`
+* Full regression only if high-risk changes detected
+
+---
+
+## 🎯 Result
+
+* Reduced regression execution time
+* Faster feedback loop in CI
+* Lower compute cost
+* More targeted testing
+
+---
+
+# ⭐ 2. AI-Based Flaky Locator Healing (Web + Mobile)
+
+## 💡 Concept
+
+Automatically detect and fix broken or unstable locators using AI-based fallback strategies.
+
+---
+
+## 🔧 How it works
+
+### Step 1: Locator failure detection
+
+When test fails:
+
+* `NoSuchElementException`
+* `ElementNotInteractableException`
+
+Framework captures:
+
+* Screenshot
+* DOM snapshot
+* Previous working locator
+
+---
+
+### Step 2: AI suggests alternative locator
+
+AI model (or rule-based + ML hybrid) suggests alternatives like:
+
+Instead of:
+
+```xpath
+//button[@id='submit']
+```
+
+AI suggests:
+
+* `//button[text()='Submit']`
+* `//button[contains(@class,'submit')]`
+* `aria-label='submit button'`
+
+---
+
+### Step 3: Smart locator ranking engine
+
+Rank based on:
+
+* Stability score
+* Uniqueness in DOM
+* Historical success rate
+
+---
+
+### Step 4: Auto-healing execution (optional safe mode)
+
+Framework tries:
+
+1. Primary locator
+2. AI-suggested fallback locators
+3. Logs best match
+
+If successful → update locator repository (with review flag)
+
+---
+
+## 🎯 Result
+
+* Reduced flaky test failures
+* Less manual maintenance
+* Faster debugging cycle
+* More resilient UI automation
+
+---
+
+# ⭐ 3. AI-Powered Flaky Test Detection (Bonus idea)
+
+* AI analyzes historical runs
+* Flags tests with:
+
+  * inconsistent pass/fail pattern
+  * high retry count
+  * environment sensitivity
+
+👉 Output:
+
+> “These 8 tests are flaky due to timing/network issues”
+
+---
+
+# ⭐ 4. Smart Test Case Generation from User Stories
+
+* Input: Jira story / acceptance criteria
+* AI generates:
+
+  * positive scenarios
+  * negative cases
+  * edge cases
+  * API + UI combinations
+
+---
+
+# ⭐ 5. AI-Based Test Failure Root Cause Analysis
+
+When CI fails:
+
+* AI reads logs + screenshots + stack traces
+* Suggests:
+
+  * likely root cause (locator issue, API failure, env issue)
+  * impacted layer (UI/API/backend)
+
+-----
+
+## When You Made a Mistake: 
+
+Situation:
+"Early in a major release cycle for our bio-wearable app, I was responsible for overseeing the final automation sign-off. We had a tight deadline, and while our automated suite passed 100%, a critical bug related to data syncing on older iOS versions reached production, affecting a small subset of users."
+Task:
+"I had to identify why our 'perfect' automation missed this and, more importantly, ensure it couldn't happen again. In the medical domain, data integrity is paramount, so any miss is a serious learning opportunity."
+Action:
+"I took immediate ownership. After performing a root cause analysis, I discovered that our automation was primarily running on the latest OS versions, and we had a gap in our cross-version compatibility matrix.
+To fix this, I didn't just add a test case. I revamped our CI/CD infrastructure to use a cloud-based device farm that triggered parallel runs across a broader spectrum of legacy devices and OS versions. I also implemented a 'Technical Debt' review into our sprint planning to ensure we were updating our test environment profiles as frequently as our production user data suggested."
+Result:
+"We caught three similar edge-case bugs in the very next sprint before they reached the user. The experience taught me that quality isn't just about the code you write today, but about the diversity of the environment you test in. It made me a much more proactive Lead, as I now prioritize 'edge-case discovery' sessions at the start of every feature design."
+
+-------
+
+## Weakness:
+
+The Weakness: "I sometimes struggle with the concept of 'Minimum Viable Product.' Because I’m so focused on the end-user experience and architectural elegance, I have a tendency to want to polish a framework or a test suite beyond what is strictly necessary for a first release."
+
+
+The Fix: "I’ve learned to manage this by setting strict time-boxes for the 'polishing' phase. I now focus on hitting the core requirements first, and I keep a 'Backlog of Enhancements' that we only touch if we finish the sprint ahead of schedule. This ensures we never miss a ship date while still maintaining a path toward excellence."
+
+-----
 
 ## QA
 
