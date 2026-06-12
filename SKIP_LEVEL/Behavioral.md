@@ -32,7 +32,8 @@ I'm excited about Apple because of its strong engineering culture and relentless
 
 In my current role at Abbott, I've been focused on building scalable automation frameworks, improving CI/CD quality gates, and validating complex mobile and backend systems. I'm particularly interested in applying those skills to products that operate at Apple's scale, where millions of users rely on the accuracy, performance, and reliability of the software every day.
 
-attention to detail , justice to design principles 
+attention to detail , CRAFTSMANSHIP I have seen is up to the mark 
+justice to design principles 
 agency, responsibility, familarity, flexibility, simplicity, craft and delight
 
 ---
