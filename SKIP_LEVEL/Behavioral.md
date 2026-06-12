@@ -36,6 +36,8 @@ attention to detail , CRAFTSMANSHIP I have seen is up to the mark
 justice to design principles 
 agency, responsibility, familarity, flexibility, simplicity, craft and delight
 
+
+
 ---
 
 ## Why are you leaving Abbott?
@@ -48,15 +50,31 @@ agency, responsibility, familarity, flexibility, simplicity, craft and delight
 
 ~I am a strong fit because I don't just write test scripts; I build scalable quality infrastructure. Whether it was building an Appium framework from scratch at my current company or managing high-load Alexa service testing at Amazon, I focus on 'Observability'—ensuring that every test run provides actionable data to developers through CI/CD integration and real-time monitoring. I’m ready to bring that same culture of automated, proactive quality to your team.~
 
-I believe I'm a strong fit because I bring a combination of deep test automation experience, a quality-first mindset, and the ability to work effectively across teams to deliver products at scale.
+~ I believe I'm a strong fit because I bring a combination of deep test automation experience, a quality-first mindset, and the ability to work effectively across teams to deliver products at scale.
 
 Over the years, I've worked in organizations such as Abbott, Adobe, and Amazon, where I've built and maintained automation frameworks, developed API and UI test strategies, improved CI/CD pipelines, and helped teams release high-quality products under tight deadlines.
 
-One of my strengths is that I don't view quality as the responsibility of QA alone. I partner closely with developers, product managers, DevOps, and SRE teams to build quality into the development process from the beginning. For example, during a recent high-priority release at Abbott with a tight third-party commitment, I helped drive a risk-based testing strategy, onboarded additional team members, expanded automation coverage, and coordinated across multiple teams to successfully deliver on time without critical production issues.
+One of my strengths is that I don't view quality as the responsibility of QA alone. I partner closely with developers, product managers, DevOps, and SRE teams to build quality into the development process from the beginning. For example, during a recent high-priority release at Abbott with a tight third-party commitment, I helped drive a risk-based testing strategy, onboarded additional team members, expanded automation coverage, and coordinated across multiple teams to successfully deliver on time without critical production issues. ~
 
 ~I also enjoy solving complex technical problems. My experience with WebDriverIO, Appium, Selenium, API automation, cloud technologies, and CI/CD allows me to contribute not only to testing but also to improving engineering efficiency and release confidence.~
 
 ~What excites me about Apple is the emphasis on delivering exceptional user experiences and maintaining a very high quality bar. I enjoy working in environments where quality, innovation, and attention to detail are deeply valued, and I believe my background and collaborative approach would allow me to make meaningful contributions to the team.~
+
+
+> I believe you should hire me because I bring a combination of **strong technical skills ** and ownership mindset. Throughout my career, I've consistently taken proactive ownership of quality rather than limiting myself to assigned tasks.
+>
+> For example, during critical releases, I've led defect triage discussions, coordinated follow-ups across development, product, and QA teams, and ensured blockers were resolved quickly. I believe communication is just as important as technical expertise when driving quality.
+>
+> I'm also **highly detail-oriented.** I enjoy creating comprehensive test plans, identifying risks early, and ensuring testing coverage aligns with both business and technical requirements. At the same time, I'm pragmatic and understand that timelines and resources are often constrained.
+>
+> I I work well with timelines -   In situations where testing windows were reduced or resources were limited, I've successfully applied **risk-based testing **approaches by prioritizing high-impact customer workflows.
+>
+> I also work **well across teams.** Whether it's collaborating with developers to debug issues, partnering with product managers to understand requirements, or mentoring team members, I focus on building strong relationships and keeping everyone aligned.
+> **can function with lower resources -  go above and beyond **
+
+
+
+
 
 ---
 ### Tell me about a time when you discovered that your idea was not the best course of action. What was your idea? Why wasn't your idea the best course of action? How did you find out it was not the correct path? What was the best course of action? Who provided it? What did you learn from the experience?
