@@ -118,6 +118,9 @@ Third-party or hybrid screens: Where only XPath or less stable locators are avai
 A blocking queue is a thread‑safe queue where operations wait (block) until they can be completed.
 A blocking queue blocks the calling thread until the queue is ready to perform the operation.
 
+when queue is empty - test thread waits as there is no device available 
+when queue is full - then mobile device which is free - one of them is alloted and the others wait for the test thread to picked up .
+
 If the queue is empty → a consumer waits
 If the queue is full → a producer waits
 No busy‑waiting. No manual locking.
