@@ -94,3 +94,48 @@ More resilient UI automation
 
 ## Challenging Bug 
 dedup 
+
+-----
+## Conflict with dev/team/manager (how did you resolve the conflict ? What were learning from that episode ? Were you at good terms after that ? )
+
+### The Conflict: Negotiating a "No-Go" on a Tight Deadline
+Situation: "During a high-priority release for our bio-wearable app, we discovered a late-stage regression in the data syncing module just 24 hours before the scheduled deployment. The lead developer felt the bug was an 'edge case' and argued that we should ship the build to stay on schedule and fix it in a patch later. However, based on my assessment, I knew this could lead to data loss for a specific subset of users."
+
+Task: "My task was to manage the disagreement professionally without damaging my relationship with the engineering team, while simultaneously acting as the 'gatekeeper' for the user experience and product integrity."
+
+Action: "Instead of just saying 'no,' I took a data-driven approach to de-escalate the tension.
+
+Objectivity: I quickly pulled our analytics to show that the 'edge case' actually affected about 5% of our active user base—thousands of people.
+Collaboration: I sat down with the developer and, instead of criticizing the code, I focused on the risk to the brand. I proposed a middle ground: we would delay the release by just six hours, and I would personally assist in a focused 'war room' session to help reproduce and verify the fix immediately.
+Communication: I kept the Product Manager informed with clear, non-emotional updates on the risk vs. reward of waiting for the fix."
+Result: "The developer agreed once he saw the impact data. We fixed the bug, ran a targeted automation sweep, and shipped the build with only a minor delay. Afterward, I initiated a 'Post-Mortem' where we agreed to implement a new 'Critical Path' automated check earlier in the sprint to prevent this kind of late-stage friction. It actually strengthened our partnership because the developer realized I was there to protect his work, not just block it." I TRIED TO BOND with colleagues to create cohesive environment, we can have disagreements , but still come to a decison for team or project ,
+
+A Wit-Check for the Interview: If they ask, "What if the manager had ordered you to ship it anyway?" Answer: "I would clearly document the known risks and provide a 'Mitigation Plan'—such as an immediate hotfix schedule or a targeted notification for affected users. At the end of the day, I advocate for the user, but I also understand that business decisions require balancing risks. My job is to make sure that risk is fully understood before the button is pressed."
+
+
+-----
+
+### The Conflict: Defending UI Consistency Against "Feature Dropping"
+
+Situation: "Recently, during a high-pressure release planning meeting, stakeholders decided to move up a shipment date. To meet the new deadline, they proposed dropping several planned projects. However, the projects they chose to cut would have left the application in a 'split' state: a major new UI overhaul would be applied to the primary user flows, while secondary—but still critical—flows would remain on the legacy UI."
+
+Task: "As the Quality Lead, I recognized that this 'disjointed' experience would confuse users and diminish the perceived quality of the brand. My task was to challenge the shipment plan and advocate for a cohesive user experience, even though the pressure to ship early was high."
+
+Action: "I spoke up during the planning meeting, but I made sure to frame my objection through the lens of User Experience (UX) debt rather than just technical difficulty:
+
+Visual Mapping: I created a quick 'User Journey Map' showing how a typical user would bounce between the new and old UIs, highlighting the friction points where buttons and navigation would change mid-session.
+The 'Brand Integrity' Argument: I argued that shipping a 'half-finished' UI would lead to higher support tickets and a drop in user trust, which would outweigh the benefits of an early release.
+The Solution: I proposed a 'Unified Toggle' strategy. If we couldn't finish the UI everywhere, I suggested we keep the new UI behind a feature flag for a smaller beta group, or revert the ship date by one week to ensure a 'Big Bang' release that was consistent across the entire app."
+Result: "My manager and the stakeholders took the feedback seriously. After seeing the journey map, they realized the 'disjointed' UI felt like a bug rather than a feature. We reached a compromise: we delayed the release by ten days, but we re-scoped the sprint to focus only on the visual consistency of the core flows. We shipped a product that felt finished and intentional, and it resulted in one of our highest-rated updates in terms of user satisfaction."
+
+A Wit-Check for the Interview: If they ask, "Why didn't you just let them ship it and fix it later?" Answer: "Because first impressions are permanent. If a user feels the app is 'broken' or 'inconsistent' on day one, it’s much harder to win their trust back on day thirty. Quality isn't a patch you apply later; it has to be baked into the launch."
+
+
+----
+
+## Why do want to leave abbott? ()
+
+
+I've had a great experience at Abbott and have had opportunities to lead significant quality engineering initiatives, including automation modernization, device infrastructure, and CI/CD improvements."	"WHAT ARE SOME ISSUES ?
+
+However, as a medical company it somehow lacks in beng very adoptive to new technologies, it take sometime for multiple rounds of approvals. "
