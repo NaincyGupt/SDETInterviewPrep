@@ -32,3 +32,65 @@ I am currently working as automation lead at Lingo which is one of the division 
 To resolve this, I re-engineered our infrastructure's orchestration layer. I built a centralized device pool management system from scratch using a Linked Blocking Queue in Java. I decoupled the test runner from hardcoded targets, implementing a strict thread-safe lock-and-release mechanism: a thread requests an available device from the queue, locks it exclusively for that suite, and safely releases it back to the pool upon completion. I also authored automated cleanup shell scripts that executed between sessions to clear app caches, reset permissions, and handle dirty device states so every test started in a pristine environment."""
 
 * "This architectural shift completely eliminated device collisions and resource exhaustion, driving our infrastructure-related false failure rate down to zero. We successfully scaled parallel test execution capacity across our entire device matrix, which slashed our overall pipeline execution time. Most importantly, it completely restored engineering trust: the development teams went from ignoring the framework to actively blocking code merges on pipeline failures, establishing a bulletproof quality gate for our mobile applications."
+
+
+---------------
+
+## AI 
+
+1. Writing Test Cases Faster
+I use Copilot or ChatGPT to quickly draft test cases from user stories or acceptance criteria. Example: “Login with valid/invalid credentials” → AI generates positive, negative, and edge cases.
+
+2. Generating Boilerplate Automation Code
+Page Object class templates
+Driver setup
+Basic test structure This saves time on repetitive coding.
+
+3. Debugging Test Failures
+I paste logs or stack traces into AI tools to quickly identify:
+Common Appium/Selenium errors
+Locator issues
+Timing/synchronization problems
+
+4. Creating Test Data
+I use AI to generate realistic test data like:
+
+5. AI-Based Flaky Locator Healing (Web + Mobile)
+
+Step 1: Locator failure detection
+When test fails:
+NoSuchElementException
+ElementNotInteractableException
+Framework captures:
+
+Screenshot
+DOM snapshot
+Previous working locator
+
+Step 2: AI suggests alternative locator
+AI model (or rule-based + ML hybrid) suggests alternatives like:
+
+Step 3: Smart locator ranking engine
+Rank based on:
+Stability score
+Uniqueness in DOM
+Historical success rate
+
+Step 4: Auto-healing execution (optional safe mode)
+Framework tries:
+Primary locator
+AI-suggested fallback locators
+Logs best match
+If successful → update locator repository (with review flag)
+
+🎯 Result
+Reduced flaky test failures
+Less manual maintenance
+Faster debugging cycle
+More resilient UI automation
+
+
+---
+
+## Challenging Bug 
+dedup 
